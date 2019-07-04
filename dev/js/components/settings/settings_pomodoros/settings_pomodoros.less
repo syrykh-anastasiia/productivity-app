@@ -1,0 +1,152 @@
+.content-area {
+	@media screen and (max-width: 1023px) {
+		padding-top: 0;
+	}
+	@media screen and (max-width: 390px) {
+		padding: 0 10px;
+	}
+}
+.main-page-title {
+	color: @active;
+	padding-bottom: 40px;
+}
+.title-hint {
+	color: @unactive;
+}
+.settings-pomodoros {
+	max-width: 776px;
+	margin: 80px auto 0;
+	overflow: hidden;
+	@media screen and (max-width: 767px) {
+		max-width: 400px;
+	}
+}
+.settings-items {
+	float: left;
+	max-width: 365px;
+	width: 50%;
+	padding-bottom: 60px;
+	font: 14px @ptsansreg;
+	.circle {
+		width: 17px;
+		height: 17px;
+		border-radius: 50%;
+		float: left;
+	}
+	@media screen and (max-width: 1365px) {
+		max-width: 365px;
+		width: 50%;
+		font-size: 16px;
+	}
+	@media screen and (max-width: 1023px) {
+		max-width: 365px;
+		width: 50%;
+	}
+	@media screen and (max-width: 767px) {
+		max-width: 365px;
+		width: 100%;
+		font-size: 14px;
+	}
+}
+.your-cycle,
+.settings-items br {
+	font-family: @ptsansbold;
+	color: @active;
+	text-align: center;
+	clear: both;
+}
+.settings-items-title,
+.counter {
+	float: left;
+}
+.settings-items-title{
+	color: @active;
+	padding-left: 20px;
+}
+.settings-items span {
+	color: #7e95a8;
+	clear: both;
+	@media screen and (max-width: 1365px) {
+		font-size: 14px;
+	}
+}
+
+.counter {
+	width: auto;
+	border-bottom: 1px solid #8da5b8;
+	color: @unactive;
+	margin: 0 0 15px 50px;
+	padding-bottom: 6px;
+	@media screen and (max-width: 390px) {
+		margin: 0 0 15px 25px;
+	}
+}
+.minus:hover,
+.plus:hover {
+	color: @active;
+}
+.counter {
+	&:hover {
+		border-bottom-color: #fff; 
+	}
+	.icon {
+		cursor: pointer;
+	}
+}
+
+.iterations {
+	font: 16px @robotoreg;
+	background-color: transparent;
+	padding: 0 5px;
+	color: @unactive;
+}
+.icon {
+	color: @unactive;
+	background-color: transparent;
+}
+.minus {
+	padding-right: 30px;
+}
+.plus {
+	padding-left: 30px;
+}
+
+.yellow {
+	.setBgColor(@category_0);
+}
+.blue {
+	.setBgColor(@category_1);
+} 
+.light-blue {
+	.setBgColor(@category_4);
+}
+
+.timeline {
+	height: 10px;
+	width: 100%;
+	margin: 0 auto;
+	position: relative;
+	overflow: hidden;
+}
+.timeline-scale {
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+	padding-bottom: 40px;
+}
+.timeline-blocks {
+	list-style-type: none;
+	height: 100%;
+	float: left;
+}
+.hourPin {
+	font: 12px @ptsansreg;
+	color: #7e95a8;
+	display: inline-block;
+	box-sizing: border-box;
+	text-align: right;
+}
+.full-cycle-point {
+	font: 14px @ptsansreg;
+	color: #7e95a8;
+}
