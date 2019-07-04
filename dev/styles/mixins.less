@@ -1,0 +1,15 @@
+.setColor(@color) {
+	color: @color;
+}
+.setBgColor(@color) {
+	background-color: @color;
+}
+.setBorderColor(@color) {
+	border-color: @color;
+}
+.setNotificationsScheme(@name; @nameSub) {
+	.setBgColor(@name);
+	.notification-icon {
+		.setBgColor(@nameSub);
+	}
+}
