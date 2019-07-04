@@ -5,7 +5,7 @@ const plugins = require('gulp-load-plugins')({
 });
 let isDevelopment = true;
 const path = require('path');
-const webpackconfig = require('./webpack.config.js');
+//const webpackconfig = require('./webpack.config.js');
 const browserSync = require('browser-sync').create();
 const settings = require('./gulp-settings.js');
 const postcssPlagins = [
@@ -55,6 +55,40 @@ gulp.task('allSass', () => {
 			path.resolve(__dirname, settings.scssDir.output);
 	}))
 	.pipe(plugins.count('## files sass to css compiled', {logFiles: true}))
+	.pipe(browserSync.stream({match: '**/*.css'}));
+});
+
+// compile from less to css
+gulp.task('allLess', function () {
+    const less = require('gulp-less');
+    const entryDir = settings.lessDir.entry;
+
+    return gulp.src(
+        path.resolve(__dirname, entryDir + '/**/*.less'),
+        {
+            base: entryDir
+        }
+	)
+	//.pipe(plugins.cached('allLess'))
+	//.pipe(plugins.lessMultiInheritance({dir: entryDir + '/'}))
+	/*.pipe(plugins.plumber(function(error) {
+		plugins.util.log(plugins.util.colors.bold.red(error.message));
+		plugins.util.beep();
+		this.emit('end');
+	}))	*/
+	//.pipe(plugins.if(isDevelopment, plugins.sourcemaps.init()))
+	.pipe(less({
+            paths: [ path.join(__dirname, 'less', 'includes') ]
+        }))
+	//.pipe(plugins.postcss(postcssPlagins))
+	//.pipe(plugins.if(isDevelopment, plugins.sourcemaps.write('./')))
+	//.pipe(plugins.plumber.stop())
+	.pipe(gulp.dest(function(file) {
+        return file.stem === settings.lessDir.mainFileName || file.stem === settings.lessDir.mainFileName + '.css' ?
+            path.resolve(__dirname, settings.lessDir.mainFileOutput) :
+            path.resolve(__dirname, settings.lessDir.output);
+    }))
+    .pipe(plugins.count('## files less to css compiled', {logFiles: true}))
 	.pipe(browserSync.stream({match: '**/*.css'}));
 });
 
@@ -199,23 +233,23 @@ gulp.task('assets', (cb) => {
 
 gulp.task('watch', function(cb) {
 	gulp.watch(
-		path.resolve(__dirname, settings.scssDir.entry + '/**/*.scss'),
-		gulp.series('allSass')
+		path.resolve(__dirname, settings.lessDir.entry + '/**/*.less'),
+		gulp.series('allLess')
 	).on('unlink', function(filePath) {
-		delete plugins.cached.caches.allSass[path.resolve(filePath)];
+		delete plugins.cached.caches.allLess[path.resolve(filePath)];
 	});
 
-	gulp.watch(
+	/*gulp.watch(
 		path.resolve(__dirname, settings.pugDir.entry + '/*.pug'),
 		gulp.series('pugPages')
 	).on('unlink', function(filePath) {
 		delete plugins.cached.caches.pugPages[path.resolve(filePath)];
-	});
+	});*/
 
-	gulp.watch(
-		path.resolve(__dirname, settings.pugDir.entry + '/**/_*.pug'),
-		gulp.series('pugAll')
-	);
+    //gulp.watch(
+    //    path.resolve(__dirname, settings.pugDir.entry + '/**/_*.pug'),
+	//	gulp.series('pugAll')
+	//);
 
 	gulp.watch(
 		[
@@ -267,10 +301,10 @@ gulp.task('build', gulp.parallel(
 */
 
 gulp.task('build', gulp.parallel(
-	'assets',
-	'copyScripts',
-	'allSass',
-	'pugPages'
+	//'assets',
+	//'copyScripts',
+	'allLess',
+	//'pugPages'
 ));
 gulp.task('dist', gulp.series(
 	(cb) => {

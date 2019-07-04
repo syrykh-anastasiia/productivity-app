@@ -6,15 +6,21 @@ module.exports = {
 	devDir,
 	assetsDir: `${devDir}/assets`,
 	imagesDir: {
-		entry: `${publicDir}/images`,
+		entry: `${devDir}/images`,
 		output: `${publicDir}/images`
 	},
 	scssDir: {
-		entry: `${devDir}/scss`,
+		entry: `${devDir}/styles`,
 		output: `${publicDir}/css`,
-		mainFileName: 'style',
+		mainFileName: 'main',
 		mainFileOutput: publicDir
 	},
+    lessDir: {
+        entry: `${devDir}/styles`,
+        output: `${publicDir}/css`,
+        mainFileName: 'main',
+        mainFileOutput: publicDir
+    },
 	pugDir: {
 		entry: devDir,
 		output: publicDir
