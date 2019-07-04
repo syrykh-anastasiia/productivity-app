@@ -1,5 +1,5 @@
-const devDir = 'dev';
-const publicDir = 'public';
+const devDir = '.';
+const publicDir = '.';
 
 module.exports = {
 	publicDir,

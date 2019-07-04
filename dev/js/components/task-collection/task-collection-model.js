@@ -1,4 +1,4 @@
-import EventBus from './../../eventBus.js';
+import EventBus from '../../eventBus.js';
 export default class TaskCollectionModel {
 	constructor() {
 		this.collection = this.collection || {};

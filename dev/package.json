@@ -33,6 +33,7 @@
     "firebase": "^3.6.4",
     "gulp": "^4.0.2",
     "gulp-cached": "^1.1.0",
+    "gulp-concat": "^2.6.1",
     "gulp-count": "^0.3.0",
     "gulp-csscomb": "^3.0.8",
     "gulp-if": "^2.0.2",

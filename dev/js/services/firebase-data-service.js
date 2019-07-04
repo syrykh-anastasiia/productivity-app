@@ -1,4 +1,4 @@
-import EventBus from './../eventBus.js';
+import EventBus from '../eventBus.js';
 
 var config = {
 		apiKey: "AIzaSyCIC08mGpjcyRVSGjXqZ2Yp2Hx7HdfkDp0",

@@ -1,6 +1,6 @@
-import EventBus from './../../eventBus.js';
+import EventBus from '../../eventBus.js';
 
-import TaskCollectionModel from './../task-collection/task-collection-model.js';
+import TaskCollectionModel from '../task-collection/task-collection-model.js';
 import TaskTemplate from './task-template.js';
 import TaskView from './task-view.js';
 import TaskModel from './task-model.js';

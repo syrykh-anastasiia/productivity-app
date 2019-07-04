@@ -1,4 +1,4 @@
-import EventBus from './../../eventBus.js';
+import EventBus from '../../eventBus.js';
 
 import LoginTemplate from './login-template.js';
 import LoginView from './login-view.js';

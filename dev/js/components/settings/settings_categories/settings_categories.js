@@ -1,4 +1,4 @@
-import EventBus from './../../../eventBus.js';
+import EventBus from '../../../eventBus.js';
 
 import SettingsCategoriesModel from './settings_categories-model.js';
 import SettingsCategoriesTemplate from './settings_categories-template.js';

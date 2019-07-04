@@ -1,4 +1,4 @@
-import EventBus from './../../../eventBus.js';
+import EventBus from '../../../eventBus.js';
 import ModalWindowTemplate from './modal-window-template.js';
 import ModalWindowView from './modal-window-view.js';
 import ModalWindowModel from './modal-window-model.js';

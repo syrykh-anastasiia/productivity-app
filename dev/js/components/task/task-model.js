@@ -1,4 +1,4 @@
-import EventBus from './../../eventBus.js';
+import EventBus from '../../eventBus.js';
 export default class TaskModel {
 	constructor() {
 		EventBus.on('updateSingleTask', function([taskId, propertyName, propertyValue]) {

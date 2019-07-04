@@ -1,4 +1,4 @@
-import EventBus from './../../../eventBus.js';
+import EventBus from '../../../eventBus.js';
 
 import TimerTemplate from './timer-template.js';
 import TimerView from './timer-view.js';

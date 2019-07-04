@@ -1,4 +1,4 @@
-import EventBus from './../../../eventBus.js';
+import EventBus from '../../../eventBus.js';
 
 import SettingsPomodorosModel from './settings_pomodoros-model.js'
 import SettingsPomodorosTemplate from './settings_pomodoros-template.js';

@@ -1,4 +1,4 @@
-import Handlebars from './../../libs/handlebars-v4.0.5.js';
+import Handlebars from '../../libs/handlebars-v4.0.5.js';
 
 export default class AppControllsView {
 	constructor(template) {

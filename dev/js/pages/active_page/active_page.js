@@ -1,4 +1,4 @@
-import EventBus from './../../eventBus.js';
+import EventBus from '../../eventBus.js';
 
 import ActivePageModel from './active_page-model.js';
 import ActivePageTemplate from './active_page-template.js';

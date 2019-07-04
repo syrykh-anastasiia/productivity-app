@@ -61,28 +61,17 @@ gulp.task('allSass', () => {
 // compile from less to css
 gulp.task('allLess', function () {
     const less = require('gulp-less');
+    var concat = require('gulp-concat');
     const entryDir = settings.lessDir.entry;
 
     return gulp.src(
-        path.resolve(__dirname, entryDir + '/**/*.less'),
+        path.resolve(__dirname, entryDir + '/**/main.less'),
         {
             base: entryDir
         }
 	)
-	//.pipe(plugins.cached('allLess'))
-	//.pipe(plugins.lessMultiInheritance({dir: entryDir + '/'}))
-	/*.pipe(plugins.plumber(function(error) {
-		plugins.util.log(plugins.util.colors.bold.red(error.message));
-		plugins.util.beep();
-		this.emit('end');
-	}))	*/
-	//.pipe(plugins.if(isDevelopment, plugins.sourcemaps.init()))
-	.pipe(less({
-            paths: [ path.join(__dirname, 'less', 'includes') ]
-        }))
-	//.pipe(plugins.postcss(postcssPlagins))
-	//.pipe(plugins.if(isDevelopment, plugins.sourcemaps.write('./')))
-	//.pipe(plugins.plumber.stop())
+	.pipe(less())
+	.pipe(concat('css/main.css'))
 	.pipe(gulp.dest(function(file) {
         return file.stem === settings.lessDir.mainFileName || file.stem === settings.lessDir.mainFileName + '.css' ?
             path.resolve(__dirname, settings.lessDir.mainFileOutput) :

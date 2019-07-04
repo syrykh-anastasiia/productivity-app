@@ -1,4 +1,4 @@
-import EventBus from './../../../../eventBus.js';
+import EventBus from '../../../../eventBus.js';
 export default function Timeline(options) {
 	var elem = options.elems;
 	var counter = options.valuesWrap;
