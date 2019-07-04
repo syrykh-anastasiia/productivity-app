@@ -28,9 +28,5 @@ module.exports = {
 	jsDir: {
 		entry: `${devDir}/js`,
 		output: `${publicDir}/js`
-	},
-	jsES6: {
-		entry: `${devDir}/js/es6`,
-		names: ['main']
 	}
 };

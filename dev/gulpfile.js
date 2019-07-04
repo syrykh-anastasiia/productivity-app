@@ -5,22 +5,14 @@ const plugins = require('gulp-load-plugins')({
 });
 let isDevelopment = true;
 const path = require('path');
-//const webpackconfig = require('./webpack.config.js');
 const browserSync = require('browser-sync').create();
+const concat = require('gulp-concat');
 const settings = require('./gulp-settings.js');
 const postcssPlagins = [
 	plugins.autoprefixer({
 		browsers: ['last 2 version']
 	})
 ];
-// ES-2015 handler
-gulp.task('webpack', (cb) => {
-	plugins.webpack(webpackconfig(isDevelopment), (err, stats) => {
-		if (err) throw new plugins.util.PluginError('webpack', err);
-		plugins.util.log('[webpack]', stats.toString({}));
-		cb();
-	});
-});
 
 const reloadPage = (cb) => {
 	browserSync.reload();
@@ -61,7 +53,6 @@ gulp.task('allSass', () => {
 // compile from less to css
 gulp.task('allLess', function () {
     const less = require('gulp-less');
-    var concat = require('gulp-concat');
     const entryDir = settings.lessDir.entry;
 
     return gulp.src(
@@ -78,57 +69,15 @@ gulp.task('allLess', function () {
             path.resolve(__dirname, settings.lessDir.output);
     }))
     .pipe(plugins.count('## files less to css compiled', {logFiles: true}))
-	.pipe(browserSync.stream({match: '**/*.css'}));
+	.pipe(browserSync.stream({match: 'css/*.css'}));
 });
 
-// compile from pug to html
-gulp.task('pugPages', function(cb) {
-	return gulp.src(
-			[
-				path.resolve(__dirname, settings.pugDir.entry + '/**/*.pug'),
-				'!' + path.resolve(__dirname, settings.pugDir.entry + '/**/_*.pug')
-			],
-			{
-				base: path.resolve(__dirname, settings.pugDir.entry)
-			}
-		)
-		.pipe(plugins.cached('pugPages'))
-		.pipe(plugins.plumber(function(error) {
-			plugins.util.log(plugins.util.colors.bold.red(error.message));
-			plugins.util.beep();
-			this.emit('end');
-		}))
-		.pipe(plugins.pug({pretty: '\t'})/*.on('error', err => {
-			console.log(err);
-			cb();
-		})*/)
-		.pipe(plugins.plumber.stop())
-		.pipe(gulp.dest(path.resolve(__dirname, settings.pugDir.output)))
-		.pipe(plugins.count('## pug files compiled', {logFiles: true}));
-});
-
-gulp.task('pugAll', function(cb) {
-	return gulp.src(
-			[
-				path.resolve(__dirname, settings.pugDir.entry + '/*.pug')
-			],
-			{
-				base: path.resolve(__dirname, settings.pugDir.entry)
-			}
-		)
-		.pipe(plugins.plumber(function(error) {
-			plugins.util.log(plugins.util.colors.bold.red(error.message));
-			plugins.util.beep();
-			this.emit('end');
-		}))
-		.pipe(plugins.pug({pretty: '\t'})/*
-		.on('error', err => {
-			console.log(err);
-			cb();
-		})*/)
-		// .pipe(plugins.plumber.stop())
-		.pipe(gulp.dest(path.resolve(__dirname, settings.pugDir.output)))
-		.pipe(plugins.count('## pug files compiled', {logFiles: true}));
+//concat all JS files
+gulp.task('allJs', function () {
+    return gulp.src(['js/**/*.js', '!js/libs/*.js'])
+	.pipe(concat('main.js'))
+	.pipe(gulp.dest(settings.jsDir.output))
+	.pipe(browserSync.stream({match: 'js/**/*.js'}));
 });
 
 // server
@@ -146,8 +95,7 @@ gulp.task('server', cb => {
 gulp.task('copyScripts', () => {
 	return gulp.src(
 		[
-			path.resolve(__dirname, settings.jsDir.entry + '/**/*.*'),
-			'!' + path.resolve(__dirname, settings.jsES6.entry + '/**/*.*')
+			path.resolve(__dirname, settings.jsDir.entry + '/**/*.js')
 		],
 		{
 			base: path.resolve(__dirname, settings.jsDir.entry)
@@ -228,32 +176,14 @@ gulp.task('watch', function(cb) {
 		delete plugins.cached.caches.allLess[path.resolve(filePath)];
 	});
 
-	/*gulp.watch(
-		path.resolve(__dirname, settings.pugDir.entry + '/*.pug'),
-		gulp.series('pugPages')
-	).on('unlink', function(filePath) {
-		delete plugins.cached.caches.pugPages[path.resolve(filePath)];
-	});*/
-
-    //gulp.watch(
-    //    path.resolve(__dirname, settings.pugDir.entry + '/**/_*.pug'),
-	//	gulp.series('pugAll')
-	//);
-
 	gulp.watch(
 		[
-			path.resolve(__dirname, settings.jsDir.entry + '/*'),
-			'!' + path.resolve(__dirname, settings.jsES6.entry)
+			path.resolve(__dirname, settings.jsDir.entry + '/*')
 		],
 		gulp.series('copyScripts')
 	).on('unlink', function(filePath) {
 		delete plugins.cached.caches.copyScripts[path.resolve(filePath)];
 	});
-
-	// gulp.watch(
-	// 	path.resolve(__dirname, settings.jsES6.entry + '/**/*.js'),
-	// 	gulp.series('webpack')
-	// );
 
 	gulp.watch(
 		path.resolve(__dirname, settings.assetsDir + '/**'),
@@ -279,21 +209,11 @@ gulp.task('clear', (cb) => {
 	});
 });
 
-/*
 gulp.task('build', gulp.parallel(
 	'assets',
-	'copyScripts',
-	'webpack',
-	'allSass',
-	'pugPages'
-));
-*/
-
-gulp.task('build', gulp.parallel(
-	//'assets',
 	//'copyScripts',
+	'allJs',
 	'allLess',
-	//'pugPages'
 ));
 gulp.task('dist', gulp.series(
 	(cb) => {
