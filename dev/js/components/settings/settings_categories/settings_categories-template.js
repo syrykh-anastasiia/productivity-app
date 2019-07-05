@@ -2,7 +2,7 @@
 * @constructor
 * @name SettingsCategoriesTemplate
 */
-export default class SettingsCategoriesTemplate {
+class SettingsCategoriesTemplate {
 	constructor() {
 		this.template = '<div class="settings-categories" id="settings-categories">' +
 			'<ul class="choose-categories">' +

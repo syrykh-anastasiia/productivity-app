@@ -1,11 +1,9 @@
-import EventBus from '../../../eventBus.js';
-
-import SettingsPomodorosModel from './settings_pomodoros-model.js'
+/*import SettingsPomodorosModel from './settings_pomodoros-model.js'
 import SettingsPomodorosTemplate from './settings_pomodoros-template.js';
 import SettingsPomodorosView from './settings_pomodoros-view.js';
 import SettingsPomodorosController from './settings_pomodoros-controller.js';
 
-import CycleController from './cycle/cycle-controller.js';
+import CycleController from './cycle/cycle-controller.js';*/
 
 window.initSettingsPomodoros = function() {
 	let settingsPomodorosModel = new SettingsPomodorosModel;

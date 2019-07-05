@@ -1,8 +1,6 @@
-import EventBus from '../../eventBus.js';
-
-import LoginTemplate from './login-template.js';
+/*import LoginTemplate from './login-template.js';
 import LoginView from './login-view.js';
-import LoginController from './login-controller.js';
+import LoginController from './login-controller.js';*/
 
 window.initLogin = function() {
 	let loginTemplate = new LoginTemplate;

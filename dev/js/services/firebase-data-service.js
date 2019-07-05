@@ -1,13 +1,18 @@
-import EventBus from '../eventBus.js';
-
-var config = {
+/*var config = {
 		apiKey: "AIzaSyCIC08mGpjcyRVSGjXqZ2Yp2Hx7HdfkDp0",
 		authDomain: "productivity-app-5d715.firebaseapp.com",
 		databaseURL: "https://productivity-app-5d715.firebaseio.com",
 		storageBucket: "productivity-app-5d715.appspot.com",
 		messagingSenderId: "237632715933"
-};
-firebase.initializeApp(config);
+};*/
+
+firebase.initializeApp({
+    apiKey: "AIzaSyCIC08mGpjcyRVSGjXqZ2Yp2Hx7HdfkDp0",
+    authDomain: "productivity-app-5d715.firebaseapp.com",
+    databaseURL: "https://productivity-app-5d715.firebaseio.com",
+    storageBucket: "productivity-app-5d715.appspot.com",
+    messagingSenderId: "237632715933"
+});
 
 var database = firebase.database();
 /*var connectedRef = database.ref(".info/connected");

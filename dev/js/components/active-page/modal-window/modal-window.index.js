@@ -1,8 +1,7 @@
-import EventBus from '../../../eventBus.js';
-import ModalWindowTemplate from './modal-window-template.js';
+/*import ModalWindowTemplate from './modal-window-template.js';
 import ModalWindowView from './modal-window-view.js';
 import ModalWindowModel from './modal-window-model.js';
-import ModalWindowController from './modal-window-controller.js';
+import ModalWindowController from './modal-window-controller.js';*/
 
 window.initModalWindow = function() {
 	var modalWindowTemplate = new ModalWindowTemplate;

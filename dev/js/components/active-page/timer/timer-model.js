@@ -1,4 +1,4 @@
-export default class TimerModel {
+class TimerModel {
 	constructor() {
 
 	}

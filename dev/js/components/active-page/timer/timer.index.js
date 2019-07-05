@@ -1,9 +1,7 @@
-import EventBus from '../../../eventBus.js';
-
-import TimerTemplate from './timer-template.js';
+/*import TimerTemplate from './timer-template.js';
 import TimerView from './timer-view.js';
 import TimerModel from './timer-model.js';
-import TimerController from './timer-controller.js';
+import TimerController from './timer-controller.js';*/
 
 window.initTimer = function() {
 	var timerModel = new TimerModel;

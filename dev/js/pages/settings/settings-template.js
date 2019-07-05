@@ -2,7 +2,7 @@
 * @constructor
 * @name SettingsTemplate
 */
-export default class SettingsTemplate {
+class SettingsTemplate {
 	constructor() {
 		this.template = '<div class="content-area">' +
 		'<header>' +

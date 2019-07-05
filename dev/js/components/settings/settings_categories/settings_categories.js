@@ -1,9 +1,9 @@
-import EventBus from '../../../eventBus.js';
-
+/*
 import SettingsCategoriesModel from './settings_categories-model.js';
 import SettingsCategoriesTemplate from './settings_categories-template.js';
 import SettingsCategoriesView from './settings_categories-view.js';
 import SettingsCategoriesController from './settings_categories-controller.js';
+*/
 
 window.initSettingsCategories = function() {
 	var settingsCategoriesModel = new SettingsCategoriesModel;

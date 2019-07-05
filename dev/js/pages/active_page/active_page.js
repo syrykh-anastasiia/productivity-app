@@ -1,9 +1,7 @@
-import EventBus from '../../eventBus.js';
-
-import ActivePageModel from './active_page-model.js';
+/*import ActivePageModel from './active_page-model.js';
 import ActivePageTemplate from './active_page-template.js';
 import ActivePageView from './active_page-view.js';
-import ActivePageController from './active_page-controller.js';
+import ActivePageController from './active_page-controller.js';*/
 
 window.initActivePage = function() {
 	let activePageModel = new ActivePageModel;

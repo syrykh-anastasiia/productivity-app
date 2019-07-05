@@ -1,4 +1,4 @@
-export default class StickyHeaderController {
+class StickyHeaderController {
 	constructor(view) {
 		var self = this;
 		self.view = view;

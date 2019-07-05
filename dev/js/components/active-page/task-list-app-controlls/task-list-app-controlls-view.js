@@ -1,4 +1,4 @@
-export default class TaskListAppControllsView {
+class TaskListAppControllsView {
 	constructor(template) {
 		this.template = template;
 	}

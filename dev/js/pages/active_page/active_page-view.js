@@ -1,12 +1,11 @@
-import EventBus from '../../eventBus.js';
 /**
 * @constructor
 * @param template
 * @name ActivePageView
 */
-import Handlebars from '../../libs/handlebars-v4.0.5.js';
+/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
 
-export default class ActivePageView {
+class ActivePageView {
 	constructor(template) {
 		this.template = template;
 	}

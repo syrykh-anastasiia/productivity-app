@@ -1,4 +1,4 @@
-export default class TaskListAppControllsTemplate {
+class TaskListAppControllsTemplate {
 	constructor() {
 		this.template = '<button class="setting-btn app-controll" id="addIcon">' +
   					'<a class="tooltip" title="Add New Task"><i class="icon-add setting-icons"></i></a>' + 

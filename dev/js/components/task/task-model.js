@@ -1,5 +1,4 @@
-import EventBus from '../../eventBus.js';
-export default class TaskModel {
+class TaskModel {
 	constructor() {
 		EventBus.on('updateSingleTask', function([taskId, propertyName, propertyValue]) {
 			var taskList = JSON.parse(LocalStorageData.getFromLS('TaskList'));

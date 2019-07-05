@@ -1,4 +1,4 @@
-export default class ModalWindowModel {
+class ModalWindowModel {
 	constructor() {
 
 	}

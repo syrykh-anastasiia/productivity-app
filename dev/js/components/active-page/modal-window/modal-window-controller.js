@@ -1,5 +1,4 @@
-import EventBus from '../../../eventBus.js';
-export default class ModalWindowController {
+class ModalWindowController {
 	constructor(model, view) {
 		var self = this;
 		self.view = view;

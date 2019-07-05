@@ -2,7 +2,7 @@
 * @constructor
 * @name SettingsPomodorosTemplate
 */
-export default class SettingsPomodorosTemplate {
+class SettingsPomodorosTemplate {
 	constructor() {
 		this.template = '<div id="settings-pomodoros">' +
 		'<div class="settings-pomodoros">' +

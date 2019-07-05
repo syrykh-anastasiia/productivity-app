@@ -1,6 +1,6 @@
-import Handlebars from '../../../libs/handlebars-v4.0.5.js';
+/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
 
-export default class StickyHeaderView {
+class StickyHeaderView {
 	constructor(template) {
 		var self = this;
 		self.hTemplate = Handlebars.compile(template);

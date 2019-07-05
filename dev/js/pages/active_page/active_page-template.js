@@ -2,7 +2,7 @@
 * @constructor
 * @name ActivePageTemplate
 */
-export default class ActivePageTemplate {
+class ActivePageTemplate {
 	constructor() {
 		this.template = '<div class="content-area">' +
 		'<header class="main-page-title">' +

@@ -1,4 +1,4 @@
-export default class AppControllsTemplate {
+class AppControllsTemplate {
 	constructor() {
 		this.template = '<div class="app-settings">' +
 			'<button class="setting-btn app-controll" id="goToReports">' +

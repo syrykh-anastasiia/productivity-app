@@ -1,4 +1,4 @@
-export default {
+EventBus = {
 	events: {},
 	on: function(eventName, func) { //subscribe
 		this.events[eventName] = this.events[eventName] || [];
@@ -22,12 +22,11 @@ export default {
 		}
 	}
 };
-import EventBus from './eventBus.js';
-
-export default class Router {
+class Router {
 	static routing(location) {
 		let currentLocation = location || window.location.hash.substr(1);
 		EventBus.trigger('getRemoteFBData');
+		console.log('1');
 		switch(currentLocation) {
 			case 'login':
 				window.initLogin();
@@ -43,7 +42,7 @@ export default class Router {
 			break;
 		}
 	}
-};
+}
 
 window.addEventListener('load', function() {
 	let currentHash = location.hash;
@@ -53,6 +52,7 @@ window.addEventListener('load', function() {
 		Router.routing(location.hash.substr(1));
 	}
 });
+
 EventBus.on('routeChange', function(route) {
 	route = route.substr(1);
 	switch(route) {
@@ -70,90 +70,21 @@ EventBus.on('routeChange', function(route) {
 window.addEventListener('hashchange', function() {
 	Router.routing();
 });
-(function($) {
-
-	$.fn.accordion = function(prop) {
-			$('.accordion-header').click(function(event) {
-				var accordionHeader = $('.accordion-header');
-				var accordionBody = $('.accordion-body');
-		
-				accordionBody.toggleClass('hidden');
-			});
-			
-		return this;
-	};
-}(jQuery));
-(function($) {
-
-	$.fn.modal = function(prop) {
-		var modalContainer = $('.modal');
-		modalContainer.removeClass('hidden');
-
-		$("#deadline").datepicker({
-			showAnim: "slideDown",
-	    	changeMonth: true,
-	    	changeYear: true,
-    		minDate: 0,
-	    	dateFormat: "MM dd, yy"
-		});
-
-		$('#confirmAdding').click(function() {
-			modalContainer.addClass('hidden');
-		});
-		$('#cancelAdding').click(function() {
-			modalContainer.addClass('hidden');
-		});
-		return this;
-	};
-}(jQuery));
-(function($) {
-
-	$.fn.tabs = function(prop) {
-		$('.tabs').click(function(event) {
-				var currentItem = $(this);
-
-				currentItem.siblings().removeClass('active');
-				currentItem.addClass('active');
-
-				if(prop == 'reports') {
-					var chartName = currentItem.attr('id');
-					$('.reports').html(ReportsModel(chartName));
-				} else {
-					EventBus.trigger('routeChange', currentItem.find('a').attr('href'));
-				}
-			});
-		return this;
-	};
-}(jQuery));
-(function($) {
-
-	$.fn.tooltips = function(prop) {
-		$('a.tooltip').each(function(i) {
-			$('body').append('<div class="tooltips-block" id="' + i + '"><p>' + $(this).attr("title") + '</p></div>');
-
-			var activeTip = $('#'+i);
-			
-			$(this).removeAttr('title').mouseover(function() {
-				activeTip.css({opacity: 0.8, display: 'none'}).fadeIn(400);
-			}).mousemove(function(kmouse) {
-				activeTip.css({left:kmouse.pageX-15, top:kmouse.pageY+25});
-			}).mouseout(function() {
-				activeTip.fadeOut(400);
-			});
-		});
-		return this;
-	};
-}(jQuery));
-import EventBus from '../eventBus.js';
-
-var config = {
+/*var config = {
 		apiKey: "AIzaSyCIC08mGpjcyRVSGjXqZ2Yp2Hx7HdfkDp0",
 		authDomain: "productivity-app-5d715.firebaseapp.com",
 		databaseURL: "https://productivity-app-5d715.firebaseio.com",
 		storageBucket: "productivity-app-5d715.appspot.com",
 		messagingSenderId: "237632715933"
-};
-firebase.initializeApp(config);
+};*/
+
+firebase.initializeApp({
+    apiKey: "AIzaSyCIC08mGpjcyRVSGjXqZ2Yp2Hx7HdfkDp0",
+    authDomain: "productivity-app-5d715.firebaseapp.com",
+    databaseURL: "https://productivity-app-5d715.firebaseio.com",
+    storageBucket: "productivity-app-5d715.appspot.com",
+    messagingSenderId: "237632715933"
+});
 
 var database = firebase.database();
 /*var connectedRef = database.ref(".info/connected");
@@ -250,6 +181,24 @@ window.LocalStorageData = {
 		localStorage.removeItem(key);
 	}
 }
+
+/*
+class LocalStorageData {
+    setToLS(key, value) {
+        localStorage.setItem(key, value);
+        //EventBus.trigger('initData', [key, value]);
+	}
+
+    getFromLS(key) {
+        return localStorage.getItem(key);
+	}
+
+    removeFromLS(key) {
+        localStorage.removeItem(key);
+	}
+}*/
+
+/* NOT WORKING */
 function AuthData() {
 	var userName = 'admin';
 	var pass = 'admin';
@@ -264,12 +213,15 @@ function AuthData() {
 	}
 }
 
+/*
 window.auth = function(login, pass) {
 	var result = false;
 	var authData = new AuthData();
 	if(login === authData.getUser() && pass === authData.getPass()) result = true;
 	return result;
-}
+}*/
+
+/* NOT WORKING */
 function notification(text) {
   if (!("Notification" in window)) {
     alert("This browser does not support desktop notification");
@@ -283,8 +235,7 @@ function notification(text) {
     });
   }
 }
-import EventBus from '../../eventBus.js';
-export default class AppControllsController {
+class AppControllsController {
 	constructor(view) {
 		this.view = view;
 		this.view.render();
@@ -302,7 +253,7 @@ export default class AppControllsController {
 		});
 	}
 }
-export default class AppControllsTemplate {
+class AppControllsTemplate {
 	constructor() {
 		this.template = '<div class="app-settings">' +
 			'<button class="setting-btn app-controll" id="goToReports">' +
@@ -321,9 +272,9 @@ export default class AppControllsTemplate {
 	}
  
 }
-import Handlebars from '../../libs/handlebars-v4.0.5.js';
+/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
 
-export default class AppControllsView {
+class AppControllsView {
 	constructor(template) {
 		this.template = template;
 	}
@@ -333,16 +284,16 @@ export default class AppControllsView {
 		document.body.innerHTML = data;
 	}
 }
-import AppControllsTemplate from './app-controlls-template.js';
+/*import AppControllsTemplate from './app-controlls-template.js';
 import AppControllsView from './app-controlls-view.js';
-import AppControllsController from './app-controlls-controller.js';
+import AppControllsController from './app-controlls-controller.js';*/
 
 window.initAppControlls = function() {
 	var appControllsTemplate = new AppControllsTemplate;
 	var appControllsView = new AppControllsView(appControllsTemplate.show());
 	var appControllsController = new AppControllsController(appControllsView);
 }
-export default class TaskController {
+class TaskController {
 	constructor(model, view) {
 		this.model = model;
 		this.view = view;
@@ -350,8 +301,7 @@ export default class TaskController {
 	
 } 
 
-import EventBus from '../../eventBus.js';
-export default class TaskModel {
+class TaskModel {
 	constructor() {
 		EventBus.on('updateSingleTask', function([taskId, propertyName, propertyValue]) {
 			var taskList = JSON.parse(LocalStorageData.getFromLS('TaskList'));
@@ -386,7 +336,7 @@ export default class TaskModel {
 		EventBus.trigger('getRemoteFBData');
 	}
 }
-export default class TaskTemplate {
+class TaskTemplate {
 	constructor() {
 		this.template = '<section class="tasks-categories">' +
 							    '<div class="span category-{{task.category}}"></div>' +
@@ -411,9 +361,9 @@ export default class TaskTemplate {
 		return this.template;
 	}
 }
-import Handlebars from '../../libs/handlebars-v4.0.5.js';
+/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
 
-export default class TaskView {
+class TaskView {
 	constructor(template) {
 		this.template = template;
 	}
@@ -452,13 +402,11 @@ export default class TaskView {
 		
 	}
 } 
-import EventBus from '../../eventBus.js';
-
-import TaskCollectionModel from '../task-collection/task-collection-model.js';
+/*import TaskCollectionModel from '../task-collection/task-collection-model.js';
 import TaskTemplate from './task-template.js';
 import TaskView from './task-view.js';
 import TaskModel from './task-model.js';
-import TaskController from './task-controller.js';
+import TaskController from './task-controller.js';*/
 
 window.initTask = function() {
 	var taskCollectionModel = new TaskCollectionModel;
@@ -486,8 +434,7 @@ window.initTask = function() {
 	
 }
 
-import EventBus from '../../eventBus.js';
-export default class TaskCollectionModel {
+class TaskCollectionModel {
 	constructor() {
 		this.collection = this.collection || {};
 		//
@@ -514,14 +461,227 @@ export default class TaskCollectionModel {
 		}
 	}
 }
-import EventBus from '../../eventBus.js';
+/**
+* @constructor
+* @param model
+* @param view
+* @name SettingsController
+*/
+class SettingsController {
+	constructor(model, view) {
+		let self = this;
+		self.view = view;
+		self.model = model;
+		self.componentData;
+		self.componentView;
+
+		window.initAppControlls();
+		
+		var $tabs = $('#tabs');
+		$tabs.tabs();
+
+		$('.setting-btn').tooltips();
+	}
+	changesTracking() {
+		var container = document.getElementsByClassName('btn-group')[0];
+
+		var btnTemplate = '<button class="action-btn back-btn">Back</button>' +
+			'<button class="action-btn save-btn">Save</button>';
+		container.innerHTML = btnTemplate;
+
+		container.addEventListener('click', function(event) {
+			if(event.target.className === 'action-btn save-btn') {
+				//self.model.updateData([elem, parseInt(value)]);
+				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
+				window.initSettingsCategories();
+			} 
+		});
+	}
+}
+
+
+/**
+* @constructor
+* @name SettingsModel
+*/
+class SettingsModel {
+	constructor() {
+		let self = this;
+	}
+	/*move same methods here and just send params*/
+}
+/**
+* @constructor
+* @name SettingsTemplate
+*/
+class SettingsTemplate {
+	constructor() {
+		this.template = '<div class="content-area">' +
+		'<header>' +
+			'<h1 class="main-page-title">Settings</h1>' +
+			'<h3 class="title-hint">SET TEXT HERE</h3>' +
+		'</header>' +
+		'<div id="tabs" class="tabs-block">' +
+			'<button class="tabs"><a href="#settings_pomodoros">Pomodoros</a></button>' +
+			'<button class="tabs"><a href="#settings_categories">Categories</a></button>' +
+		'</div>' +
+		'<div class="settings" id="settings-container"></div>'
+	'</div>';
+	}
+/**
+* @memberof SettingsTemplate
+*/
+	show() {
+		return this.template;
+	}
+}
+/**
+* @constructor
+* @param template
+* @name SettingsView
+*/
+/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
+
+class SettingsView {
+	constructor(template) {
+		this.template = template;
+	}
+	render() {
+		let hTemplate = Handlebars.compile(this.template);
+		let data = hTemplate();
+		document.body.innerHTML += data;
+		document.title = 'Settings';
+	}
+}
+/*import SettingsModel from './settings-model.js'
+import SettingsTemplate from './settings-template.js';
+import SettingsView from './settings-view.js';
+import SettingsController from './settings-controller.js';
+
+import SettingsCategories from '../../components/settings/settings_categories/settings_categories.js';
+import SettingsPomodoros from '../../components/settings/settings_pomodoros/settings_pomodoros.js';*/
+
+window.initSettings = function() {
+	let settingsModel = new SettingsModel;
+	let settingsTemplate = new SettingsTemplate;
+	let settingsView = new SettingsView(settingsTemplate.show());
+	let settingsController = new SettingsController(settingsModel, settingsView);
+	settingsView.render();
+
+	window.initSettingsPomodoros();
+};
+/**
+* @constructor
+* @param view
+* @name LoginController
+* @summary Login controller
+*/
+class LoginController {
+	constructor(view) {
+		if(LocalStorageData.getFromLS('username') !== null) {
+			this.findNextPage();
+		}
+		this.view = view;
+		let auth = window.auth;
+		let self = this;
+		document.addEventListener('submit', function(event) {
+			event.preventDefault();
+			let inputUser = document.getElementById('login').value;
+			let inputPass = document.getElementById('pass').value;
+			let validation = false;
+			if(inputUser.length > 0 && inputPass.length > 0) validation = auth(inputUser, inputPass);
+			document.getElementById('login').value = '';
+			document.getElementById('pass').value = '';
+			if(validation) {
+				LocalStorageData.setToLS('username', inputUser);
+				self.findNextPage();
+			}
+		});
+	}
+	findNextPage() {
+		if(LocalStorageData.getFromLS('Pomodoros') === null && LocalStorageData.getFromLS('Categories') === null) {
+			EventBus.trigger('routeChange', '#settings');
+		} else {
+			EventBus.trigger('routeChange', '#active_page');
+		}
+	}
+} 
+/**
+* @constructor
+* @name LoginTemplate
+* @summary Login template
+*/
+class LoginTemplate {
+  constructor() {
+    this.template = '<div class="main-wrapper">' +
+      '<div class="login-content-area">' +
+        '<h1 class="alt-logo-text">Pomodoro Login Page</h1>' +
+        '<div class="logo"></div>' +
+        '<form id="loginForm" class="log-in">' +
+           '<label class="input-wrap">' +
+             '<input id="login" class="form-input login-input" type="text" placeholder="Username" autocomplete="off"><i class="icon-login login"></i>' + 
+           '</label>' +
+           '<span class="hidden error-text">Lorem ipsum dolor sit amet, consectetu adipiscing elit</span>' +
+           '<label class="input-wrap">' +
+             '<input id="pass" class="form-input pass-input" type="password" placeholder="Password" autocomplete="off"><i class="icon-password password"></i>' +
+          ' </label>' +
+           '<input type="submit" value="Log In">' +
+        '</form>' +
+      '</div>' +
+      '</div>';
+  }
+/**
+* @memberof LoginTemplate
+* @summary show function
+*/
+  show() {
+    return this.template;
+  }
+}
+/**
+* @constructor
+* @param template
+* @name LoginView
+* @summary Login views
+*/
+/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
+
+class LoginView {
+	constructor(template) {
+		this.template = template;
+	}
+/**
+* @memberof LoginView
+* @summary render function
+*/
+	render() {
+		let hTemplate = Handlebars.compile(this.template);
+		let data = hTemplate();
+		document.body.innerHTML = data;
+		document.title = 'Log In';
+	}
+}
+/*import LoginTemplate from './login-template.js';
+import LoginView from './login-view.js';
+import LoginController from './login-controller.js';*/
+
+window.initLogin = function() {
+	let loginTemplate = new LoginTemplate;
+	let loginView = new LoginView(loginTemplate.show());
+	let loginController = new LoginController(loginView);
+
+	EventBus.on('renderLogin', function() {
+		loginView.render();
+	});
+};
+
 /**
 * @constructor
 * @param model
 * @param view
 * @name ActivePageController
 */
-export default class ActivePageController {
+class ActivePageController {
 	constructor(model, view) {
 		var self = this;
 		self.view = view;
@@ -575,9 +735,7 @@ export default class ActivePageController {
 }
 
 
-import EventBus from '../../eventBus.js';
-
-export default class ActivePageModel {
+class ActivePageModel {
 	constructor() {
 		
 	}
@@ -595,7 +753,7 @@ export default class ActivePageModel {
 * @constructor
 * @name ActivePageTemplate
 */
-export default class ActivePageTemplate {
+class ActivePageTemplate {
 	constructor() {
 		this.template = '<div class="content-area">' +
 		'<header class="main-page-title">' +
@@ -633,15 +791,14 @@ export default class ActivePageTemplate {
 		return this.template;
 	}
   }
-import EventBus from '../../eventBus.js';
 /**
 * @constructor
 * @param template
 * @name ActivePageView
 */
-import Handlebars from '../../libs/handlebars-v4.0.5.js';
+/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
 
-export default class ActivePageView {
+class ActivePageView {
 	constructor(template) {
 		this.template = template;
 	}
@@ -717,12 +874,10 @@ export default class ActivePageView {
 	}
 }
 	
-import EventBus from '../../eventBus.js';
-
-import ActivePageModel from './active_page-model.js';
+/*import ActivePageModel from './active_page-model.js';
 import ActivePageTemplate from './active_page-template.js';
 import ActivePageView from './active_page-view.js';
-import ActivePageController from './active_page-controller.js';
+import ActivePageController from './active_page-controller.js';*/
 
 window.initActivePage = function() {
 	let activePageModel = new ActivePageModel;
@@ -745,36 +900,603 @@ window.initActivePage = function() {
 	});
 }
 
-function ArrowsController(view) {
-	this.view = view;
-
-	this.view.render();
-
-	document.addEventListener('click', function() {
-		if(event.target.classList.contains('icon-arrow-left')) {
-			EventBus.trigger('routeChange', '#active_page');
-		} /*else if(event.target.classList.contains('icon-arrow-right')) {
-
-		}*/
-	});
+class StickyHeaderController {
+	constructor(view) {
+		var self = this;
+		self.view = view;
+		window.onscroll = function() {
+			if(document.title == 'Task List') { //hack for some time
+				self.view.run();
+			}
+		};
+	}
 }
-function ArrowsTemplate() {
-  this.template = '<div class="arrow">' +
-		'<button class="arrows arrow-left"><a class="tooltip" title="Go To Task List"><i class="icons icon-arrow-left"></i></a></button>' +
-		'<button class="arrows arrow-right"><i class="icons icon-arrow-right"></i></button>' +
+class StickyHeaderTemplate {
+	constructor() {
+		this.template = '<div id="stickyHeader" class="hidden-header-wrapper hidden">' +
+		'<header class="hidden-header">' +
+			'<a href="/"><img class="hidden-header-logo" src="img/Logo.svg"></a>' +
+			'<div class="nav-settings">' +
+				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="New Task"><i id="addIcon" class="icon-add setting-icons"></i></a></button>' +
+				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="To Trash"><i id="openTrash" class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a></button>' +
+				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="To Reports"><i id="goToReports" class="icon-statistics setting-icons"></i></a></button>' +
+				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="To Settings"><i id="settings" class="icon-settings setting-icons current"></i></a></button>' +
+				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="Log out"><i id="logout2" class="icon-logout setting-icons"></i></a></button>' +
+			'</div>' +
+		'</header>' +
 	'</div>';
+	}
+	show() {
+		return this.template;
+	}
 }
-ArrowsTemplate.prototype.show = function() {
-	return this.template;
+/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
+
+class StickyHeaderView {
+	constructor(template) {
+		var self = this;
+		self.hTemplate = Handlebars.compile(template);
+		var data = self.hTemplate();
+		document.body.innerHTML = data;
+	}
+	run(scrolled) {
+		var scrolled = window.pageYOffset || document.documentElement.scrollTop;
+		if(!document.getElementById('stickyHeader')) document.body.innerHTML = self.template;
+		
+		var header = document.getElementById('stickyHeader');
+		if(scrolled > 200) header.classList.remove('hidden');
+		else if(scrolled <= 200) header.classList.add('hidden');
+	}
 }
-function ArrowsView(template) {
-	this.template = template;
+/*import StickyHeaderTemplate from './sticky-header-template.js';
+import StickyHeaderView from './sticky-header-view.js';
+import StickyHeaderController from './sticky-header-controller.js';*/
+
+window.initStickyHeader = function() {
+	var stickyHeaderTemplate = new StickyHeaderTemplate;
+	var stickyHeaderView = new StickyHeaderView(stickyHeaderTemplate.show());
+	var stickyHeaderController = new StickyHeaderController(stickyHeaderView);
 }
-ArrowsView.prototype.render = function() {
-	var hTemplate = Handlebars.compile(this.template);
-	var data = hTemplate();
-	document.querySelector('.content-area').innerHTML += data;
+class TaskListAppControllsController {
+	constructor(view) {
+		this.view = view;
+		window.initAppControlls();
+		this.view.render();
+
+		document.addEventListener('click', function(event) {
+			if(event.target.closest('#openTrash')) {
+				var trashes = document.getElementsByClassName('add-to-trash');
+				for(var i = 0; i < trashes.length; i++) {
+					if(trashes[i].classList.contains('hidden')) {
+						trashes[i].classList.remove('hidden');
+					}
+					else trashes[i].classList.add('hidden');
+				}
+			}
+		});
+	}
+	
 }
+class TaskListAppControllsTemplate {
+	constructor() {
+		this.template = '<button class="setting-btn app-controll" id="addIcon">' +
+  					'<a class="tooltip" title="Add New Task"><i class="icon-add setting-icons"></i></a>' + 
+  				'</button>' +
+      			'<button class="setting-btn app-controll" id="openTrash">' + 
+      				'<a class="tooltip" title="Add To Trash"><i class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a>' +
+      			'</button>';
+	}
+	show() {
+		return this.template;
+	}
+}
+class TaskListAppControllsView {
+	constructor(template) {
+		this.template = template;
+	}
+	render() {
+		var controllsWrapper = document.querySelector('.app-settings');
+		controllsWrapper.insertAdjacentHTML('afterbegin', this.template);
+	}
+}
+/*import TaskListAppControllsTemplate from './task-list-app-controlls-template.js';
+import TaskListAppControllsView from './task-list-app-controlls-view.js';
+import TaskListAppControllsController from './task-list-app-controlls-controller.js';*/
+
+window.initTaskListControlls = function() {
+	var taskListAppControllsTemplate = new TaskListAppControllsTemplate;
+	var taskListAppControllsView = new TaskListAppControllsView(taskListAppControllsTemplate.show());
+	var taskListAppControllsController = new TaskListAppControllsController(taskListAppControllsView);
+}
+class TimerController {
+	constructor(view, model) {
+		this.view = view;
+		this.model = model;
+
+		//window.initAppControlls();
+		$('.setting-btn').tooltips();
+	}
+}
+class TimerModel {
+	constructor() {
+
+	}
+	saveActiveTaskInfo(id) {
+
+	}
+}
+class TimerTemplate {
+	constructor() {
+		this.template = '<section class="content-area">' +
+		'<header>' +
+			'<h1 class="main-page-title">1. Creating a New Design</h1>' +
+			'<h3 class="small-title-hint">Lorem ipsum dolor sit amet consectetur adipiscing</h3>' +
+		'</header>' +
+		'<div class="timer-area">' +
+			'<ul class="pomodoros">' +
+				'<li class="pomodoro-item">' +
+					'<img src="img/tomato.svg" alt="tomato">' +
+				'</li>' +
+				'<li class="pomodoro-item">' +
+					'<img src="img/tomato.svg" alt="tomato">' +
+				'</li>' +
+				'<li class="pomodoro-item">' +
+					'<img src="img/tomato.svg" alt="tomato">' +
+				'</li>' +
+			'</ul>' +
+			'<div class="timer-container border-' + '">' +
+				'<div class="timer-out">' +
+					'<div class="spin timer"></div>' +
+					'<div class="addition-spin timer"></div>' +
+					'<div class="mask"></div>' +
+				'</div>' +
+				'<div class="timer-in">' +
+					'<p class="timer-text">Let\'s do it</p>' +
+					'<p class="hidden timer-text double-line"><span>6</span><br> min</p>' +
+					'<p class="hidden timer-text">Break<br> is over</p>' +
+					'<p class="hidden timer-text triple-line">Break<br><span>3</span><br>min</p>' +
+					'<p class="hidden timer-text trile-text">You Completed Task</p>' +
+				'</div>' +
+			'</div>' +
+		'</div>' +
+		'<div class="hidden btn-group">' +
+			'<button class="action-btn fail-btn">Fail Pomodora</button>' +
+			'<button class="action-btn finish-btn">Finish Pomodora</button>' +
+		'</div>' +
+		'<div class="hidden btn-group">' +
+			'<button class="action-btn start-btn">Start Pomodora</button>' +
+			'<button class="hidden action-btn finish-task-btn">Finish Task</button>' +
+		'</div>' +
+		'<button class="action-btn start-btn">Start</button>' +
+	'</section>';
+	}
+	show() {
+		return this.template;
+	}
+}
+class TimerView {
+	constructor(template) {
+		this.template = template;
+	}
+	render() {
+		document.title = 'Timer';
+		document.body.innerHTML = this.template;
+	}
+}
+/*import TimerTemplate from './timer-template.js';
+import TimerView from './timer-view.js';
+import TimerModel from './timer-model.js';
+import TimerController from './timer-controller.js';*/
+
+window.initTimer = function() {
+	var timerModel = new TimerModel;
+	var timerTemplate = new TimerTemplate;
+	var timerView = new TimerView(timerTemplate.show());
+	var timerController = new TimerController(timerView, timerModel);
+
+	EventBus.on('renderTimer', function(taskId) {
+		timerModel.saveActiveTaskInfo(taskId);
+		timerView.render();
+	});
+};
+/**
+* @constructor
+* @param model
+* @param view
+* @name SettingsCategoriesController
+*/
+class SettingsCategoriesController {
+	constructor(model, view) {
+		this.view = view;
+		this.model = model;
+
+		document.addEventListener('change', function(event) {
+			var target = event.target;
+			if(target.closest('.category-input-text')) {
+				EventBus.trigger('savingCategoriesData', [target.id, target.value]);
+				var container = document.querySelector('.btn-group');
+
+				var btnTemplate = '<button class="action-btn back-btn">Back</button>' +
+					'<button class="action-btn save-btn">Save</button>';
+				container.innerHTML = btnTemplate;
+
+				container.addEventListener('click', function(event) {
+					if(event.target.className === 'action-btn save-btn') {
+						EventBus.trigger('routeChange', '#active_page');
+					} 
+				});
+			}
+		});
+
+		document.addEventListener('click', function(event) {
+			var target = event.target;
+		 	if(target.closest('#nextToActPage')){
+		 		EventBus.trigger('routeChange', '#active_page');
+		 	}
+		});
+	}
+}
+
+
+/**
+* @constructor
+* @name SettingsCategoriesModel
+*/
+class SettingsCategoriesModel {
+	constructor() {
+		//let self = this;
+		
+	}
+	savingCategories(index, title) {
+		let self = this;
+		LocalStorageData.setToLS('Categories', self.parseLSData(index, title));
+		EventBus.trigger('dataSet', 'Categories');
+	}
+/**
+* @memberof SettingsCategoriesModel
+*/
+	setDefaultData() {
+		if(LocalStorageData.getFromLS('Categories') === null  && location.hash == '#settings_categories') {
+			LocalStorageData.setToLS('Categories', JSON.stringify([[0, 'Work'], [1, 'Education'], [2, 'Hobby'], [3, 'Sport'], [4, 'Other']]));
+			EventBus.trigger('dataSet', 'Categories');
+		}
+	}
+/**
+* @memberof SettingsCategoriesModel
+*/
+	parseLSData(index, title) {
+		let obj = {};
+		obj = JSON.parse(LocalStorageData.getFromLS('Categories'));
+		for(var i in obj) {
+			if(obj[i][0] == index) {
+				obj[i][1] = title;
+			}
+		}
+		return JSON.stringify(obj);
+	}
+/**
+* @memberof SettingsCategoriesModel
+*/
+	saveData(id, value) {
+		let self = this;
+		LocalStorageData.setToLS('Categories', self.parseLSData(id, value));
+	}
+}
+/**
+* @constructor
+* @name SettingsCategoriesTemplate
+*/
+class SettingsCategoriesTemplate {
+	constructor() {
+		this.template = '<div class="settings-categories" id="settings-categories">' +
+			'<ul class="choose-categories">' +
+				'<li class="category-item">' +
+					'<input id="input-work" class="category-item-hidden" type="radio" name="category"><label for="input-work" class="category-radio-icon work"></label>' +
+					'<input id="0" class="category-input-text" type="text" value="{{category0}}">' +
+				'</li>' +
+				'<li class="category-item">' +
+					'<input id="input-educat" class="category-item-hidden" type="radio" name="category"><label for="input-educat" class="category-radio-icon education"></label>' +
+					'<input id="1" class="category-input-text" type="text" value="{{category1}}">' +
+				'</li>' +
+				'<li class="category-item">' +
+					'<input id="input-hobby" class="category-item-hidden" type="radio" name="category"><label for="input-hobby" class="category-radio-icon hobby"></label>' +
+					'<input id="2" class="category-input-text" type="text" value="{{category2}}">' +
+				'</li>' +
+				'<li class="category-item">' +
+					'<input id="input-sport" class="category-item-hidden" type="radio" name="category"><label for="input-sport" class="category-radio-icon sport"></label>' +
+					'<input id="3" class="category-input-text" type="text" value="{{category3}}">' +
+				'</li>' +
+				'<li class="category-item">' +
+					'<input id="input-other" class="category-item-hidden" type="radio" name="category"><label for="input-other" class="category-radio-icon other"></label>' +
+					'<input id="4" class="category-input-text" type="text" value="{{category4}}">' +
+				'</li>' +
+			'</ul>' +
+		'<div class="btn-group">' +
+			'<button id="nextToActPage" class="action-btn next-btn">Next</button>' +
+		'</div>' +
+		'</div>';
+	}
+/**
+* @memberof SettingsCategoriesTemplate
+*/
+	show() {
+		return this.template;
+	}
+}
+/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
+/**
+* @constructor
+* @param template
+* @name SettingsCategoriesView
+*/
+class SettingsCategoriesView {
+	constructor(template) {
+		this.template = template;
+	}
+/**
+* @memberof SettingsCategoriesView
+* @summary render function
+*/
+	render() {
+		var hTemplate = Handlebars.compile(this.template);
+		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],
+							category1: JSON.parse(LocalStorageData.getFromLS('Categories'))['1'][1],
+							category2: JSON.parse(LocalStorageData.getFromLS('Categories'))['2'][1],
+							category3: JSON.parse(LocalStorageData.getFromLS('Categories'))['3'][1],
+							category4: JSON.parse(LocalStorageData.getFromLS('Categories'))['4'][1]});
+		document.getElementById('settings-container').innerHTML += data;
+		document.title = 'Settings Categories';
+	}
+	destroy() {
+		
+	}
+}
+/*
+import SettingsCategoriesModel from './settings_categories-model.js';
+import SettingsCategoriesTemplate from './settings_categories-template.js';
+import SettingsCategoriesView from './settings_categories-view.js';
+import SettingsCategoriesController from './settings_categories-controller.js';
+*/
+
+window.initSettingsCategories = function() {
+	var settingsCategoriesModel = new SettingsCategoriesModel;
+	settingsCategoriesModel.setDefaultData();
+	var settingsCategoriesTemplate = new SettingsCategoriesTemplate;
+	var settingsCategoriesView = new SettingsCategoriesView(settingsCategoriesTemplate.show());
+	var settingsCategoriesController = new SettingsCategoriesController(settingsCategoriesModel, settingsCategoriesView);
+	settingsCategoriesView.render();
+
+	EventBus.on('renderSettingsCategories', function() {
+		settingsCategoriesView.render();
+	});
+	EventBus.on('settingsCategoriesDataSaving', function([key, value]) {
+		settingsCategoriesModel.saveData(key, value);
+	});
+	EventBus.on('savingCategoriesData', function([index, title]) {
+		settingsCategoriesModel.savingCategories(index, title);
+	});
+};
+
+/**
+* @constructor
+* @param model
+* @param view
+* @name SettingsController
+*/
+class SettingsPomodorosController {
+	constructor(model, view) {
+		let self = this;
+		self.view = view;
+		self.model = model;
+		self.componentData;
+		self.componentView;
+
+		document.addEventListener('click', function(event) {
+		 	var target = event.target;
+		 	if(target.closest('#nextToSetCat')){
+				self.view.destroy();
+				window.initSettingsCategories();
+		 	}
+		});
+	}
+	changesTracking() {
+		let self = this;
+		let container = document.querySelector('.btn-group');
+
+		let btnTemplate = '<button class="action-btn back-btn">Back</button>' +
+			'<button class="action-btn save-btn">Save</button>';
+		container.innerHTML = btnTemplate;
+
+		container.addEventListener('click', function(event) {
+			if(event.target.className === 'action-btn save-btn') {
+				//self.model.updateData([elem, parseInt(value)]);
+				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
+				self.view.destroy();
+				window.initSettingsCategories();
+			} 
+		});
+	}
+}
+
+
+/**
+* @constructor
+* @name SettingsModel
+*/
+class SettingsPomodorosModel {
+	constructor() {
+		let self = this;
+	}
+	savingSettings(index, title) {
+		let self = this;
+		LocalStorageData.setToLS('Pomodoros', self.parseLSData(index, title));
+		EventBus.trigger('dataSet', 'Pomodoros');
+	}
+/**
+* @memberof SettingsModel
+* @summary setDefaultData function
+*/
+	setDefaultData() {
+		if(LocalStorageData.getFromLS('Pomodoros') === null && location.hash == '#settings') {
+			LocalStorageData.setToLS('Pomodoros', JSON.stringify([['workTime', 25], ['shortBreak', 1], ['workIteration', 5], ['longBreak', 45]]));
+			EventBus.trigger('dataSet', 'Pomodoros');
+		}
+	}
+/**
+* @memberof SettingsModel
+* @summary parseLSData function
+*/
+	parseLSData(elemId, newValue) {
+		let obj = {};
+		obj = JSON.parse(LocalStorageData.getFromLS('Pomodoros'));
+		for(var i in obj) {
+			if(obj[i][0] === elemId) {
+				obj[i][1] = newValue;
+			}
+		}
+		return JSON.stringify(obj);
+	}
+/**
+* @memberof SettingsModel
+* @summary saveData function
+*/
+	saveData(id, value) {
+		let self = this;
+		LocalStorageData.setToLS('Pomodoros', self.parseLSData(id, value));
+	}
+}
+/**
+* @constructor
+* @name SettingsPomodorosTemplate
+*/
+class SettingsPomodorosTemplate {
+	constructor() {
+		this.template = '<div id="settings-pomodoros">' +
+		'<div class="settings-pomodoros">' +
+			'<section class="settings-items">' +
+				'<div class="circle yellow"></div>' +
+				'<h4 class="settings-items-title">WORK TIME</h4>' +
+				'<div id="workTime" class="counter">' +
+					'<button id="work-time-minus" class="minus icon"><i class="icon-minus"></i></button>' +
+					'<input id="work-time-count" class="iterations" type="text" value="{{workTimeIterations}}" size="2" readonly> min' +
+					'<button id="work-time-plus" class="plus icon"><i class="icon-add"></i></button>' +
+				'</div>' +
+				'<br><span>Lorem ipsum dolor sit amet consectetur adipiscing</span>' +
+			'</section>' +
+			'<section class="settings-items">' +
+				'<div class="circle light-blue"></div>' +
+				'<h4 class="settings-items-title">WORK ITERATION</h4>' +
+				'<div id="workIteration" class="counter">' +
+					'<button id="work-iteration-minus" class="minus icon"><i class="icon-minus"></i></button>' +
+					'<input id="work-iteration-count" class="iterations" type="text" value="{{workIterations}}" size="2" readonly>' +
+					'<button id="work-iteration-plus" class="plus icon"><i class="icon-add"></i></button>' +
+				'</div>' +
+				'<br><span>Lorem ipsum dolor sit amet consectetur</span>' +
+			'</section>' +
+			'<section class="settings-items">' +
+				'<div class="circle blue"></div>' +
+				'<h4 class="settings-items-title">SHORT BREAK</h4>' +
+				'<div id="shortBreak" class="counter">' +
+					'<button id="short-break-minus" class="minus icon"><i class="icon-minus"></i></button>' +
+					'<input id="short-break-count" class="iterations" type="text" value="{{shortBreakIterations}}" size="2" readonly> min' +
+					'<button id="short-break-plus" class="plus icon"><i class="icon-add"></i></button>' +
+				'</div>' +
+				'<br><span>Lorem ipsum dolor sit amet consectetur adipiscing sed do eiusmod tempor</span>' +
+			'</section>' +
+			'<section class="settings-items">' +
+				'<div class="circle blue"></div>' +
+				'<h4 class="settings-items-title">LONG BREAK</h4>' +
+				'<div id="longBreak" class="counter">' +
+					'<button id="long-break-minus" class="minus icon"><i class="icon-minus"></i></button>' +
+					'<input id="long-break-count" class="iterations" type="text" size="2" value="{{longBreakIterations}}" readonly> min' +
+					'<button id="long-break-plus" class="plus icon"><i class="icon-add"></i></button>' +
+				'</div>' +
+				'<br><span>Lorem ipsum dolor sit amet consectetur adipiscing</span>' +
+			'</section>' +
+		'</div>' +
+		'<section class="your-cycle">' +
+			'<h2 class="cycle-title">Your cycle</h2>' +
+			'<p class="full-cycle-point">Full cycle: </p>' +
+			'<ul class="timeline blue"></ul>' +
+			'<ul class="timeline-scale"></ul>' +
+		'</section>' +
+		'<div class="btn-group">' +
+			'<button id="nextToSetCat" class="action-btn next-btn">Next</button>' +
+		'</div>'
+		'</div>';
+	}
+/**
+* @memberof SettingsPomodorosTemplate
+* @summary show function
+*/
+	show(){
+		return this.template;
+	}
+}
+
+/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
+/**
+* @constructor
+* @param template
+* @name SettingsPomodorosView
+*/
+
+class SettingsPomodorosView {
+	constructor(template) {
+		this.template = template;
+	}
+/**
+* @memberof LoginView
+* @summary render function
+*/
+	render() {
+		//AppControllsController();
+		let hTemplate = Handlebars.compile(this.template);
+		let data = hTemplate({workTimeIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[0][1],
+							workIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[2][1],
+							shortBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[1][1],
+							longBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[3][1]});
+		document.getElementById('settings-container').innerHTML += data;
+		document.title = 'Settings Pomodoros';
+	}
+	destroy() {
+		let container = document.getElementById('settings-pomodoros');
+		if(container) {
+			document.getElementById('settings-container').removeChild(container);
+		}
+	}
+}
+/*import SettingsPomodorosModel from './settings_pomodoros-model.js'
+import SettingsPomodorosTemplate from './settings_pomodoros-template.js';
+import SettingsPomodorosView from './settings_pomodoros-view.js';
+import SettingsPomodorosController from './settings_pomodoros-controller.js';
+
+import CycleController from './cycle/cycle-controller.js';*/
+
+window.initSettingsPomodoros = function() {
+	let settingsPomodorosModel = new SettingsPomodorosModel;
+	settingsPomodorosModel.setDefaultData();
+	let settingsPomodorosTemplate = new SettingsPomodorosTemplate;
+	let settingsPomodorosView = new SettingsPomodorosView(settingsPomodorosTemplate.show());
+	let settingsPomodorosController = new SettingsPomodorosController(settingsPomodorosModel, settingsPomodorosView);
+	settingsPomodorosView.render();
+
+	settingsPomodorosController.component = CycleController();
+
+	//app.settingsController.componentData = new CycleInput();
+	//app.settingsController.componentView = new CycleTimeline(self.componentData);
+	EventBus.on('renderSettings', function() {
+		settingsPomodorosView.render();
+	});
+	EventBus.on('settingsDataSaving', function([key, value]) {
+		settingsPomodorosModel.saveData(key, value);
+	});
+	EventBus.on('settingInputsChanges', function([elem, value]) {
+		settingsPomodorosModel.savingSettings(elem, parseInt(value));
+		settingsPomodorosController.changesTracking();
+	});
+};
+
 /*$(function (){
     $(document).ready(dayInit);
     $('#day-chart').click(dayInit);
@@ -1095,830 +1817,7 @@ function ReportsView() {
 	
 	return this;
 }
-export default class StickyHeaderController {
-	constructor(view) {
-		var self = this;
-		self.view = view;
-		window.onscroll = function() {
-			if(document.title == 'Task List') { //hack for some time
-				self.view.run();
-			}
-		};
-	}
-}
-export default class StickyHeaderTemplate {
-	constructor() {
-		this.template = '<div id="stickyHeader" class="hidden-header-wrapper hidden">' +
-		'<header class="hidden-header">' +
-			'<a href="/"><img class="hidden-header-logo" src="img/Logo.svg"></a>' +
-			'<div class="nav-settings">' +
-				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="New Task"><i id="addIcon" class="icon-add setting-icons"></i></a></button>' +
-				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="To Trash"><i id="openTrash" class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a></button>' +
-				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="To Reports"><i id="goToReports" class="icon-statistics setting-icons"></i></a></button>' +
-				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="To Settings"><i id="settings" class="icon-settings setting-icons current"></i></a></button>' +
-				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="Log out"><i id="logout2" class="icon-logout setting-icons"></i></a></button>' +
-			'</div>' +
-		'</header>' +
-	'</div>';
-	}
-	show() {
-		return this.template;
-	}
-}
-import Handlebars from '../../../libs/handlebars-v4.0.5.js';
-
-export default class StickyHeaderView {
-	constructor(template) {
-		var self = this;
-		self.hTemplate = Handlebars.compile(template);
-		var data = self.hTemplate();
-		document.body.innerHTML = data;
-	}
-	run(scrolled) {
-		var scrolled = window.pageYOffset || document.documentElement.scrollTop;
-		if(!document.getElementById('stickyHeader')) document.body.innerHTML = self.template;
-		
-		var header = document.getElementById('stickyHeader');
-		if(scrolled > 200) header.classList.remove('hidden');
-		else if(scrolled <= 200) header.classList.add('hidden');
-	}
-}
-import StickyHeaderTemplate from './sticky-header-template.js';
-import StickyHeaderView from './sticky-header-view.js';
-import StickyHeaderController from './sticky-header-controller.js';
-
-window.initStickyHeader = function() {
-	var stickyHeaderTemplate = new StickyHeaderTemplate;
-	var stickyHeaderView = new StickyHeaderView(stickyHeaderTemplate.show());
-	var stickyHeaderController = new StickyHeaderController(stickyHeaderView);
-}
-export default class TaskListAppControllsController {
-	constructor(view) {
-		this.view = view;
-		window.initAppControlls();
-		this.view.render();
-
-		document.addEventListener('click', function(event) {
-			if(event.target.closest('#openTrash')) {
-				var trashes = document.getElementsByClassName('add-to-trash');
-				for(var i = 0; i < trashes.length; i++) {
-					if(trashes[i].classList.contains('hidden')) {
-						trashes[i].classList.remove('hidden');
-					}
-					else trashes[i].classList.add('hidden');
-				}
-			}
-		});
-	}
-	
-}
-export default class TaskListAppControllsTemplate {
-	constructor() {
-		this.template = '<button class="setting-btn app-controll" id="addIcon">' +
-  					'<a class="tooltip" title="Add New Task"><i class="icon-add setting-icons"></i></a>' + 
-  				'</button>' +
-      			'<button class="setting-btn app-controll" id="openTrash">' + 
-      				'<a class="tooltip" title="Add To Trash"><i class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a>' +
-      			'</button>';
-	}
-	show() {
-		return this.template;
-	}
-}
-export default class TaskListAppControllsView {
-	constructor(template) {
-		this.template = template;
-	}
-	render() {
-		var controllsWrapper = document.querySelector('.app-settings');
-		controllsWrapper.insertAdjacentHTML('afterbegin', this.template);
-	}
-}
-import TaskListAppControllsTemplate from './task-list-app-controlls-template.js';
-import TaskListAppControllsView from './task-list-app-controlls-view.js';
-import TaskListAppControllsController from './task-list-app-controlls-controller.js';
-
-window.initTaskListControlls = function() {
-	var taskListAppControllsTemplate = new TaskListAppControllsTemplate;
-	var taskListAppControllsView = new TaskListAppControllsView(taskListAppControllsTemplate.show());
-	var taskListAppControllsController = new TaskListAppControllsController(taskListAppControllsView);
-}
-export default class TimerController {
-	constructor(view, model) {
-		this.view = view;
-		this.model = model;
-
-		//window.initAppControlls();
-		$('.setting-btn').tooltips();
-	}
-}
-export default class TimerModel {
-	constructor() {
-
-	}
-	saveActiveTaskInfo(id) {
-
-	}
-}
-export default class TimerTemplate {
-	constructor() {
-		this.template = '<section class="content-area">' +
-		'<header>' +
-			'<h1 class="main-page-title">1. Creating a New Design</h1>' +
-			'<h3 class="small-title-hint">Lorem ipsum dolor sit amet consectetur adipiscing</h3>' +
-		'</header>' +
-		'<div class="timer-area">' +
-			'<ul class="pomodoros">' +
-				'<li class="pomodoro-item">' +
-					'<img src="img/tomato.svg" alt="tomato">' +
-				'</li>' +
-				'<li class="pomodoro-item">' +
-					'<img src="img/tomato.svg" alt="tomato">' +
-				'</li>' +
-				'<li class="pomodoro-item">' +
-					'<img src="img/tomato.svg" alt="tomato">' +
-				'</li>' +
-			'</ul>' +
-			'<div class="timer-container border-' + '">' +
-				'<div class="timer-out">' +
-					'<div class="spin timer"></div>' +
-					'<div class="addition-spin timer"></div>' +
-					'<div class="mask"></div>' +
-				'</div>' +
-				'<div class="timer-in">' +
-					'<p class="timer-text">Let\'s do it</p>' +
-					'<p class="hidden timer-text double-line"><span>6</span><br> min</p>' +
-					'<p class="hidden timer-text">Break<br> is over</p>' +
-					'<p class="hidden timer-text triple-line">Break<br><span>3</span><br>min</p>' +
-					'<p class="hidden timer-text trile-text">You Completed Task</p>' +
-				'</div>' +
-			'</div>' +
-		'</div>' +
-		'<div class="hidden btn-group">' +
-			'<button class="action-btn fail-btn">Fail Pomodora</button>' +
-			'<button class="action-btn finish-btn">Finish Pomodora</button>' +
-		'</div>' +
-		'<div class="hidden btn-group">' +
-			'<button class="action-btn start-btn">Start Pomodora</button>' +
-			'<button class="hidden action-btn finish-task-btn">Finish Task</button>' +
-		'</div>' +
-		'<button class="action-btn start-btn">Start</button>' +
-	'</section>';
-	}
-	show() {
-		return this.template;
-	}
-}
-export default class TimerView {
-	constructor(template) {
-		this.template = template;
-	}
-	render() {
-		document.title = 'Timer';
-		document.body.innerHTML = this.template;
-	}
-}
-import EventBus from '../../../eventBus.js';
-
-import TimerTemplate from './timer-template.js';
-import TimerView from './timer-view.js';
-import TimerModel from './timer-model.js';
-import TimerController from './timer-controller.js';
-
-window.initTimer = function() {
-	var timerModel = new TimerModel;
-	var timerTemplate = new TimerTemplate;
-	var timerView = new TimerView(timerTemplate.show());
-	var timerController = new TimerController(timerView, timerModel);
-
-	EventBus.on('renderTimer', function(taskId) {
-		timerModel.saveActiveTaskInfo(taskId);
-		timerView.render();
-	});
-};
-/**
-* @constructor
-* @param model
-* @param view
-* @name SettingsController
-*/
-export default class SettingsController {
-	constructor(model, view) {
-		let self = this;
-		self.view = view;
-		self.model = model;
-		self.componentData;
-		self.componentView;
-
-		window.initAppControlls();
-		
-		var $tabs = $('#tabs');
-		$tabs.tabs();
-
-		$('.setting-btn').tooltips();
-	}
-	changesTracking() {
-		var container = document.getElementsByClassName('btn-group')[0];
-
-		var btnTemplate = '<button class="action-btn back-btn">Back</button>' +
-			'<button class="action-btn save-btn">Save</button>';
-		container.innerHTML = btnTemplate;
-
-		container.addEventListener('click', function(event) {
-			if(event.target.className === 'action-btn save-btn') {
-				//self.model.updateData([elem, parseInt(value)]);
-				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-				window.initSettingsCategories();
-			} 
-		});
-	}
-}
-
-
-/**
-* @constructor
-* @name SettingsModel
-*/
-export default class SettingsModel {
-	constructor() {
-		let self = this;
-	}
-	/*move same methods here and just send params*/
-}
-/**
-* @constructor
-* @name SettingsTemplate
-*/
-export default class SettingsTemplate {
-	constructor() {
-		this.template = '<div class="content-area">' +
-		'<header>' +
-			'<h1 class="main-page-title">Settings</h1>' +
-			'<h3 class="title-hint">SET TEXT HERE</h3>' +
-		'</header>' +
-		'<div id="tabs" class="tabs-block">' +
-			'<button class="tabs"><a href="#settings_pomodoros">Pomodoros</a></button>' +
-			'<button class="tabs"><a href="#settings_categories">Categories</a></button>' +
-		'</div>' +
-		'<div class="settings" id="settings-container"></div>'
-	'</div>';
-	}
-/**
-* @memberof SettingsTemplate
-*/
-	show() {
-		return this.template;
-	}
-}
-/**
-* @constructor
-* @param template
-* @name SettingsView
-*/
-import Handlebars from '../../libs/handlebars-v4.0.5.js';
-
-export default class SettingsView {
-	constructor(template) {
-		this.template = template;
-	}
-	render() {
-		let hTemplate = Handlebars.compile(this.template);
-		let data = hTemplate();
-		document.body.innerHTML += data;
-		document.title = 'Settings';
-	}
-}
-import SettingsModel from './settings-model.js'
-import SettingsTemplate from './settings-template.js';
-import SettingsView from './settings-view.js';
-import SettingsController from './settings-controller.js';
-
-import SettingsCategories from '../../components/settings/settings_categories/settings_categories.js';
-import SettingsPomodoros from '../../components/settings/settings_pomodoros/settings_pomodoros.js';
-
-window.initSettings = function() {
-	let settingsModel = new SettingsModel;
-	let settingsTemplate = new SettingsTemplate;
-	let settingsView = new SettingsView(settingsTemplate.show());
-	let settingsController = new SettingsController(settingsModel, settingsView);
-	settingsView.render();
-
-	window.initSettingsPomodoros();
-};
-import EventBus from '../../eventBus.js';
-/**
-* @constructor
-* @param view
-* @name LoginController
-* @summary Login controller
-*/
-export default class LoginController {
-	constructor(view) {
-		if(LocalStorageData.getFromLS('username') !== null) {
-			this.findNextPage();
-		}
-		this.view = view;
-		let auth = window.auth;
-		let self = this;
-		document.addEventListener('submit', function(event) {
-			event.preventDefault();
-			let inputUser = document.getElementById('login').value;
-			let inputPass = document.getElementById('pass').value;
-			let validation = false;
-			if(inputUser.length > 0 && inputPass.length > 0) validation = auth(inputUser, inputPass);
-			document.getElementById('login').value = '';
-			document.getElementById('pass').value = '';
-			if(validation) {
-				LocalStorageData.setToLS('username', inputUser);
-				self.findNextPage();
-			}
-		});
-	}
-	findNextPage() {
-		if(LocalStorageData.getFromLS('Pomodoros') === null && LocalStorageData.getFromLS('Categories') === null) {
-			EventBus.trigger('routeChange', '#settings');
-		} else {
-			EventBus.trigger('routeChange', '#active_page');
-		}
-	}
-} 
-/**
-* @constructor
-* @name LoginTemplate
-* @summary Login template
-*/
-export default class LoginTemplate {
-  constructor() {
-    this.template = '<div class="main-wrapper">' +
-      '<div class="login-content-area">' +
-        '<h1 class="alt-logo-text">Pomodoro Login Page</h1>' +
-        '<div class="logo"></div>' +
-        '<form id="loginForm" class="log-in">' +
-           '<label class="input-wrap">' +
-             '<input id="login" class="form-input login-input" type="text" placeholder="Username" autocomplete="off"><i class="icon-login login"></i>' + 
-           '</label>' +
-           '<span class="hidden error-text">Lorem ipsum dolor sit amet, consectetu adipiscing elit</span>' +
-           '<label class="input-wrap">' +
-             '<input id="pass" class="form-input pass-input" type="password" placeholder="Password" autocomplete="off"><i class="icon-password password"></i>' +
-          ' </label>' +
-           '<input type="submit" value="Log In">' +
-        '</form>' +
-      '</div>' +
-      '</div>';
-  }
-/**
-* @memberof LoginTemplate
-* @summary show function
-*/
-  show() {
-    return this.template;
-  }
-}
-/**
-* @constructor
-* @param template
-* @name LoginView
-* @summary Login views
-*/
-import Handlebars from '../../libs/handlebars-v4.0.5.js';
-
-export default class LoginView {
-	constructor(template) {
-		this.template = template;
-	}
-/**
-* @memberof LoginView
-* @summary render function
-*/
-	render() {
-		let hTemplate = Handlebars.compile(this.template);
-		let data = hTemplate();
-		document.body.innerHTML = data;
-		document.title = 'Log In';
-	}
-}
-import EventBus from '../../eventBus.js';
-
-import LoginTemplate from './login-template.js';
-import LoginView from './login-view.js';
-import LoginController from './login-controller.js';
-
-window.initLogin = function() {
-	let loginTemplate = new LoginTemplate;
-	let loginView = new LoginView(loginTemplate.show());
-	let loginController = new LoginController(loginView);
-
-	EventBus.on('renderLogin', function() {
-		loginView.render();
-	});
-};
-
-/*import EventBus from './../../../eventBus.js';*/
-/**
-* @constructor
-* @param model
-* @param view
-* @name SettingsController
-*/
-export default class SettingsPomodorosController {
-	constructor(model, view) {
-		let self = this;
-		self.view = view;
-		self.model = model;
-		self.componentData;
-		self.componentView;
-
-		document.addEventListener('click', function(event) {
-		 	var target = event.target;
-		 	if(target.closest('#nextToSetCat')){
-				self.view.destroy();
-				window.initSettingsCategories();
-		 	}
-		});
-	}
-	changesTracking() {
-		let self = this;
-		let container = document.querySelector('.btn-group');
-
-		let btnTemplate = '<button class="action-btn back-btn">Back</button>' +
-			'<button class="action-btn save-btn">Save</button>';
-		container.innerHTML = btnTemplate;
-
-		container.addEventListener('click', function(event) {
-			if(event.target.className === 'action-btn save-btn') {
-				//self.model.updateData([elem, parseInt(value)]);
-				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-				self.view.destroy();
-				window.initSettingsCategories();
-			} 
-		});
-	}
-}
-
-
-import EventBus from '../../../eventBus.js';
-/**
-* @constructor
-* @name SettingsModel
-*/
-export default class SettingsPomodorosModel {
-	constructor() {
-		let self = this;
-	}
-	savingSettings(index, title) {
-		let self = this;
-		LocalStorageData.setToLS('Pomodoros', self.parseLSData(index, title));
-		EventBus.trigger('dataSet', 'Pomodoros');
-	}
-/**
-* @memberof SettingsModel
-* @summary setDefaultData function
-*/
-	setDefaultData() {
-		if(LocalStorageData.getFromLS('Pomodoros') === null && location.hash == '#settings') {
-			LocalStorageData.setToLS('Pomodoros', JSON.stringify([['workTime', 25], ['shortBreak', 1], ['workIteration', 5], ['longBreak', 45]]));
-			EventBus.trigger('dataSet', 'Pomodoros');
-		}
-	}
-/**
-* @memberof SettingsModel
-* @summary parseLSData function
-*/
-	parseLSData(elemId, newValue) {
-		let obj = {};
-		obj = JSON.parse(LocalStorageData.getFromLS('Pomodoros'));
-		for(var i in obj) {
-			if(obj[i][0] === elemId) {
-				obj[i][1] = newValue;
-			}
-		}
-		return JSON.stringify(obj);
-	}
-/**
-* @memberof SettingsModel
-* @summary saveData function
-*/
-	saveData(id, value) {
-		let self = this;
-		LocalStorageData.setToLS('Pomodoros', self.parseLSData(id, value));
-	}
-}
-/**
-* @constructor
-* @name SettingsPomodorosTemplate
-*/
-export default class SettingsPomodorosTemplate {
-	constructor() {
-		this.template = '<div id="settings-pomodoros">' +
-		'<div class="settings-pomodoros">' +
-			'<section class="settings-items">' +
-				'<div class="circle yellow"></div>' +
-				'<h4 class="settings-items-title">WORK TIME</h4>' +
-				'<div id="workTime" class="counter">' +
-					'<button id="work-time-minus" class="minus icon"><i class="icon-minus"></i></button>' +
-					'<input id="work-time-count" class="iterations" type="text" value="{{workTimeIterations}}" size="2" readonly> min' +
-					'<button id="work-time-plus" class="plus icon"><i class="icon-add"></i></button>' +
-				'</div>' +
-				'<br><span>Lorem ipsum dolor sit amet consectetur adipiscing</span>' +
-			'</section>' +
-			'<section class="settings-items">' +
-				'<div class="circle light-blue"></div>' +
-				'<h4 class="settings-items-title">WORK ITERATION</h4>' +
-				'<div id="workIteration" class="counter">' +
-					'<button id="work-iteration-minus" class="minus icon"><i class="icon-minus"></i></button>' +
-					'<input id="work-iteration-count" class="iterations" type="text" value="{{workIterations}}" size="2" readonly>' +
-					'<button id="work-iteration-plus" class="plus icon"><i class="icon-add"></i></button>' +
-				'</div>' +
-				'<br><span>Lorem ipsum dolor sit amet consectetur</span>' +
-			'</section>' +
-			'<section class="settings-items">' +
-				'<div class="circle blue"></div>' +
-				'<h4 class="settings-items-title">SHORT BREAK</h4>' +
-				'<div id="shortBreak" class="counter">' +
-					'<button id="short-break-minus" class="minus icon"><i class="icon-minus"></i></button>' +
-					'<input id="short-break-count" class="iterations" type="text" value="{{shortBreakIterations}}" size="2" readonly> min' +
-					'<button id="short-break-plus" class="plus icon"><i class="icon-add"></i></button>' +
-				'</div>' +
-				'<br><span>Lorem ipsum dolor sit amet consectetur adipiscing sed do eiusmod tempor</span>' +
-			'</section>' +
-			'<section class="settings-items">' +
-				'<div class="circle blue"></div>' +
-				'<h4 class="settings-items-title">LONG BREAK</h4>' +
-				'<div id="longBreak" class="counter">' +
-					'<button id="long-break-minus" class="minus icon"><i class="icon-minus"></i></button>' +
-					'<input id="long-break-count" class="iterations" type="text" size="2" value="{{longBreakIterations}}" readonly> min' +
-					'<button id="long-break-plus" class="plus icon"><i class="icon-add"></i></button>' +
-				'</div>' +
-				'<br><span>Lorem ipsum dolor sit amet consectetur adipiscing</span>' +
-			'</section>' +
-		'</div>' +
-		'<section class="your-cycle">' +
-			'<h2 class="cycle-title">Your cycle</h2>' +
-			'<p class="full-cycle-point">Full cycle: </p>' +
-			'<ul class="timeline blue"></ul>' +
-			'<ul class="timeline-scale"></ul>' +
-		'</section>' +
-		'<div class="btn-group">' +
-			'<button id="nextToSetCat" class="action-btn next-btn">Next</button>' +
-		'</div>'
-		'</div>';
-	}
-/**
-* @memberof SettingsPomodorosTemplate
-* @summary show function
-*/
-	show(){
-		return this.template;
-	}
-}
-
-import Handlebars from '../../../libs/handlebars-v4.0.5.js';
-/**
-* @constructor
-* @param template
-* @name SettingsPomodorosView
-*/
-
-export default class SettingsPomodorosView {
-	constructor(template) {
-		this.template = template;
-	}
-/**
-* @memberof LoginView
-* @summary render function
-*/
-	render() {
-		//AppControllsController();
-		let hTemplate = Handlebars.compile(this.template);
-		let data = hTemplate({workTimeIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[0][1],
-							workIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[2][1],
-							shortBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[1][1],
-							longBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[3][1]});
-		document.getElementById('settings-container').innerHTML += data;
-		document.title = 'Settings Pomodoros';
-	}
-	destroy() {
-		let container = document.getElementById('settings-pomodoros');
-		if(container) {
-			document.getElementById('settings-container').removeChild(container);
-		}
-	}
-}
-import EventBus from '../../../eventBus.js';
-
-import SettingsPomodorosModel from './settings_pomodoros-model.js'
-import SettingsPomodorosTemplate from './settings_pomodoros-template.js';
-import SettingsPomodorosView from './settings_pomodoros-view.js';
-import SettingsPomodorosController from './settings_pomodoros-controller.js';
-
-import CycleController from './cycle/cycle-controller.js';
-
-window.initSettingsPomodoros = function() {
-	let settingsPomodorosModel = new SettingsPomodorosModel;
-	settingsPomodorosModel.setDefaultData();
-	let settingsPomodorosTemplate = new SettingsPomodorosTemplate;
-	let settingsPomodorosView = new SettingsPomodorosView(settingsPomodorosTemplate.show());
-	let settingsPomodorosController = new SettingsPomodorosController(settingsPomodorosModel, settingsPomodorosView);
-	settingsPomodorosView.render();
-
-	settingsPomodorosController.component = CycleController();
-
-	//app.settingsController.componentData = new CycleInput();
-	//app.settingsController.componentView = new CycleTimeline(self.componentData);
-	EventBus.on('renderSettings', function() {
-		settingsPomodorosView.render();
-	});
-	EventBus.on('settingsDataSaving', function([key, value]) {
-		settingsPomodorosModel.saveData(key, value);
-	});
-	EventBus.on('settingInputsChanges', function([elem, value]) {
-		settingsPomodorosModel.savingSettings(elem, parseInt(value));
-		settingsPomodorosController.changesTracking();
-	});
-};
-
-import EventBus from '../../../eventBus.js';
-/**
-* @constructor
-* @param model
-* @param view
-* @name SettingsCategoriesController
-*/
-export default class SettingsCategoriesController {
-	constructor(model, view) {
-		this.view = view;
-		this.model = model;
-
-		document.addEventListener('change', function(event) {
-			var target = event.target;
-			if(target.closest('.category-input-text')) {
-				EventBus.trigger('savingCategoriesData', [target.id, target.value]);
-				var container = document.querySelector('.btn-group');
-
-				var btnTemplate = '<button class="action-btn back-btn">Back</button>' +
-					'<button class="action-btn save-btn">Save</button>';
-				container.innerHTML = btnTemplate;
-
-				container.addEventListener('click', function(event) {
-					if(event.target.className === 'action-btn save-btn') {
-						EventBus.trigger('routeChange', '#active_page');
-					} 
-				});
-			}
-		});
-
-		document.addEventListener('click', function(event) {
-			var target = event.target;
-		 	if(target.closest('#nextToActPage')){
-		 		EventBus.trigger('routeChange', '#active_page');
-		 	}
-		});
-	}
-}
-
-
-import EventBus from '../../../eventBus.js';
-/**
-* @constructor
-* @name SettingsCategoriesModel
-*/
-export default class SettingsCategoriesModel {
-	constructor() {
-		//let self = this;
-		
-	}
-	savingCategories(index, title) {
-		let self = this;
-		LocalStorageData.setToLS('Categories', self.parseLSData(index, title));
-		EventBus.trigger('dataSet', 'Categories');
-	}
-/**
-* @memberof SettingsCategoriesModel
-*/
-	setDefaultData() {
-		if(LocalStorageData.getFromLS('Categories') === null  && location.hash == '#settings_categories') {
-			LocalStorageData.setToLS('Categories', JSON.stringify([[0, 'Work'], [1, 'Education'], [2, 'Hobby'], [3, 'Sport'], [4, 'Other']]));
-			EventBus.trigger('dataSet', 'Categories');
-		}
-	}
-/**
-* @memberof SettingsCategoriesModel
-*/
-	parseLSData(index, title) {
-		let obj = {};
-		obj = JSON.parse(LocalStorageData.getFromLS('Categories'));
-		for(var i in obj) {
-			if(obj[i][0] == index) {
-				obj[i][1] = title;
-			}
-		}
-		return JSON.stringify(obj);
-	}
-/**
-* @memberof SettingsCategoriesModel
-*/
-	saveData(id, value) {
-		let self = this;
-		LocalStorageData.setToLS('Categories', self.parseLSData(id, value));
-	}
-}
-/**
-* @constructor
-* @name SettingsCategoriesTemplate
-*/
-export default class SettingsCategoriesTemplate {
-	constructor() {
-		this.template = '<div class="settings-categories" id="settings-categories">' +
-			'<ul class="choose-categories">' +
-				'<li class="category-item">' +
-					'<input id="input-work" class="category-item-hidden" type="radio" name="category"><label for="input-work" class="category-radio-icon work"></label>' +
-					'<input id="0" class="category-input-text" type="text" value="{{category0}}">' +
-				'</li>' +
-				'<li class="category-item">' +
-					'<input id="input-educat" class="category-item-hidden" type="radio" name="category"><label for="input-educat" class="category-radio-icon education"></label>' +
-					'<input id="1" class="category-input-text" type="text" value="{{category1}}">' +
-				'</li>' +
-				'<li class="category-item">' +
-					'<input id="input-hobby" class="category-item-hidden" type="radio" name="category"><label for="input-hobby" class="category-radio-icon hobby"></label>' +
-					'<input id="2" class="category-input-text" type="text" value="{{category2}}">' +
-				'</li>' +
-				'<li class="category-item">' +
-					'<input id="input-sport" class="category-item-hidden" type="radio" name="category"><label for="input-sport" class="category-radio-icon sport"></label>' +
-					'<input id="3" class="category-input-text" type="text" value="{{category3}}">' +
-				'</li>' +
-				'<li class="category-item">' +
-					'<input id="input-other" class="category-item-hidden" type="radio" name="category"><label for="input-other" class="category-radio-icon other"></label>' +
-					'<input id="4" class="category-input-text" type="text" value="{{category4}}">' +
-				'</li>' +
-			'</ul>' +
-		'<div class="btn-group">' +
-			'<button id="nextToActPage" class="action-btn next-btn">Next</button>' +
-		'</div>' +
-		'</div>';
-	}
-/**
-* @memberof SettingsCategoriesTemplate
-*/
-	show() {
-		return this.template;
-	}
-}
-import Handlebars from '../../../libs/handlebars-v4.0.5.js';
-/**
-* @constructor
-* @param template
-* @name SettingsCategoriesView
-*/
-export default class SettingsCategoriesView {
-	constructor(template) {
-		this.template = template;
-	}
-/**
-* @memberof SettingsCategoriesView
-* @summary render function
-*/
-	render() {
-		var hTemplate = Handlebars.compile(this.template);
-		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],
-							category1: JSON.parse(LocalStorageData.getFromLS('Categories'))['1'][1],
-							category2: JSON.parse(LocalStorageData.getFromLS('Categories'))['2'][1],
-							category3: JSON.parse(LocalStorageData.getFromLS('Categories'))['3'][1],
-							category4: JSON.parse(LocalStorageData.getFromLS('Categories'))['4'][1]});
-		document.getElementById('settings-container').innerHTML += data;
-		document.title = 'Settings Categories';
-	}
-	destroy() {
-		
-	}
-}
-import EventBus from '../../../eventBus.js';
-
-import SettingsCategoriesModel from './settings_categories-model.js';
-import SettingsCategoriesTemplate from './settings_categories-template.js';
-import SettingsCategoriesView from './settings_categories-view.js';
-import SettingsCategoriesController from './settings_categories-controller.js';
-
-window.initSettingsCategories = function() {
-	var settingsCategoriesModel = new SettingsCategoriesModel;
-	settingsCategoriesModel.setDefaultData();
-	var settingsCategoriesTemplate = new SettingsCategoriesTemplate;
-	var settingsCategoriesView = new SettingsCategoriesView(settingsCategoriesTemplate.show());
-	var settingsCategoriesController = new SettingsCategoriesController(settingsCategoriesModel, settingsCategoriesView);
-	settingsCategoriesView.render();
-
-	EventBus.on('renderSettingsCategories', function() {
-		settingsCategoriesView.render();
-	});
-	EventBus.on('settingsCategoriesDataSaving', function([key, value]) {
-		settingsCategoriesModel.saveData(key, value);
-	});
-	EventBus.on('savingCategoriesData', function([index, title]) {
-		settingsCategoriesModel.savingCategories(index, title);
-	});
-};
-
-import EventBus from '../../../eventBus.js';
-export default class ModalWindowController {
+class ModalWindowController {
 	constructor(model, view) {
 		var self = this;
 		self.view = view;
@@ -1999,7 +1898,7 @@ export default class ModalWindowController {
 		}
 	}
 }
-export default class ModalWindowModel {
+class ModalWindowModel {
 	constructor() {
 
 	}
@@ -2017,7 +1916,7 @@ export default class ModalWindowModel {
 		return result;
 	}
 }
-export default class ModalWindowTemplate {
+class ModalWindowTemplate {
 	constructor() {
 		this.template = '<div id="modalWindow" class="modal modal-open hidden">' +
 		'<div class="cover-wrapper"></div>' +
@@ -2096,9 +1995,9 @@ export default class ModalWindowTemplate {
 	}
   
 }
-import Handlebars from '../../../libs/handlebars-v4.0.5.js';
+/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
 
-export default class ModalWindowView {
+class ModalWindowView {
 	constructor(template) {
 		this.template = template;
 	}
@@ -2125,11 +2024,10 @@ export default class ModalWindowView {
 	for(var i in estimations) {
 	}
 }*/
-import EventBus from '../../../eventBus.js';
-import ModalWindowTemplate from './modal-window-template.js';
+/*import ModalWindowTemplate from './modal-window-template.js';
 import ModalWindowView from './modal-window-view.js';
 import ModalWindowModel from './modal-window-model.js';
-import ModalWindowController from './modal-window-controller.js';
+import ModalWindowController from './modal-window-controller.js';*/
 
 window.initModalWindow = function() {
 	var modalWindowTemplate = new ModalWindowTemplate;
@@ -2146,10 +2044,40 @@ window.initModalWindow = function() {
 	});
 }
 
-import Inputs from './cycle-model.js';
-import Timeline from './cycle-view.js';
+function ArrowsController(view) {
+	this.view = view;
 
-export default function CycleController() {	
+	this.view.render();
+
+	document.addEventListener('click', function() {
+		if(event.target.classList.contains('icon-arrow-left')) {
+			EventBus.trigger('routeChange', '#active_page');
+		} /*else if(event.target.classList.contains('icon-arrow-right')) {
+
+		}*/
+	});
+}
+function ArrowsTemplate() {
+  this.template = '<div class="arrow">' +
+		'<button class="arrows arrow-left"><a class="tooltip" title="Go To Task List"><i class="icons icon-arrow-left"></i></a></button>' +
+		'<button class="arrows arrow-right"><i class="icons icon-arrow-right"></i></button>' +
+	'</div>';
+}
+ArrowsTemplate.prototype.show = function() {
+	return this.template;
+}
+function ArrowsView(template) {
+	this.template = template;
+}
+ArrowsView.prototype.render = function() {
+	var hTemplate = Handlebars.compile(this.template);
+	var data = hTemplate();
+	document.querySelector('.content-area').innerHTML += data;
+}
+/*import Inputs from './cycle-model.js';
+import Timeline from './cycle-view.js';*/
+
+function CycleController() {
 	var workTime = new Inputs({
 		elem: document.getElementById('workTime'),
 		step: 5,
@@ -2228,7 +2156,7 @@ CycleInput.prototype = {
 }
 //var inputChanges = '0'; 
 
-export default function Inputs(options) {
+function Inputs(options) {
 	var elem = options.elem;
 	var step = options.step; 
 	var minValue = options.minValue;
@@ -2258,8 +2186,7 @@ export default function Inputs(options) {
 function CycleTimeline(model) {
 	this.model = model;
 }
-import EventBus from '../../../../eventBus.js';
-export default function Timeline(options) {
+function Timeline(options) {
 	var elem = options.elems;
 	var counter = options.valuesWrap;
 

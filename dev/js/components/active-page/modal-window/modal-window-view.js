@@ -1,6 +1,6 @@
-import Handlebars from '../../../libs/handlebars-v4.0.5.js';
+/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
 
-export default class ModalWindowView {
+class ModalWindowView {
 	constructor(template) {
 		this.template = template;
 	}

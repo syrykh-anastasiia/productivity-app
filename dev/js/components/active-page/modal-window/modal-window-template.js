@@ -1,4 +1,4 @@
-export default class ModalWindowTemplate {
+class ModalWindowTemplate {
 	constructor() {
 		this.template = '<div id="modalWindow" class="modal modal-open hidden">' +
 		'<div class="cover-wrapper"></div>' +

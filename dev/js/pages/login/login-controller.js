@@ -1,11 +1,10 @@
-import EventBus from '../../eventBus.js';
 /**
 * @constructor
 * @param view
 * @name LoginController
 * @summary Login controller
 */
-export default class LoginController {
+class LoginController {
 	constructor(view) {
 		if(LocalStorageData.getFromLS('username') !== null) {
 			this.findNextPage();

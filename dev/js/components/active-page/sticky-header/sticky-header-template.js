@@ -1,4 +1,4 @@
-export default class StickyHeaderTemplate {
+class StickyHeaderTemplate {
 	constructor() {
 		this.template = '<div id="stickyHeader" class="hidden-header-wrapper hidden">' +
 		'<header class="hidden-header">' +

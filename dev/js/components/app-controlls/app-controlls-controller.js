@@ -1,5 +1,4 @@
-import EventBus from '../../eventBus.js';
-export default class AppControllsController {
+class AppControllsController {
 	constructor(view) {
 		this.view = view;
 		this.view.render();

@@ -1,3 +1,4 @@
+/* NOT WORKING */
 function AuthData() {
 	var userName = 'admin';
 	var pass = 'admin';
@@ -12,9 +13,10 @@ function AuthData() {
 	}
 }
 
+/*
 window.auth = function(login, pass) {
 	var result = false;
 	var authData = new AuthData();
 	if(login === authData.getUser() && pass === authData.getPass()) result = true;
 	return result;
-}
+}*/

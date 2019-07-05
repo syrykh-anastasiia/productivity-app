@@ -1,4 +1,4 @@
-export default class TaskTemplate {
+class TaskTemplate {
 	constructor() {
 		this.template = '<section class="tasks-categories">' +
 							    '<div class="span category-{{task.category}}"></div>' +

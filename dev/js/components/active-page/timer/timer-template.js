@@ -1,4 +1,4 @@
-export default class TimerTemplate {
+class TimerTemplate {
 	constructor() {
 		this.template = '<section class="content-area">' +
 		'<header>' +

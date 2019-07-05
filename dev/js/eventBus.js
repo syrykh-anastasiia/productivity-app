@@ -1,4 +1,4 @@
-export default {
+EventBus = {
 	events: {},
 	on: function(eventName, func) { //subscribe
 		this.events[eventName] = this.events[eventName] || [];

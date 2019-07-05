@@ -1,11 +1,10 @@
-import EventBus from '../../eventBus.js';
 /**
 * @constructor
 * @param model
 * @param view
 * @name ActivePageController
 */
-export default class ActivePageController {
+class ActivePageController {
 	constructor(model, view) {
 		var self = this;
 		self.view = view;

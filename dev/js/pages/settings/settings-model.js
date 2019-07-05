@@ -2,7 +2,7 @@
 * @constructor
 * @name SettingsModel
 */
-export default class SettingsModel {
+class SettingsModel {
 	constructor() {
 		let self = this;
 	}

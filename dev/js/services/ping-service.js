@@ -1,3 +1,4 @@
+/* NOT WORKING */
 function notification(text) {
   if (!("Notification" in window)) {
     alert("This browser does not support desktop notification");

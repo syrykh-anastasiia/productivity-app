@@ -1,9 +1,8 @@
-import EventBus from '../../../eventBus.js';
 /**
 * @constructor
 * @name SettingsModel
 */
-export default class SettingsPomodorosModel {
+class SettingsPomodorosModel {
 	constructor() {
 		let self = this;
 	}

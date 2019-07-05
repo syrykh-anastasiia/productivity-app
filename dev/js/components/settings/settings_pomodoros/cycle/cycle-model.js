@@ -1,6 +1,6 @@
 //var inputChanges = '0'; 
 
-export default function Inputs(options) {
+function Inputs(options) {
 	var elem = options.elem;
 	var step = options.step; 
 	var minValue = options.minValue;

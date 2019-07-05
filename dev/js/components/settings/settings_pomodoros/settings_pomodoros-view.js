@@ -1,11 +1,11 @@
-import Handlebars from '../../../libs/handlebars-v4.0.5.js';
+/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
 /**
 * @constructor
 * @param template
 * @name SettingsPomodorosView
 */
 
-export default class SettingsPomodorosView {
+class SettingsPomodorosView {
 	constructor(template) {
 		this.template = template;
 	}

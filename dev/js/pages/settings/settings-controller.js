@@ -4,7 +4,7 @@
 * @param view
 * @name SettingsController
 */
-export default class SettingsController {
+class SettingsController {
 	constructor(model, view) {
 		let self = this;
 		self.view = view;

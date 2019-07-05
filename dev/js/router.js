@@ -1,9 +1,8 @@
-import EventBus from './eventBus.js';
-
-export default class Router {
+class Router {
 	static routing(location) {
 		let currentLocation = location || window.location.hash.substr(1);
 		EventBus.trigger('getRemoteFBData');
+		console.log('1');
 		switch(currentLocation) {
 			case 'login':
 				window.initLogin();
@@ -19,7 +18,7 @@ export default class Router {
 			break;
 		}
 	}
-};
+}
 
 window.addEventListener('load', function() {
 	let currentHash = location.hash;
@@ -29,6 +28,7 @@ window.addEventListener('load', function() {
 		Router.routing(location.hash.substr(1));
 	}
 });
+
 EventBus.on('routeChange', function(route) {
 	route = route.substr(1);
 	switch(route) {

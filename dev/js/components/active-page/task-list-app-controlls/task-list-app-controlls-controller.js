@@ -1,4 +1,4 @@
-export default class TaskListAppControllsController {
+class TaskListAppControllsController {
 	constructor(view) {
 		this.view = view;
 		window.initAppControlls();

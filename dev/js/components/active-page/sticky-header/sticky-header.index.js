@@ -1,6 +1,6 @@
-import StickyHeaderTemplate from './sticky-header-template.js';
+/*import StickyHeaderTemplate from './sticky-header-template.js';
 import StickyHeaderView from './sticky-header-view.js';
-import StickyHeaderController from './sticky-header-controller.js';
+import StickyHeaderController from './sticky-header-controller.js';*/
 
 window.initStickyHeader = function() {
 	var stickyHeaderTemplate = new StickyHeaderTemplate;

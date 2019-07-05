@@ -1,7 +1,7 @@
-import Inputs from './cycle-model.js';
-import Timeline from './cycle-view.js';
+/*import Inputs from './cycle-model.js';
+import Timeline from './cycle-view.js';*/
 
-export default function CycleController() {	
+function CycleController() {
 	var workTime = new Inputs({
 		elem: document.getElementById('workTime'),
 		step: 5,

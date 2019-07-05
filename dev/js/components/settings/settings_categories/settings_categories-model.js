@@ -1,9 +1,8 @@
-import EventBus from '../../../eventBus.js';
 /**
 * @constructor
 * @name SettingsCategoriesModel
 */
-export default class SettingsCategoriesModel {
+class SettingsCategoriesModel {
 	constructor() {
 		//let self = this;
 		

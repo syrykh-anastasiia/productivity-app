@@ -1,4 +1,4 @@
-export default class TimerView {
+class TimerView {
 	constructor(template) {
 		this.template = template;
 	}

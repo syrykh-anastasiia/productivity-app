@@ -1,4 +1,4 @@
-export default class TimerController {
+class TimerController {
 	constructor(view, model) {
 		this.view = view;
 		this.model = model;

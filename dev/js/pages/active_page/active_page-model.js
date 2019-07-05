@@ -1,6 +1,4 @@
-import EventBus from '../../eventBus.js';
-
-export default class ActivePageModel {
+class ActivePageModel {
 	constructor() {
 		
 	}

@@ -3,7 +3,7 @@
 * @name LoginTemplate
 * @summary Login template
 */
-export default class LoginTemplate {
+class LoginTemplate {
   constructor() {
     this.template = '<div class="main-wrapper">' +
       '<div class="login-content-area">' +

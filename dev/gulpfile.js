@@ -7,6 +7,7 @@ let isDevelopment = true;
 const path = require('path');
 const browserSync = require('browser-sync').create();
 const concat = require('gulp-concat');
+const babel = require("gulp-babel");
 const settings = require('./gulp-settings.js');
 const postcssPlagins = [
 	plugins.autoprefixer({
@@ -74,7 +75,19 @@ gulp.task('allLess', function () {
 
 //concat all JS files
 gulp.task('allJs', function () {
-    return gulp.src(['js/**/*.js', '!js/libs/*.js'])
+    return gulp.src(['js/**/*.js', '!js/libs/*.js', '!js/plugins/*.js'])
+	/*.pipe(babel(
+        {
+            "presets": [
+                "@babel/preset-env"
+            ],
+            "plugins": [
+                "@babel/plugin-transform-runtime",
+                "@babel/plugin-transform-modules-amd"
+            ],
+			"sourceType": "unambiguous"
+        }
+	))*/
 	.pipe(concat('main.js'))
 	.pipe(gulp.dest(settings.jsDir.output))
 	.pipe(browserSync.stream({match: 'js/**/*.js'}));

@@ -1,11 +1,10 @@
-import EventBus from '../../../eventBus.js';
 /**
 * @constructor
 * @param model
 * @param view
 * @name SettingsCategoriesController
 */
-export default class SettingsCategoriesController {
+class SettingsCategoriesController {
 	constructor(model, view) {
 		this.view = view;
 		this.model = model;
