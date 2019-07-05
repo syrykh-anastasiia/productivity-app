@@ -20,12 +20,15 @@ class Router {
 }
 
 window.addEventListener('load', function() {
+	$('body').addClass('loaded');
+
 	let currentHash = location.hash;
 	if(currentHash.length === 0 || currentHash === '#') {
 		location.hash = '#login';
 	} else {
 		Router.routing(location.hash.substr(1));
 	}
+
 });
 
 EventBus.on('routeChange', function(route) {

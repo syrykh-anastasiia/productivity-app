@@ -26,6 +26,7 @@ class LoginController {
 			}
 		});
 	}
+	/*should be in router*/
 	findNextPage() {
 		if(LocalStorageData.getFromLS('Pomodoros') === null && LocalStorageData.getFromLS('Categories') === null) {
 			EventBus.trigger('routeChange', '#settings');

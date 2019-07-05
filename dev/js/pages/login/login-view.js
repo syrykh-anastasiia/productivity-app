@@ -6,16 +6,12 @@
 */
 
 class LoginView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#loginTemplate').html());
 	}
-/**
-* @memberof LoginView
-* @summary render function
-*/
+
 	render() {
-		let data = this.template();
-		document.body.innerHTML = data;
+		document.body.innerHTML = this.template();
 		document.title = 'Log In';
 	}
 }

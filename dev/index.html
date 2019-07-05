@@ -26,7 +26,27 @@
 	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-	<script id="appControls" type="text/x-handlebars-template">
+	<script id="loginTemplate" type="text/x-handlebars-template">
+		<div class="main-wrapper">
+			<div class="login-content-area">
+				<h1 class="alt-logo-text">Pomodoro Login Page</h1>
+				<div class="logo"></div>
+				<form id="loginForm" class="log-in">
+					<label class="input-wrap">
+						<input id="login" class="form-input login-input" type="text" placeholder="Username" autocomplete="off">
+						<i class="icon-login login"></i>
+					</label>
+					<span class="hidden error-text">Lorem ipsum dolor sit amet, consectetu adipiscing elit</span>
+					<label class="input-wrap">
+						<input id="pass" class="form-input pass-input" type="password" placeholder="Password" autocomplete="off">
+						<i class="icon-password password"></i>
+					</label>
+					<input type="submit" value="Log In">
+				</form>
+			</div>
+		</div>
+	</script>
+	<script id="appControlsTemplate" type="text/x-handlebars-template">
 		<ul class="settings-list">
 			<!--<li>
 				<a href="#" class="tooltip" title="New Task"><i id="addIcon" class="icon-add setting-icons"></i></a>

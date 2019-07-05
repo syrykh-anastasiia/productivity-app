@@ -1,3 +1,24 @@
+body {
+	&.loaded {
+		&:after {
+			opacity: 0;
+			visibility: hidden;
+		}
+	}
+
+	&:after {
+		content: '';
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: @base-background-color;
+		transition: opacity ease .3s, visibility ease .3s;
+		z-index: 999;
+	}
+}
+
 .main-page-title {
 	color: #fff;
 	padding-bottom: 30px;
@@ -11,7 +32,7 @@
 }
 .title-hint {
 	color: #8da5b8;
-	font: 20px "robotolight";
+	font-size: 20px;
 	@media screen and (max-width: 1365px) {
 		font-size: 24px;
 	}

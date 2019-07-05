@@ -537,6 +537,21 @@ a:hover,
 a:focus {
   text-decoration: none;
 }
+body.loaded:after {
+  opacity: 0;
+  visibility: hidden;
+}
+body:after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2a3f50;
+  transition: opacity ease .3s, visibility ease .3s;
+  z-index: 999;
+}
 .main-page-title {
   color: #fff;
   padding-bottom: 30px;
@@ -554,7 +569,7 @@ a:focus {
 }
 .title-hint {
   color: #8da5b8;
-  font: 20px "robotolight";
+  font-size: 20px;
 }
 @media screen and (max-width: 1365px) {
   .title-hint {
