@@ -1,20 +1,20 @@
 /* color scheme */
+@white: #fff;
+@black: #000;
+
+
 @main: #2a3f50;
-/* task categories */
 @category_0: #ffb200;
 @category_1: #59abe3;
 @category_2: #b470d0;
 @category_3: #e16c65;
 @category_4: #00d4d9;
-/* task priorities */
 @priority_urgent: #e16c65;
 @priority_high: #ffa841;
 @priority_middle: #fddc43;
 @priority_low: #1abc9c;
-/* text */
 @unactive: #8da5b8;
 @active: #fff;
-/* notifications */
 @info: #59abe3;
 @infoSub: lighten(saturate(spin(@info, -0.0235), 0.4789), 7.6471);
 @success: #1abc9c;
@@ -24,13 +24,48 @@
 @warning: #ffa841;
 @warningSub: lighten(saturate(spin(@warning, -0.1579), 0.0000), 7.4510);
 
+/* sizing */
+@rem-base: 16px;
+
 /* fonts */
+@roboto: "Roboto";
+@pt-sans: "PT Sans";
 @base-font-serif: 'Times New Roman', 'Times', 'Baskerville', 'Georgia', serif;
-@base-font-sans-serif: 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
-@roboto: "Roboto", @base-font-sans-serif;
-@pt-sans: "PT Sans", @base-font-sans-serif;
+@base-font-sans-serif: @roboto, 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
 
+/* basics */
+@base-text-color: @black;
+@base-background-color: @white;
+@font-size-base: 16px;
+@line-height-base: 1.2;
+@base-font-family: @base-font-sans-serif;
 
-@pathToFile: "../../../";
+@base-min-width: 320px;
 
-@backgroundPositionX: 0;
+// Liks
+@base-link-color: @black;
+
+// Buttons
+@btn-color: @white;
+@btn-background: @black;
+@btn-padding: 0.4em 0.7em;
+@btn-font-size: inherit;
+
+// Forms
+@form-element-padding: @btn-padding;
+@form-element-border-color: @black;
+@form-element-focus-border-color: @black;
+@placeholder-color: @black;
+
+// Headers
+@h1-font-size: 30px;
+@h2-font-size: 27px;
+@h3-font-size: 24px;
+@h4-font-size: 21px;
+@h5-font-size: 17px;
+@h6-font-size: 15px;
+
+@headings-font-family: inherit;
+@headings-color: inherit;
+
+@animation-speed: 0.3s;
