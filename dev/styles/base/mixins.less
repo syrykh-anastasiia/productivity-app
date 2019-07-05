@@ -13,3 +13,13 @@
 		.setBgColor(@nameSub);
 	}
 }
+
+.font-face(@font-name; @font-path; @weight; @style) {
+	@font-face {
+		font-family: @font-name;
+		src: url('../fonts/@{font-path}.woff') format('woff'),
+		url('../fonts/@{font-path}.ttf') format('truetype');
+		font-weight: @weight;
+		font-style: @style;
+	}
+}

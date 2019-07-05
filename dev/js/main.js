@@ -465,220 +465,6 @@ class TaskCollectionModel {
 * @constructor
 * @param model
 * @param view
-* @name SettingsController
-*/
-class SettingsController {
-	constructor(model, view) {
-		let self = this;
-		self.view = view;
-		self.model = model;
-		self.componentData;
-		self.componentView;
-
-		window.initAppControlls();
-		
-		var $tabs = $('#tabs');
-		$tabs.tabs();
-
-		$('.setting-btn').tooltips();
-	}
-	changesTracking() {
-		var container = document.getElementsByClassName('btn-group')[0];
-
-		var btnTemplate = '<button class="action-btn back-btn">Back</button>' +
-			'<button class="action-btn save-btn">Save</button>';
-		container.innerHTML = btnTemplate;
-
-		container.addEventListener('click', function(event) {
-			if(event.target.className === 'action-btn save-btn') {
-				//self.model.updateData([elem, parseInt(value)]);
-				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-				window.initSettingsCategories();
-			} 
-		});
-	}
-}
-
-
-/**
-* @constructor
-* @name SettingsModel
-*/
-class SettingsModel {
-	constructor() {
-		let self = this;
-	}
-	/*move same methods here and just send params*/
-}
-/**
-* @constructor
-* @name SettingsTemplate
-*/
-class SettingsTemplate {
-	constructor() {
-		this.template = '<div class="content-area">' +
-		'<header>' +
-			'<h1 class="main-page-title">Settings</h1>' +
-			'<h3 class="title-hint">SET TEXT HERE</h3>' +
-		'</header>' +
-		'<div id="tabs" class="tabs-block">' +
-			'<button class="tabs"><a href="#settings_pomodoros">Pomodoros</a></button>' +
-			'<button class="tabs"><a href="#settings_categories">Categories</a></button>' +
-		'</div>' +
-		'<div class="settings" id="settings-container"></div>'
-	'</div>';
-	}
-/**
-* @memberof SettingsTemplate
-*/
-	show() {
-		return this.template;
-	}
-}
-/**
-* @constructor
-* @param template
-* @name SettingsView
-*/
-/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
-
-class SettingsView {
-	constructor(template) {
-		this.template = template;
-	}
-	render() {
-		let hTemplate = Handlebars.compile(this.template);
-		let data = hTemplate();
-		document.body.innerHTML += data;
-		document.title = 'Settings';
-	}
-}
-/*import SettingsModel from './settings-model.js'
-import SettingsTemplate from './settings-template.js';
-import SettingsView from './settings-view.js';
-import SettingsController from './settings-controller.js';
-
-import SettingsCategories from '../../components/settings/settings_categories/settings_categories.js';
-import SettingsPomodoros from '../../components/settings/settings_pomodoros/settings_pomodoros.js';*/
-
-window.initSettings = function() {
-	let settingsModel = new SettingsModel;
-	let settingsTemplate = new SettingsTemplate;
-	let settingsView = new SettingsView(settingsTemplate.show());
-	let settingsController = new SettingsController(settingsModel, settingsView);
-	settingsView.render();
-
-	window.initSettingsPomodoros();
-};
-/**
-* @constructor
-* @param view
-* @name LoginController
-* @summary Login controller
-*/
-class LoginController {
-	constructor(view) {
-		if(LocalStorageData.getFromLS('username') !== null) {
-			this.findNextPage();
-		}
-		this.view = view;
-		let auth = window.auth;
-		let self = this;
-		document.addEventListener('submit', function(event) {
-			event.preventDefault();
-			let inputUser = document.getElementById('login').value;
-			let inputPass = document.getElementById('pass').value;
-			let validation = false;
-			if(inputUser.length > 0 && inputPass.length > 0) validation = auth(inputUser, inputPass);
-			document.getElementById('login').value = '';
-			document.getElementById('pass').value = '';
-			if(validation) {
-				LocalStorageData.setToLS('username', inputUser);
-				self.findNextPage();
-			}
-		});
-	}
-	findNextPage() {
-		if(LocalStorageData.getFromLS('Pomodoros') === null && LocalStorageData.getFromLS('Categories') === null) {
-			EventBus.trigger('routeChange', '#settings');
-		} else {
-			EventBus.trigger('routeChange', '#active_page');
-		}
-	}
-} 
-/**
-* @constructor
-* @name LoginTemplate
-* @summary Login template
-*/
-class LoginTemplate {
-  constructor() {
-    this.template = '<div class="main-wrapper">' +
-      '<div class="login-content-area">' +
-        '<h1 class="alt-logo-text">Pomodoro Login Page</h1>' +
-        '<div class="logo"></div>' +
-        '<form id="loginForm" class="log-in">' +
-           '<label class="input-wrap">' +
-             '<input id="login" class="form-input login-input" type="text" placeholder="Username" autocomplete="off"><i class="icon-login login"></i>' + 
-           '</label>' +
-           '<span class="hidden error-text">Lorem ipsum dolor sit amet, consectetu adipiscing elit</span>' +
-           '<label class="input-wrap">' +
-             '<input id="pass" class="form-input pass-input" type="password" placeholder="Password" autocomplete="off"><i class="icon-password password"></i>' +
-          ' </label>' +
-           '<input type="submit" value="Log In">' +
-        '</form>' +
-      '</div>' +
-      '</div>';
-  }
-/**
-* @memberof LoginTemplate
-* @summary show function
-*/
-  show() {
-    return this.template;
-  }
-}
-/**
-* @constructor
-* @param template
-* @name LoginView
-* @summary Login views
-*/
-/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
-
-class LoginView {
-	constructor(template) {
-		this.template = template;
-	}
-/**
-* @memberof LoginView
-* @summary render function
-*/
-	render() {
-		let hTemplate = Handlebars.compile(this.template);
-		let data = hTemplate();
-		document.body.innerHTML = data;
-		document.title = 'Log In';
-	}
-}
-/*import LoginTemplate from './login-template.js';
-import LoginView from './login-view.js';
-import LoginController from './login-controller.js';*/
-
-window.initLogin = function() {
-	let loginTemplate = new LoginTemplate;
-	let loginView = new LoginView(loginTemplate.show());
-	let loginController = new LoginController(loginView);
-
-	EventBus.on('renderLogin', function() {
-		loginView.render();
-	});
-};
-
-/**
-* @constructor
-* @param model
-* @param view
 * @name ActivePageController
 */
 class ActivePageController {
@@ -900,6 +686,797 @@ window.initActivePage = function() {
 	});
 }
 
+/**
+* @constructor
+* @param view
+* @name LoginController
+* @summary Login controller
+*/
+class LoginController {
+	constructor(view) {
+		if(LocalStorageData.getFromLS('username') !== null) {
+			this.findNextPage();
+		}
+		this.view = view;
+		let auth = window.auth;
+		let self = this;
+		document.addEventListener('submit', function(event) {
+			event.preventDefault();
+			let inputUser = document.getElementById('login').value;
+			let inputPass = document.getElementById('pass').value;
+			let validation = false;
+			if(inputUser.length > 0 && inputPass.length > 0) validation = auth(inputUser, inputPass);
+			document.getElementById('login').value = '';
+			document.getElementById('pass').value = '';
+			if(validation) {
+				LocalStorageData.setToLS('username', inputUser);
+				self.findNextPage();
+			}
+		});
+	}
+	findNextPage() {
+		if(LocalStorageData.getFromLS('Pomodoros') === null && LocalStorageData.getFromLS('Categories') === null) {
+			EventBus.trigger('routeChange', '#settings');
+		} else {
+			EventBus.trigger('routeChange', '#active_page');
+		}
+	}
+} 
+/**
+* @constructor
+* @name LoginTemplate
+* @summary Login template
+*/
+class LoginTemplate {
+  constructor() {
+    this.template = '<div class="main-wrapper">' +
+      '<div class="login-content-area">' +
+        '<h1 class="alt-logo-text">Pomodoro Login Page</h1>' +
+        '<div class="logo"></div>' +
+        '<form id="loginForm" class="log-in">' +
+           '<label class="input-wrap">' +
+             '<input id="login" class="form-input login-input" type="text" placeholder="Username" autocomplete="off"><i class="icon-login login"></i>' + 
+           '</label>' +
+           '<span class="hidden error-text">Lorem ipsum dolor sit amet, consectetu adipiscing elit</span>' +
+           '<label class="input-wrap">' +
+             '<input id="pass" class="form-input pass-input" type="password" placeholder="Password" autocomplete="off"><i class="icon-password password"></i>' +
+          ' </label>' +
+           '<input type="submit" value="Log In">' +
+        '</form>' +
+      '</div>' +
+      '</div>';
+  }
+/**
+* @memberof LoginTemplate
+* @summary show function
+*/
+  show() {
+    return this.template;
+  }
+}
+/**
+* @constructor
+* @param template
+* @name LoginView
+* @summary Login views
+*/
+/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
+
+class LoginView {
+	constructor(template) {
+		this.template = template;
+	}
+/**
+* @memberof LoginView
+* @summary render function
+*/
+	render() {
+		let hTemplate = Handlebars.compile(this.template);
+		let data = hTemplate();
+		document.body.innerHTML = data;
+		document.title = 'Log In';
+	}
+}
+/*import LoginTemplate from './login-template.js';
+import LoginView from './login-view.js';
+import LoginController from './login-controller.js';*/
+
+window.initLogin = function() {
+	let loginTemplate = new LoginTemplate;
+	let loginView = new LoginView(loginTemplate.show());
+	let loginController = new LoginController(loginView);
+
+	EventBus.on('renderLogin', function() {
+		loginView.render();
+	});
+};
+
+/**
+* @constructor
+* @param model
+* @param view
+* @name SettingsController
+*/
+class SettingsController {
+	constructor(model, view) {
+		let self = this;
+		self.view = view;
+		self.model = model;
+		self.componentData;
+		self.componentView;
+
+		window.initAppControlls();
+		
+		var $tabs = $('#tabs');
+		$tabs.tabs();
+
+		$('.setting-btn').tooltips();
+	}
+	changesTracking() {
+		var container = document.getElementsByClassName('btn-group')[0];
+
+		var btnTemplate = '<button class="action-btn back-btn">Back</button>' +
+			'<button class="action-btn save-btn">Save</button>';
+		container.innerHTML = btnTemplate;
+
+		container.addEventListener('click', function(event) {
+			if(event.target.className === 'action-btn save-btn') {
+				//self.model.updateData([elem, parseInt(value)]);
+				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
+				window.initSettingsCategories();
+			} 
+		});
+	}
+}
+
+
+/**
+* @constructor
+* @name SettingsModel
+*/
+class SettingsModel {
+	constructor() {
+		let self = this;
+	}
+	/*move same methods here and just send params*/
+}
+/**
+* @constructor
+* @name SettingsTemplate
+*/
+class SettingsTemplate {
+	constructor() {
+		this.template = '<div class="content-area">' +
+		'<header>' +
+			'<h1 class="main-page-title">Settings</h1>' +
+			'<h3 class="title-hint">SET TEXT HERE</h3>' +
+		'</header>' +
+		'<div id="tabs" class="tabs-block">' +
+			'<button class="tabs"><a href="#settings_pomodoros">Pomodoros</a></button>' +
+			'<button class="tabs"><a href="#settings_categories">Categories</a></button>' +
+		'</div>' +
+		'<div class="settings" id="settings-container"></div>'
+	'</div>';
+	}
+/**
+* @memberof SettingsTemplate
+*/
+	show() {
+		return this.template;
+	}
+}
+/**
+* @constructor
+* @param template
+* @name SettingsView
+*/
+/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
+
+class SettingsView {
+	constructor(template) {
+		this.template = template;
+	}
+	render() {
+		let hTemplate = Handlebars.compile(this.template);
+		let data = hTemplate();
+		document.body.innerHTML += data;
+		document.title = 'Settings';
+	}
+}
+/*import SettingsModel from './settings-model.js'
+import SettingsTemplate from './settings-template.js';
+import SettingsView from './settings-view.js';
+import SettingsController from './settings-controller.js';
+
+import SettingsCategories from '../../components/settings/settings_categories/settings_categories.js';
+import SettingsPomodoros from '../../components/settings/settings_pomodoros/settings_pomodoros.js';*/
+
+window.initSettings = function() {
+	let settingsModel = new SettingsModel;
+	let settingsTemplate = new SettingsTemplate;
+	let settingsView = new SettingsView(settingsTemplate.show());
+	let settingsController = new SettingsController(settingsModel, settingsView);
+	settingsView.render();
+
+	window.initSettingsPomodoros();
+};
+function ArrowsController(view) {
+	this.view = view;
+
+	this.view.render();
+
+	document.addEventListener('click', function() {
+		if(event.target.classList.contains('icon-arrow-left')) {
+			EventBus.trigger('routeChange', '#active_page');
+		} /*else if(event.target.classList.contains('icon-arrow-right')) {
+
+		}*/
+	});
+}
+function ArrowsTemplate() {
+  this.template = '<div class="arrow">' +
+		'<button class="arrows arrow-left"><a class="tooltip" title="Go To Task List"><i class="icons icon-arrow-left"></i></a></button>' +
+		'<button class="arrows arrow-right"><i class="icons icon-arrow-right"></i></button>' +
+	'</div>';
+}
+ArrowsTemplate.prototype.show = function() {
+	return this.template;
+}
+function ArrowsView(template) {
+	this.template = template;
+}
+ArrowsView.prototype.render = function() {
+	var hTemplate = Handlebars.compile(this.template);
+	var data = hTemplate();
+	document.querySelector('.content-area').innerHTML += data;
+}
+class ModalWindowController {
+	constructor(model, view) {
+		var self = this;
+		self.view = view;
+		self.model = model;
+
+		document.addEventListener('click', function(event) {
+			let target = event.target;
+			if(target.id === 'confirmAdding') {
+				let newTaskInfo = self.getDataFromModal();
+				if(target.classList.contains('Add')) {
+					EventBus.trigger('addNewTask', newTaskInfo);
+				} else if(target.classList.contains('Edit')) {
+					let modal = document.querySelector('.modal-open');
+					EventBus.trigger('editExistingTask', [modal.dataset.key, newTaskInfo]);
+				}
+				self.view.destroy();
+			} else if(target.id === 'cancelAdding') {
+				self.view.destroy();
+			}
+		});
+	}
+	getDataFromModal() {
+		let modal = document.querySelector('.modal-open');
+		let title = modal.querySelector('#title').value;
+		let description = modal.querySelector('#description').value;
+		let category = [];
+		let categories = modal.querySelectorAll('.category-list');
+		for(var i = 0; i < categories.length; i++) {
+			if(categories[i].checked) {
+				category[0] = i;
+				category[1] = categories[i].parentNode.querySelector('.input-text').innerHTML;
+			}
+		}
+		let deadline = modal.querySelector('#deadline').value;	
+		let estimations = modal.querySelectorAll('.estimation-list');
+		let estimation = 0;
+		for(var i = 0; i < estimations.length; i++) {
+			if(estimations[i].checked) {
+				estimation++;
+			}
+		}
+		let priority = '';
+		let priorities = modal.querySelectorAll('.priority-list');
+		for(var i = 0; i < priorities.length; i++) {
+			if(priorities[i].checked) {
+				priority = priorities[i].parentNode.querySelector('.input-text').innerHTML;
+			}
+		}
+		let obj = {
+					title: title, 
+					description: description, 
+					category: category, 
+					deadline: deadline, 
+					estimation: estimation,
+					priority: priority
+				};
+		return obj;
+	}
+	setTaskToModel(task, taskId) {
+		var modal = document.querySelector('.modal-open');
+		modal.dataset.key = taskId;
+		modal.querySelector('#title').value = task.title;
+		modal.querySelector('#description').value = task.description;
+		var categoryIndex = task.category[0];
+		modal.querySelectorAll('.category-list')[categoryIndex].checked = true;
+		modal.querySelector('#deadline').value = task.deadline;	
+		var estimations = modal.querySelectorAll('.estimation-list');
+		var estimationIndex = task.estimation;
+		for(var i = 0; i < estimationIndex; i++) {
+			estimations[i].checked = true;
+		}
+		var priority = task.priority;
+		var priorities = modal.querySelectorAll('.priority-value');
+		for(var i = 0; i < priorities.length; i++) {
+			if(priority.localeCompare(priorities[i].innerHTML) == 0) {
+				priorities[i].checked = true;
+			}
+		}
+	}
+}
+class ModalWindowModel {
+	constructor() {
+
+	}
+	getChosenTaskData(id) {
+		var obj = {};
+		var result = {};
+		obj = JSON.parse(LocalStorageData.getFromLS('TaskList'));
+
+		for(var i in obj) {
+			if(id == i) {
+				result = obj[i];
+			}
+		}
+		
+		return result;
+	}
+}
+class ModalWindowTemplate {
+	constructor() {
+		this.template = '<div id="modalWindow" class="modal modal-open hidden">' +
+		'<div class="cover-wrapper"></div>' +
+		'<div class="modal-window">' +
+			'<div class="btns-group">' +
+				'<button class="modal-action-btn"><i id="cancelAdding" class="icon-close"></i></button>' +
+				'<button class="modal-action-btn"><i id="confirmAdding" class="{{mode}} icon-check"></i></button>' +
+			'</div>' +
+			'<div class="add-edit-task">' +
+				'<h2 class="modal-title add-task-window">{{mode}} Task</h2>' +
+				'<form class="modal-form">' +
+					'<label for="title" class="input-title">TITLE</label>' +
+					'<input id="title" type="text" class="input-content" placeholder="Add title here">' +
+					'<label for="description" class="input-title">DESCRIPTION</label>' +
+					'<input id="description" type="text" class="input-content" placeholder="Add description here">' +
+					'<label for="category" class="input-title">CATEGORY</label>' +
+					'<ul id="category" class="category-block input-content">' +
+						'<li class="category-item">' +
+							'<input id="input-work" class="list-item radio-list-item category-list" type="radio" name="category" checked><label for="input-work" class="c-radio-icon work"></label><span class="input-text">{{category0}}</span>' +
+						'</li>' +
+						'<li class="category-item">' +
+							'<input id="input-educat" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-educat" class="c-radio-icon education"></label><span class="input-text">{{category1}}</span>' +
+						'</li>' +
+						'<li class="category-item">' +
+							'<input id="input-hobby" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-hobby" class="c-radio-icon hobby"></label><span class="input-text">{{category2}}</span>' +
+						'</li>' +
+						'<li class="category-item">' +
+							'<input id="input-sport" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-sport" class="c-radio-icon sport"></label><span class="input-text">{{category3}}</span>' +
+						'</li>' +
+						'<li class="category-item">' +
+							'<input id="input-other" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-other" class="c-radio-icon other"></label><span class="input-text">{{category4}}</span>' +
+						'</li>' +
+					'</ul>' +
+					'<label for="deadline" class="input-title">DEADLINE</label>' +
+					'<input id="deadline" type="text" class="input-content" value="" placeholder="Pick a date">' +
+					'<label for="estimation" class="input-title">ESTIMATION</label>' +
+					'<ul id="estimation" class="estimation-block input-content">' +
+						'<li class="estimation-item">' +
+							'<input id="input-1-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox"><label for="input-1-pomodoro" class="checkbox-element"></label>' +
+						'</li>' +
+						'<li class="estimation-item">' +
+							'<input id="input-2-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox"><label for="input-2-pomodoro" class="checkbox-element"></label>' +
+						'</li>' +
+						'<li class="estimation-item">' +
+							'<input id="input-3-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox"><label for="input-3-pomodoro" class="checkbox-element"></label>' +
+						'</li>' +
+						'<li class="estimation-item">' +
+							'<input id="input-4-pomodoro" class="list-item checkbox-list-item estimation-list"  type="checkbox"><label for="input-4-pomodoro" class="checkbox-element"></label>' +
+						'</li>' +
+						'<li class="estimation-item">' +
+							'<input id="input-5-pomodoro" class="list-item checkbox-list-item estimation-list"  type="checkbox"><label for="input-5-pomodoro" class="checkbox-element"></label>' +
+						'</li>' +
+					'</ul>' +
+					'<label for="priority" class="input-title">PRIORITY</label>' +
+					'<ul id="priority" class="priority-block input-content">' +
+						'<li class="priority-item">' +
+							'<input id="input-urgent" class="list-item radio-list-item priority-list" type="radio" name="priority" checked><label for="input-urgent" class="p-radio-icon urgent"></label><span class="input-text priority-value">Urgent</span>' +
+						'</li>' +
+						'<li class="priority-item">' +
+							'<input id="input-high" class="list-item radio-list-item priority-list" type="radio" name="priority"><label for="input-high" class="p-radio-icon high"></label><span class="input-text priority-value">High</span>' +
+						'</li>' +
+						'<li class="priority-item">' +
+							'<input id="input-middle" class="list-item radio-list-item priority-list" type="radio" name="priority"><label for="input-middle" class="p-radio-icon middle"></label><span class="input-text priority-value">Middle</span>' +
+						'</li>' +
+						'<li class="priority-item">' +
+							'<input id="input-low" class="list-item radio-list-item priority-list" type="radio" name="priority"><label for="input-low" class="p-radio-icon low"></label><span class="input-text priority-value">Low</span>' +
+						'</li>' +
+					'</ul>' +
+				'</form>' +	
+			'</div>' +
+		'</div>' +
+	'</div>';
+	}
+	show() {
+		return this.template;
+	}
+  
+}
+/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
+
+class ModalWindowView {
+	constructor(template) {
+		this.template = template;
+	}
+	render(mode) {
+		var hTemplate = Handlebars.compile(this.template);
+		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],
+													category1: JSON.parse(LocalStorageData.getFromLS('Categories'))['1'][1],
+													category2: JSON.parse(LocalStorageData.getFromLS('Categories'))['2'][1],
+													category3: JSON.parse(LocalStorageData.getFromLS('Categories'))['3'][1],
+													category4: JSON.parse(LocalStorageData.getFromLS('Categories'))['4'][1],
+													mode: mode});
+		document.body.innerHTML += data;
+	}
+	destroy() {
+		var modal = document.querySelector('.modal');
+		if(modal) document.body.removeChild(modal);
+	}
+}
+
+/*ModalWindowView.prototype.pomodorosCheckbox = function() {
+	var modal = document.getElementsByClassName('modal-open')[0];
+	var estimations = modal.querySelectorAll('.estimation-list');
+
+	for(var i in estimations) {
+	}
+}*/
+/*import ModalWindowTemplate from './modal-window-template.js';
+import ModalWindowView from './modal-window-view.js';
+import ModalWindowModel from './modal-window-model.js';
+import ModalWindowController from './modal-window-controller.js';*/
+
+window.initModalWindow = function() {
+	var modalWindowTemplate = new ModalWindowTemplate;
+	var modalWindowView = new ModalWindowView(modalWindowTemplate.show());
+	var modalWindowModel = new ModalWindowModel();
+	var modalWindowController = new ModalWindowController(modalWindowModel, modalWindowView);
+
+	EventBus.on('renderModalWindow', function([mode, taskId]) {
+		modalWindowView.render(mode);
+		if(mode === 'Edit') {
+			var task = modalWindowModel.getChosenTaskData(taskId);
+		 	modalWindowController.setTaskToModel(task, taskId);
+		}
+	});
+}
+
+/*$(function (){
+    $(document).ready(dayInit);
+    $('#day-chart').click(dayInit);
+    function dayInit() {
+        $('div.chart').empty();
+        
+
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $('.chart').addClass('hidden');
+        $('#container-day').removeClass('hidden');
+    } 
+});
+
+$(function (){
+    $('#week-chart').click( function() {
+        $('div.chart').empty();
+        
+
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $('.chart').addClass('hidden');
+        $('#container-week').removeClass('hidden');
+    });
+});
+ 
+$(function () {
+    $('#month-chart').click(function() {
+        $('div.chart').empty();
+        
+
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $('.chart').addClass('hidden');
+        $('#container-month').removeClass('hidden');
+    });
+});*/
+
+//$(function () {
+    $(function initCharts(chartName) {
+        //$(document).ready(dayInit);
+        $('#' + chartName).click(function() {
+            $('div.chart').empty();
+            chartName;
+            $(this).siblings().removeClass('active');
+            $(this).addClass('active');
+            $('.chart').addClass('hidden');
+            $('#' + chartName).removeClass('hidden');
+        });  
+    });
+    
+//});
+
+function ReportsController() {
+	location.hash = '#reports';
+	document.title = 'Reports';
+
+	ReportsView();
+
+	$('.tabs').tabs('reports');
+	$('.icons').tooltips();
+
+	var controllers = document.getElementsByClassName('upper-filter')[0];
+	var chartState = controllers.querySelector('.active');	
+	var chart = chartState.id;
+
+	ReportsModel(chart);
+}
+function ReportsModel(chartName) {
+	var chartCommon = Highcharts.chart('container', {
+		chart: {
+			backgroundColor: "#2a3f50",
+		},
+    credits: {enabled: false},
+    tooltip: {
+      pointFormat: '{series.name}</b>',
+      backgroundColor: '#cedeea',
+      borderRadius: 2,
+      borderWidth: 1,
+      borderColor: 'rgba(84, 108, 126, 0.7)',
+      style : {
+        'color': '#3c5162',
+        'font-family': 'robotobold',
+        'font-size': '12px',
+        'padding': '10px 15px'
+      }
+	  }
+	});
+	var dayChart = Highcharts.chart('container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Total',
+                align: 'center',
+                verticalAlign: 'middle',
+                style: {
+                    fontSize: '14px',
+                    color: '#fff'
+                } 
+            },
+            height: "100%",
+            width: "100%",
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        distance: -30,
+                        format: '<b>{point.name}</b>',
+                        style: {                        
+                            fontWeight: 'bold',                        
+                            color: 'white',                        
+                            textShadow: false,                        
+                            fontSize: '14px',                        
+                            borderColor: 'none'                   
+                        }
+                    },
+                    showInLegend: false,
+                }
+            },
+            series: [{
+                name: 'Priority',
+                colorByPoint: true,
+                data: [{
+                    name: 'High',
+                    color: '#ffa841',
+                    y: 4
+                }, {
+                    name: 'Middle',
+                    color: '#fddc43',
+                    y: 3
+                }, {
+                    name: 'Low',
+                    color: '#1abc9c',
+                    y: 2
+                }, {
+                    name: 'Urgent',
+                    color: '#e16c65',
+                    y: 1
+                }, {
+                    name: 'Failed',
+                    color: '#8da5b8',
+                    y: 3
+                }],
+                innerSize: '50%'
+            }]
+        });
+    var weekChart = Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: ''
+            },
+            legend: {
+                symbolRadius:0,
+                itemStyle: {
+                    "color": "#8da5b8"
+                },
+                itemHoverStyle: {                
+                    color: '#fff'            
+                }
+            },
+            xAxis: {
+                categories: ['MON', 'TUE', 'WED', 'THU', 'FRI'],
+                labels: {
+                    style: {
+                        "color": "#fff"
+                    }
+                },
+                lineColor: "#fff",
+                lineWidth: 1,
+                tickColor: 'transparent'
+            },
+            yAxis: {
+                allowDecimals: false,
+                min: 0,
+                tickInterval: 2,
+                labels: {
+                    style: {
+                        "color": "#fff"
+                    }
+                },
+                gridLineColor: "#8da5b8",
+                title: {
+                    text: ''
+                },
+                lineWidth: 1,            
+                lineColor: '#fff'
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal'
+                }
+            },
+            series: [{
+                name: 'Urgent',
+                data: [1, 2, 3, 1, 2],
+                color: '#e16c65',
+                stack: 'done',
+                borderWidth: 0
+            }, {
+                name: 'High',
+                data: [3, 2, 0, 2, 2],
+                color: '#ffa841',
+                stack: 'done',
+                borderWidth: 0
+            }, {
+                name: 'Middle',
+                data: [2, 3, 0, 2, 1],
+                color: '#fddc43',
+                stack: 'done',
+                borderWidth: 0
+            }, {
+                name: 'Low',
+                data: [3, 0, 2, 2, 1],
+                color: '#1abc9c',
+                stack: 'done',
+                borderWidth: 0
+            }, {
+                name: 'Failed',
+                data: [1, 2, 5, 1, 3],
+                color: '#8da5b8',
+                stack: 'failed',
+                borderWidth: 0
+            }]
+        });
+    var monthChart = Highcharts.chart('container', {
+            xAxis: {
+                categories: ['1','2','3','4','5','6','7','8','9','10',
+                            '11','12','13','14','15','16','17','18','19','20',
+                            '21','22','23','24','25','26','27','28','29','30'],
+                labels: {
+                    style: {
+                        "color": "#fff"
+                    }
+                },
+                lineColor: "#fff",
+                lineWidth: 1,
+                tickColor: 'transparent'
+            },
+            series: [{
+                name: 'Urgent',
+                data: [1, 2, 3, 1, 2, 1, 2, 3, 1, 2, 1, 2, 3, 1, 2, 1, 2, 3, 1, 2, 1, 2, 3, 1, 2, 1, 2, 3, 1, 2],
+                color: '#e16c65',
+                stack: 'done',
+                borderWidth: 0
+            }, {
+                name: 'High',
+                data: [3, 2, 0, 2, 2, 3, 2, 0, 2, 2, 3, 2, 0, 2, 2, 3, 2, 0, 2, 2, 3, 2, 0, 2, 2, 3, 2, 0, 2, 2],
+                color: '#ffa841',
+                stack: 'done',
+                borderWidth: 0
+            }, {
+                name: 'Middle',
+                data: [2, 3, 0, 2, 1, 2, 3, 0, 2, 1, 2, 3, 0, 2, 1, 2, 3, 0, 2, 1, 2, 3, 0, 2, 1, 2, 3, 0, 2, 1],
+                color: '#fddc43',
+                stack: 'done',
+                borderWidth: 0
+            }, {
+                name: 'Low',
+                data: [3, 0, 2, 2, 1, 3, 0, 2, 2, 1, 3, 0, 2, 2, 1, 3, 0, 2, 2, 1, 3, 0, 2, 2, 1, 3, 0, 2, 2, 1],
+                color: '#1abc9c',
+                stack: 'done',
+                borderWidth: 0
+            }, {
+                name: 'Failed',
+                data: [1, 2, 5, 1, 3, 1, 2, 5, 1, 3, 1, 2, 5, 1, 3, 1, 2, 5, 1, 3, 1, 2, 5, 1, 3, 1, 2, 5, 1, 3],
+                color: '#8da5b8',
+                stack: 'failed',
+                borderWidth: 0
+            }]
+        });
+    
+	var chart = $.extend({}, chartCommon, chartName);
+	console.log(chart);
+
+
+	return chart;
+}
+function ReportsTemplate() {
+  var template = renderTemplate();
+
+  function renderTemplate() {
+    return '<section class="content-area">' +
+		'<header>' +
+			'<h1 class="main-page-title">Report</h1>' +
+		'</header>' +
+		'<div class="upper-filter">' +
+			'<button id="dayChart" class="tabs chart-tabs active">Day</button>' +
+			'<button id="weekChart" class="tabs chart-tabs">Week</button>' +
+			'<button id="monthChart" class="tabs chart-tabs">Month</button>' +
+		'</div>' +
+		'<div class="reports-area">' +
+			'<div id="container" class="chart"></div>' +
+		'</div>' +
+		'<div class="bottom-filter">' +
+			'<button class="tabs">Pomodoros</button>' +
+			'<button class="tabs active">Tasks</button>' +
+		'</div>' +
+	'</section>';
+  }
+  return template;
+}
+function ReportsView() {
+	TaskListAppControllsController();
+	var template = ReportsTemplate();
+	var hTemplate = Handlebars.compile(template);
+	var data = hTemplate();
+	document.body.innerHTML += data;
+	
+	ArrowsController();
+	
+	return this;
+}
 class StickyHeaderController {
 	constructor(view) {
 		var self = this;
@@ -1497,583 +2074,6 @@ window.initSettingsPomodoros = function() {
 	});
 };
 
-/*$(function (){
-    $(document).ready(dayInit);
-    $('#day-chart').click(dayInit);
-    function dayInit() {
-        $('div.chart').empty();
-        
-
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
-        $('.chart').addClass('hidden');
-        $('#container-day').removeClass('hidden');
-    } 
-});
-
-$(function (){
-    $('#week-chart').click( function() {
-        $('div.chart').empty();
-        
-
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
-        $('.chart').addClass('hidden');
-        $('#container-week').removeClass('hidden');
-    });
-});
- 
-$(function () {
-    $('#month-chart').click(function() {
-        $('div.chart').empty();
-        
-
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
-        $('.chart').addClass('hidden');
-        $('#container-month').removeClass('hidden');
-    });
-});*/
-
-//$(function () {
-    $(function initCharts(chartName) {
-        //$(document).ready(dayInit);
-        $('#' + chartName).click(function() {
-            $('div.chart').empty();
-            chartName;
-            $(this).siblings().removeClass('active');
-            $(this).addClass('active');
-            $('.chart').addClass('hidden');
-            $('#' + chartName).removeClass('hidden');
-        });  
-    });
-    
-//});
-
-function ReportsController() {
-	location.hash = '#reports';
-	document.title = 'Reports';
-
-	ReportsView();
-
-	$('.tabs').tabs('reports');
-	$('.icons').tooltips();
-
-	var controllers = document.getElementsByClassName('upper-filter')[0];
-	var chartState = controllers.querySelector('.active');	
-	var chart = chartState.id;
-
-	ReportsModel(chart);
-}
-function ReportsModel(chartName) {
-	var chartCommon = Highcharts.chart('container', {
-		chart: {
-			backgroundColor: "#2a3f50",
-		},
-    credits: {enabled: false},
-    tooltip: {
-      pointFormat: '{series.name}</b>',
-      backgroundColor: '#cedeea',
-      borderRadius: 2,
-      borderWidth: 1,
-      borderColor: 'rgba(84, 108, 126, 0.7)',
-      style : {
-        'color': '#3c5162',
-        'font-family': 'robotobold',
-        'font-size': '12px',
-        'padding': '10px 15px'
-      }
-	  }
-	});
-	var dayChart = Highcharts.chart('container', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'Total',
-                align: 'center',
-                verticalAlign: 'middle',
-                style: {
-                    fontSize: '14px',
-                    color: '#fff'
-                } 
-            },
-            height: "100%",
-            width: "100%",
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        distance: -30,
-                        format: '<b>{point.name}</b>',
-                        style: {                        
-                            fontWeight: 'bold',                        
-                            color: 'white',                        
-                            textShadow: false,                        
-                            fontSize: '14px',                        
-                            borderColor: 'none'                   
-                        }
-                    },
-                    showInLegend: false,
-                }
-            },
-            series: [{
-                name: 'Priority',
-                colorByPoint: true,
-                data: [{
-                    name: 'High',
-                    color: '#ffa841',
-                    y: 4
-                }, {
-                    name: 'Middle',
-                    color: '#fddc43',
-                    y: 3
-                }, {
-                    name: 'Low',
-                    color: '#1abc9c',
-                    y: 2
-                }, {
-                    name: 'Urgent',
-                    color: '#e16c65',
-                    y: 1
-                }, {
-                    name: 'Failed',
-                    color: '#8da5b8',
-                    y: 3
-                }],
-                innerSize: '50%'
-            }]
-        });
-    var weekChart = Highcharts.chart('container', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: ''
-            },
-            legend: {
-                symbolRadius:0,
-                itemStyle: {
-                    "color": "#8da5b8"
-                },
-                itemHoverStyle: {                
-                    color: '#fff'            
-                }
-            },
-            xAxis: {
-                categories: ['MON', 'TUE', 'WED', 'THU', 'FRI'],
-                labels: {
-                    style: {
-                        "color": "#fff"
-                    }
-                },
-                lineColor: "#fff",
-                lineWidth: 1,
-                tickColor: 'transparent'
-            },
-            yAxis: {
-                allowDecimals: false,
-                min: 0,
-                tickInterval: 2,
-                labels: {
-                    style: {
-                        "color": "#fff"
-                    }
-                },
-                gridLineColor: "#8da5b8",
-                title: {
-                    text: ''
-                },
-                lineWidth: 1,            
-                lineColor: '#fff'
-            },
-            plotOptions: {
-                column: {
-                    stacking: 'normal'
-                }
-            },
-            series: [{
-                name: 'Urgent',
-                data: [1, 2, 3, 1, 2],
-                color: '#e16c65',
-                stack: 'done',
-                borderWidth: 0
-            }, {
-                name: 'High',
-                data: [3, 2, 0, 2, 2],
-                color: '#ffa841',
-                stack: 'done',
-                borderWidth: 0
-            }, {
-                name: 'Middle',
-                data: [2, 3, 0, 2, 1],
-                color: '#fddc43',
-                stack: 'done',
-                borderWidth: 0
-            }, {
-                name: 'Low',
-                data: [3, 0, 2, 2, 1],
-                color: '#1abc9c',
-                stack: 'done',
-                borderWidth: 0
-            }, {
-                name: 'Failed',
-                data: [1, 2, 5, 1, 3],
-                color: '#8da5b8',
-                stack: 'failed',
-                borderWidth: 0
-            }]
-        });
-    var monthChart = Highcharts.chart('container', {
-            xAxis: {
-                categories: ['1','2','3','4','5','6','7','8','9','10',
-                            '11','12','13','14','15','16','17','18','19','20',
-                            '21','22','23','24','25','26','27','28','29','30'],
-                labels: {
-                    style: {
-                        "color": "#fff"
-                    }
-                },
-                lineColor: "#fff",
-                lineWidth: 1,
-                tickColor: 'transparent'
-            },
-            series: [{
-                name: 'Urgent',
-                data: [1, 2, 3, 1, 2, 1, 2, 3, 1, 2, 1, 2, 3, 1, 2, 1, 2, 3, 1, 2, 1, 2, 3, 1, 2, 1, 2, 3, 1, 2],
-                color: '#e16c65',
-                stack: 'done',
-                borderWidth: 0
-            }, {
-                name: 'High',
-                data: [3, 2, 0, 2, 2, 3, 2, 0, 2, 2, 3, 2, 0, 2, 2, 3, 2, 0, 2, 2, 3, 2, 0, 2, 2, 3, 2, 0, 2, 2],
-                color: '#ffa841',
-                stack: 'done',
-                borderWidth: 0
-            }, {
-                name: 'Middle',
-                data: [2, 3, 0, 2, 1, 2, 3, 0, 2, 1, 2, 3, 0, 2, 1, 2, 3, 0, 2, 1, 2, 3, 0, 2, 1, 2, 3, 0, 2, 1],
-                color: '#fddc43',
-                stack: 'done',
-                borderWidth: 0
-            }, {
-                name: 'Low',
-                data: [3, 0, 2, 2, 1, 3, 0, 2, 2, 1, 3, 0, 2, 2, 1, 3, 0, 2, 2, 1, 3, 0, 2, 2, 1, 3, 0, 2, 2, 1],
-                color: '#1abc9c',
-                stack: 'done',
-                borderWidth: 0
-            }, {
-                name: 'Failed',
-                data: [1, 2, 5, 1, 3, 1, 2, 5, 1, 3, 1, 2, 5, 1, 3, 1, 2, 5, 1, 3, 1, 2, 5, 1, 3, 1, 2, 5, 1, 3],
-                color: '#8da5b8',
-                stack: 'failed',
-                borderWidth: 0
-            }]
-        });
-    
-	var chart = $.extend({}, chartCommon, chartName);
-	console.log(chart);
-
-
-	return chart;
-}
-function ReportsTemplate() {
-  var template = renderTemplate();
-
-  function renderTemplate() {
-    return '<section class="content-area">' +
-		'<header>' +
-			'<h1 class="main-page-title">Report</h1>' +
-		'</header>' +
-		'<div class="upper-filter">' +
-			'<button id="dayChart" class="tabs chart-tabs active">Day</button>' +
-			'<button id="weekChart" class="tabs chart-tabs">Week</button>' +
-			'<button id="monthChart" class="tabs chart-tabs">Month</button>' +
-		'</div>' +
-		'<div class="reports-area">' +
-			'<div id="container" class="chart"></div>' +
-		'</div>' +
-		'<div class="bottom-filter">' +
-			'<button class="tabs">Pomodoros</button>' +
-			'<button class="tabs active">Tasks</button>' +
-		'</div>' +
-	'</section>';
-  }
-  return template;
-}
-function ReportsView() {
-	TaskListAppControllsController();
-	var template = ReportsTemplate();
-	var hTemplate = Handlebars.compile(template);
-	var data = hTemplate();
-	document.body.innerHTML += data;
-	
-	ArrowsController();
-	
-	return this;
-}
-class ModalWindowController {
-	constructor(model, view) {
-		var self = this;
-		self.view = view;
-		self.model = model;
-
-		document.addEventListener('click', function(event) {
-			let target = event.target;
-			if(target.id === 'confirmAdding') {
-				let newTaskInfo = self.getDataFromModal();
-				if(target.classList.contains('Add')) {
-					EventBus.trigger('addNewTask', newTaskInfo);
-				} else if(target.classList.contains('Edit')) {
-					let modal = document.querySelector('.modal-open');
-					EventBus.trigger('editExistingTask', [modal.dataset.key, newTaskInfo]);
-				}
-				self.view.destroy();
-			} else if(target.id === 'cancelAdding') {
-				self.view.destroy();
-			}
-		});
-	}
-	getDataFromModal() {
-		let modal = document.querySelector('.modal-open');
-		let title = modal.querySelector('#title').value;
-		let description = modal.querySelector('#description').value;
-		let category = [];
-		let categories = modal.querySelectorAll('.category-list');
-		for(var i = 0; i < categories.length; i++) {
-			if(categories[i].checked) {
-				category[0] = i;
-				category[1] = categories[i].parentNode.querySelector('.input-text').innerHTML;
-			}
-		}
-		let deadline = modal.querySelector('#deadline').value;	
-		let estimations = modal.querySelectorAll('.estimation-list');
-		let estimation = 0;
-		for(var i = 0; i < estimations.length; i++) {
-			if(estimations[i].checked) {
-				estimation++;
-			}
-		}
-		let priority = '';
-		let priorities = modal.querySelectorAll('.priority-list');
-		for(var i = 0; i < priorities.length; i++) {
-			if(priorities[i].checked) {
-				priority = priorities[i].parentNode.querySelector('.input-text').innerHTML;
-			}
-		}
-		let obj = {
-					title: title, 
-					description: description, 
-					category: category, 
-					deadline: deadline, 
-					estimation: estimation,
-					priority: priority
-				};
-		return obj;
-	}
-	setTaskToModel(task, taskId) {
-		var modal = document.querySelector('.modal-open');
-		modal.dataset.key = taskId;
-		modal.querySelector('#title').value = task.title;
-		modal.querySelector('#description').value = task.description;
-		var categoryIndex = task.category[0];
-		modal.querySelectorAll('.category-list')[categoryIndex].checked = true;
-		modal.querySelector('#deadline').value = task.deadline;	
-		var estimations = modal.querySelectorAll('.estimation-list');
-		var estimationIndex = task.estimation;
-		for(var i = 0; i < estimationIndex; i++) {
-			estimations[i].checked = true;
-		}
-		var priority = task.priority;
-		var priorities = modal.querySelectorAll('.priority-value');
-		for(var i = 0; i < priorities.length; i++) {
-			if(priority.localeCompare(priorities[i].innerHTML) == 0) {
-				priorities[i].checked = true;
-			}
-		}
-	}
-}
-class ModalWindowModel {
-	constructor() {
-
-	}
-	getChosenTaskData(id) {
-		var obj = {};
-		var result = {};
-		obj = JSON.parse(LocalStorageData.getFromLS('TaskList'));
-
-		for(var i in obj) {
-			if(id == i) {
-				result = obj[i];
-			}
-		}
-		
-		return result;
-	}
-}
-class ModalWindowTemplate {
-	constructor() {
-		this.template = '<div id="modalWindow" class="modal modal-open hidden">' +
-		'<div class="cover-wrapper"></div>' +
-		'<div class="modal-window">' +
-			'<div class="btns-group">' +
-				'<button class="modal-action-btn"><i id="cancelAdding" class="icon-close"></i></button>' +
-				'<button class="modal-action-btn"><i id="confirmAdding" class="{{mode}} icon-check"></i></button>' +
-			'</div>' +
-			'<div class="add-edit-task">' +
-				'<h2 class="modal-title add-task-window">{{mode}} Task</h2>' +
-				'<form class="modal-form">' +
-					'<label for="title" class="input-title">TITLE</label>' +
-					'<input id="title" type="text" class="input-content" placeholder="Add title here">' +
-					'<label for="description" class="input-title">DESCRIPTION</label>' +
-					'<input id="description" type="text" class="input-content" placeholder="Add description here">' +
-					'<label for="category" class="input-title">CATEGORY</label>' +
-					'<ul id="category" class="category-block input-content">' +
-						'<li class="category-item">' +
-							'<input id="input-work" class="list-item radio-list-item category-list" type="radio" name="category" checked><label for="input-work" class="c-radio-icon work"></label><span class="input-text">{{category0}}</span>' +
-						'</li>' +
-						'<li class="category-item">' +
-							'<input id="input-educat" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-educat" class="c-radio-icon education"></label><span class="input-text">{{category1}}</span>' +
-						'</li>' +
-						'<li class="category-item">' +
-							'<input id="input-hobby" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-hobby" class="c-radio-icon hobby"></label><span class="input-text">{{category2}}</span>' +
-						'</li>' +
-						'<li class="category-item">' +
-							'<input id="input-sport" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-sport" class="c-radio-icon sport"></label><span class="input-text">{{category3}}</span>' +
-						'</li>' +
-						'<li class="category-item">' +
-							'<input id="input-other" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-other" class="c-radio-icon other"></label><span class="input-text">{{category4}}</span>' +
-						'</li>' +
-					'</ul>' +
-					'<label for="deadline" class="input-title">DEADLINE</label>' +
-					'<input id="deadline" type="text" class="input-content" value="" placeholder="Pick a date">' +
-					'<label for="estimation" class="input-title">ESTIMATION</label>' +
-					'<ul id="estimation" class="estimation-block input-content">' +
-						'<li class="estimation-item">' +
-							'<input id="input-1-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox"><label for="input-1-pomodoro" class="checkbox-element"></label>' +
-						'</li>' +
-						'<li class="estimation-item">' +
-							'<input id="input-2-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox"><label for="input-2-pomodoro" class="checkbox-element"></label>' +
-						'</li>' +
-						'<li class="estimation-item">' +
-							'<input id="input-3-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox"><label for="input-3-pomodoro" class="checkbox-element"></label>' +
-						'</li>' +
-						'<li class="estimation-item">' +
-							'<input id="input-4-pomodoro" class="list-item checkbox-list-item estimation-list"  type="checkbox"><label for="input-4-pomodoro" class="checkbox-element"></label>' +
-						'</li>' +
-						'<li class="estimation-item">' +
-							'<input id="input-5-pomodoro" class="list-item checkbox-list-item estimation-list"  type="checkbox"><label for="input-5-pomodoro" class="checkbox-element"></label>' +
-						'</li>' +
-					'</ul>' +
-					'<label for="priority" class="input-title">PRIORITY</label>' +
-					'<ul id="priority" class="priority-block input-content">' +
-						'<li class="priority-item">' +
-							'<input id="input-urgent" class="list-item radio-list-item priority-list" type="radio" name="priority" checked><label for="input-urgent" class="p-radio-icon urgent"></label><span class="input-text priority-value">Urgent</span>' +
-						'</li>' +
-						'<li class="priority-item">' +
-							'<input id="input-high" class="list-item radio-list-item priority-list" type="radio" name="priority"><label for="input-high" class="p-radio-icon high"></label><span class="input-text priority-value">High</span>' +
-						'</li>' +
-						'<li class="priority-item">' +
-							'<input id="input-middle" class="list-item radio-list-item priority-list" type="radio" name="priority"><label for="input-middle" class="p-radio-icon middle"></label><span class="input-text priority-value">Middle</span>' +
-						'</li>' +
-						'<li class="priority-item">' +
-							'<input id="input-low" class="list-item radio-list-item priority-list" type="radio" name="priority"><label for="input-low" class="p-radio-icon low"></label><span class="input-text priority-value">Low</span>' +
-						'</li>' +
-					'</ul>' +
-				'</form>' +	
-			'</div>' +
-		'</div>' +
-	'</div>';
-	}
-	show() {
-		return this.template;
-	}
-  
-}
-/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
-
-class ModalWindowView {
-	constructor(template) {
-		this.template = template;
-	}
-	render(mode) {
-		var hTemplate = Handlebars.compile(this.template);
-		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],
-													category1: JSON.parse(LocalStorageData.getFromLS('Categories'))['1'][1],
-													category2: JSON.parse(LocalStorageData.getFromLS('Categories'))['2'][1],
-													category3: JSON.parse(LocalStorageData.getFromLS('Categories'))['3'][1],
-													category4: JSON.parse(LocalStorageData.getFromLS('Categories'))['4'][1],
-													mode: mode});
-		document.body.innerHTML += data;
-	}
-	destroy() {
-		var modal = document.querySelector('.modal');
-		if(modal) document.body.removeChild(modal);
-	}
-}
-
-/*ModalWindowView.prototype.pomodorosCheckbox = function() {
-	var modal = document.getElementsByClassName('modal-open')[0];
-	var estimations = modal.querySelectorAll('.estimation-list');
-
-	for(var i in estimations) {
-	}
-}*/
-/*import ModalWindowTemplate from './modal-window-template.js';
-import ModalWindowView from './modal-window-view.js';
-import ModalWindowModel from './modal-window-model.js';
-import ModalWindowController from './modal-window-controller.js';*/
-
-window.initModalWindow = function() {
-	var modalWindowTemplate = new ModalWindowTemplate;
-	var modalWindowView = new ModalWindowView(modalWindowTemplate.show());
-	var modalWindowModel = new ModalWindowModel();
-	var modalWindowController = new ModalWindowController(modalWindowModel, modalWindowView);
-
-	EventBus.on('renderModalWindow', function([mode, taskId]) {
-		modalWindowView.render(mode);
-		if(mode === 'Edit') {
-			var task = modalWindowModel.getChosenTaskData(taskId);
-		 	modalWindowController.setTaskToModel(task, taskId);
-		}
-	});
-}
-
-function ArrowsController(view) {
-	this.view = view;
-
-	this.view.render();
-
-	document.addEventListener('click', function() {
-		if(event.target.classList.contains('icon-arrow-left')) {
-			EventBus.trigger('routeChange', '#active_page');
-		} /*else if(event.target.classList.contains('icon-arrow-right')) {
-
-		}*/
-	});
-}
-function ArrowsTemplate() {
-  this.template = '<div class="arrow">' +
-		'<button class="arrows arrow-left"><a class="tooltip" title="Go To Task List"><i class="icons icon-arrow-left"></i></a></button>' +
-		'<button class="arrows arrow-right"><i class="icons icon-arrow-right"></i></button>' +
-	'</div>';
-}
-ArrowsTemplate.prototype.show = function() {
-	return this.template;
-}
-function ArrowsView(template) {
-	this.template = template;
-}
-ArrowsView.prototype.render = function() {
-	var hTemplate = Handlebars.compile(this.template);
-	var data = hTemplate();
-	document.querySelector('.content-area').innerHTML += data;
-}
 /*import Inputs from './cycle-model.js';
 import Timeline from './cycle-view.js';*/
 
