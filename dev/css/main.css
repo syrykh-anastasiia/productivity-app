@@ -468,7 +468,7 @@ header {
   height: 17px;
   display: inline-block;
   float: left;
-  background-image: url("../../../img/radiobtn-sprite.png");
+  background-image: url("../images/radiobtn-sprite.png");
 }
 .radio-icon.icon-0 {
   background-position-x: -1px;
@@ -849,7 +849,7 @@ header {
 }
 /*login page*/
 .main-wrapper {
-  background: linear-gradient(to top, rgba(8, 41, 63, 0.92), rgba(8, 41, 63, 0.92)), url("../../../img/login-bg.jpg") center center / cover no-repeat;
+  background: linear-gradient(to top, rgba(8, 41, 63, 0.92), rgba(8, 41, 63, 0.92)), url("../images/login-bg.jpg") center center / cover no-repeat;
   height: 100%;
 }
 .login-content-area {
@@ -879,7 +879,7 @@ header {
   padding-bottom: 20px;
   width: 245px;
   height: 371px;
-  background: url("../../../img/Logo_1.svg") -1% 0.5% no-repeat;
+  background: url("../images/Logo_1.svg") -1% 0.5% no-repeat;
 }
 @media screen and (max-width: 1365px) {
   .logo {
@@ -1029,7 +1029,7 @@ header {
   height: 17px;
   display: inline-block;
   float: left;
-  background-image: url("../../../img/radiobtn-sprite.png");
+  background-image: url("../images/radiobtn-sprite.png");
   margin: 0 10px 0 0;
   background-position-x: -1px;
   background-position-y: -38px;
@@ -1039,7 +1039,7 @@ header {
   height: 17px;
   display: inline-block;
   float: left;
-  background-image: url("../../../img/radiobtn-sprite-2.png");
+  background-image: url("../images/radiobtn-sprite-2.png");
   background-position-y: -39px;
   margin-top: 0;
   background-position-x: -2px;
@@ -1048,11 +1048,11 @@ header {
 .checkbox-element {
   width: 20px;
   height: 19px;
-  background-image: url("../../../img/tomato.svg");
+  background-image: url("../images/tomato.svg");
   display: inline-block;
 }
 .estimation-item .checkbox-list-item:checked + .checkbox-element {
-  background-image: url("../../../img/tomato_fill.svg");
+  background-image: url("../images/tomato_fill.svg");
 }
 /*HOVER AND CHECK ON CATEGORIES RADIOBUTTONS*/
 .category-item:hover .c-radio-icon {
@@ -1212,7 +1212,7 @@ header {
   height: 17px;
   display: inline-block;
   float: left;
-  background-image: url("../../../img/radiobtn-sprite.png");
+  background-image: url("../images/radiobtn-sprite.png");
 }
 .category-item-hidden {
   display: none;
