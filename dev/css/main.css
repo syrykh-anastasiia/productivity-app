@@ -421,6 +421,7 @@ template {
 /* sizing */
 /* fonts */
 /* basics */
+/* mobile first breakpoints */
 form,
 fieldset {
   margin: 0;
@@ -536,13 +537,13 @@ a:hover,
 a:focus {
   text-decoration: none;
 }
-button,
-input {
-  outline: none;
-}
 body {
   background-color: #2a3f50;
   font-family: "Roboto";
+}
+button,
+input {
+  outline: none;
 }
 /* pages header */
 header {
@@ -748,9 +749,6 @@ input[type="submit"]:hover {
   display: none;
 }
 /* active page */
-.main-wrapper {
-  padding-top: 30px;
-}
 .add-task {
   color: #fff;
   display: block;
@@ -1255,7 +1253,8 @@ header {
 /*login page*/
 .main-wrapper {
   background: linear-gradient(to top, rgba(8, 41, 63, 0.92), rgba(8, 41, 63, 0.92)), url("../images/login-bg.jpg") center center / cover no-repeat;
-  height: 100%;
+  height: 100vh;
+  padding-top: 30px;
 }
 .login-content-area {
   max-width: 330px;
@@ -1540,9 +1539,6 @@ header {
 }
 .remove-task-btn {
   display: inline-block;
-}
-.main-wrapper {
-  padding-top: 30px;
 }
 .upper-filter {
   margin-bottom: 0;
