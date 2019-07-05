@@ -1,3 +1,4 @@
+/*
 function ReportsTemplate() {
   var template = renderTemplate();
 
@@ -21,4 +22,4 @@ function ReportsTemplate() {
 	'</section>';
   }
   return template;
-}
+}*/

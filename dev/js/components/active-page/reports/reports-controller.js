@@ -1,3 +1,4 @@
+/*
 function ReportsController() {
 	location.hash = '#reports';
 	document.title = 'Reports';
@@ -12,4 +13,4 @@ function ReportsController() {
 	var chart = chartState.id;
 
 	ReportsModel(chart);
-}
+}*/

@@ -1,11 +1,8 @@
-/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
-
 class StickyHeaderView {
-	constructor(template) {
+	constructor() {
 		var self = this;
-		self.hTemplate = Handlebars.compile(template);
-		var data = self.hTemplate();
-		document.body.innerHTML = data;
+		self.hTemplate = Handlebars.compile($('#stickyHeaderTemplate').html());
+		document.body.innerHTML = self.hTemplate();
 	}
 	run(scrolled) {
 		var scrolled = window.pageYOffset || document.documentElement.scrollTop;

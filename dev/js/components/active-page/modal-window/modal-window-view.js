@@ -1,11 +1,9 @@
-/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
-
 class ModalWindowView {
 	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile(template);
 	}
 	render(mode) {
-		var hTemplate = Handlebars.compile(this.template);
+		var hTemplate = this.template;
 		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],
 													category1: JSON.parse(LocalStorageData.getFromLS('Categories'))['1'][1],
 													category2: JSON.parse(LocalStorageData.getFromLS('Categories'))['2'][1],

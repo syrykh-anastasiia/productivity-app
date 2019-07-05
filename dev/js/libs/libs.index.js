@@ -1,1 +1,0 @@
-import Handlebars from './handlebars-v4.0.5.js';

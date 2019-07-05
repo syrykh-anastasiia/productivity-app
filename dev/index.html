@@ -16,13 +16,73 @@
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 	<!--<script>window.jQuery || document.write('<script src="js/libs/jquery-ui.min.js"><\/script>')</script>-->
 
+	<script type="text/javascript" src="js/plugins.js"></script>
+
 	<script src="js/libs/handlebars-v4.0.5.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
-	<script src="js/libs/require.min.js"></script>
+	<!--<script src="js/libs/require.min.js"></script>-->
 
 	<link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700%7CRoboto:300,400,500,700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+	<script id="appControls" type="text/x-handlebars-template">
+		<ul class="settings-list">
+			<!--<li>
+				<a href="#" class="tooltip" title="New Task"><i id="addIcon" class="icon-add setting-icons"></i></a>
+			</li>
+			<li>
+				<a href="#" class="tooltip" title="To Trash"><i id="openTrash" class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a>
+			</li>-->
+			<li class="app-controll">
+				<a href="#" class="tooltip" title="To Reports"><i id="goToReports" class="icon-statistics setting-icons"></i></a>
+			</li>
+			<li class="nav-settings-btn app-controll">
+				<a href="#" class="tooltip" title="To Settings"><i id="settings" class="icon-settings setting-icons current"></i></a>
+			</li>
+			<li class="nav-settings-btn app-controll">
+				<a href="#" class="tooltip" title="Log out"><i id="logout2" class="icon-logout setting-icons"></i></a>
+			</li>
+		</ul>
+	</script>
+	<script id="stickyHeaderTemplate" type="text/x-handlebars-template">
+		<header id="stickyHeader" class="header hidden">
+			<div class="container">
+				<strong class="logo">
+					<a href="/"><img src="images/Logo.svg" alt="Productivity app"></a>
+				</strong>
+				<ul class="settings-list">
+					<!--<li>
+						<a href="#" class="tooltip" title="New Task"><i id="addIcon" class="icon-add setting-icons"></i></a>
+					</li>
+					<li>
+						<a href="#" class="tooltip" title="To Trash"><i id="openTrash" class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a>
+					</li>-->
+					<li class="app-controll">
+						<a href="#" class="tooltip" title="To Reports"><i id="goToReports" class="icon-statistics setting-icons"></i></a>
+					</li>
+					<li class="nav-settings-btn app-controll">
+						<a href="#" class="tooltip" title="To Settings"><i id="settings" class="icon-settings setting-icons current"></i></a>
+					</li>
+					<li class="nav-settings-btn app-controll">
+						<a href="#" class="tooltip" title="Log out"><i id="logout2" class="icon-logout setting-icons"></i></a>
+					</li>
+				</ul>
+			</div>
+		</header>
+	</script>
+	<script id="settingsTemplate" type="text/x-handlebars-template">
+		<div class="content-area">
+			<header>
+				<h1 class="main-page-title">Settings</h1>
+				<h3 class="title-hint">SET TEXT HERE</h3>
+			</header>
+			<div id="tabs" class="tabs-block">
+				<button class="tabs"><a href="#settings_pomodoros">Pomodoros</a></button>
+				<button class="tabs"><a href="#settings_categories">Categories</a></button>
+			</div>
+			<div class="settings" id="settings-container"></div>
+		</div>
+	</script>
 </body>
 </html>

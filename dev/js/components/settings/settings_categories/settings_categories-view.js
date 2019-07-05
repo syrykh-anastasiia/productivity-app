@@ -1,4 +1,3 @@
-/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
 /**
 * @constructor
 * @param template
@@ -6,14 +5,14 @@
 */
 class SettingsCategoriesView {
 	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile(template);
 	}
 /**
 * @memberof SettingsCategoriesView
 * @summary render function
 */
 	render() {
-		var hTemplate = Handlebars.compile(this.template);
+		var hTemplate = this.template;
 		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],
 							category1: JSON.parse(LocalStorageData.getFromLS('Categories'))['1'][1],
 							category2: JSON.parse(LocalStorageData.getFromLS('Categories'))['2'][1],

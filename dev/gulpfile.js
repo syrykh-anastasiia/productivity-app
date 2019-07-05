@@ -8,6 +8,7 @@ const path = require('path');
 const browserSync = require('browser-sync').create();
 const concat = require('gulp-concat');
 const babel = require("gulp-babel");
+var clean = require('gulp-clean');
 const settings = require('./gulp-settings.js');
 const postcssPlagins = [
 	plugins.autoprefixer({
@@ -73,7 +74,7 @@ gulp.task('allLess', function () {
 	.pipe(browserSync.stream({match: 'css/*.css'}));
 });
 
-//concat all JS files
+//concat main JS files
 gulp.task('allJs', function () {
     return gulp.src(['js/**/*.js', '!js/libs/*.js', '!js/plugins/*.js'])
 	/*.pipe(babel(
@@ -90,7 +91,14 @@ gulp.task('allJs', function () {
 	))*/
 	.pipe(concat('main.js'))
 	.pipe(gulp.dest(settings.jsDir.output))
-	.pipe(browserSync.stream({match: 'js/**/*.js'}));
+	.pipe(browserSync.stream({match: 'js/*.js'}));
+});
+
+gulp.task('pluginsJS', function () {
+    return gulp.src(['js/plugins/*.js'])
+        .pipe(concat('plugins.js'))
+        .pipe(gulp.dest(settings.jsDir.output))
+        .pipe(browserSync.stream({match: 'js/*.js'}));
 });
 
 // server
@@ -217,17 +225,19 @@ gulp.task('watch', function(cb) {
 });
 
 gulp.task('clear', (cb) => {
-	plugins.del(path.resolve(__dirname, settings.publicDir), {read: false}).then(paths => {
-		cb();
-	});
+    return gulp.src('css/*.css', 'js/main.js', 'js/plugin.js', {read: false})
+        .pipe(clean());
 });
 
 gulp.task('build', gulp.parallel(
 	'assets',
 	//'copyScripts',
+	'clear',
 	'allJs',
+	'pluginsJS',
 	'allLess',
 ));
+
 gulp.task('dist', gulp.series(
 	(cb) => {
 		isDevelopment = false;
@@ -237,5 +247,6 @@ gulp.task('dist', gulp.series(
 	'build',
 	gulp.parallel('imagesOptimize', 'beautify')
 ));
+
 gulp.task('default', gulp.series('build', 'server', 'watch'));
 

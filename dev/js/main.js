@@ -26,7 +26,6 @@ class Router {
 	static routing(location) {
 		let currentLocation = location || window.location.hash.substr(1);
 		EventBus.trigger('getRemoteFBData');
-		console.log('1');
 		switch(currentLocation) {
 			case 'login':
 				window.initLogin();
@@ -213,13 +212,12 @@ function AuthData() {
 	}
 }
 
-/*
 window.auth = function(login, pass) {
 	var result = false;
 	var authData = new AuthData();
 	if(login === authData.getUser() && pass === authData.getPass()) result = true;
 	return result;
-}*/
+}
 
 /* NOT WORKING */
 function notification(text) {
@@ -253,44 +251,17 @@ class AppControllsController {
 		});
 	}
 }
-class AppControllsTemplate {
-	constructor() {
-		this.template = '<div class="app-settings">' +
-			'<button class="setting-btn app-controll" id="goToReports">' +
-				'<a class="tooltip" title="Go To Reports"><i class="icon-statistics setting-icons"></i></a>' +
-			'</button>' +
-			'<button class="setting-btn app-controll" id="settings">' +
-				'<a class="tooltip" title="Go To Settings"><i class="icon-settings setting-icons"></i></a>' +
-			'</button>' +
-			'<button class="setting-btn app-controll" id="logout">' +
-				'<a class="tooltip" title="Logout"><i class="icon-logout setting-icons"></i></a>' +
-			'</button>' +
-		'</div>';
-	}
-	show() {
-		return this.template;
-	}
- 
-}
-/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
-
 class AppControllsView {
-	constructor(template) {
-		this.template = template;
+	constructor() {
+		var self = this;
+		this.template = Handlebars.compile($('#appControls').html());
 	}
 	render() {
-		var hTemplate = Handlebars.compile(this.template);
-		var data = hTemplate();
-		document.body.innerHTML = data;
+		document.body.innerHTML = this.template();
 	}
 }
-/*import AppControllsTemplate from './app-controlls-template.js';
-import AppControllsView from './app-controlls-view.js';
-import AppControllsController from './app-controlls-controller.js';*/
-
 window.initAppControlls = function() {
-	var appControllsTemplate = new AppControllsTemplate;
-	var appControllsView = new AppControllsView(appControllsTemplate.show());
+	var appControllsView = new AppControllsView();
 	var appControllsController = new AppControllsController(appControllsView);
 }
 class TaskController {
@@ -361,14 +332,12 @@ class TaskTemplate {
 		return this.template;
 	}
 }
-/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
-
 class TaskView {
 	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile(template);
 	}
 	render(task, key) {
-		var hTemplate = Handlebars.compile(this.template);
+		var hTemplate = this.template();
 		var data = hTemplate({
 								task: {
 									category: task.category[0],
@@ -582,18 +551,15 @@ class ActivePageTemplate {
 * @param template
 * @name ActivePageView
 */
-/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
 
 class ActivePageView {
 	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile(template);
 	}
 	render() {
 		var self = this;
 		document.title = 'Active Page';
-		var hTemplate = Handlebars.compile(this.template);
-		var data = hTemplate();
-		document.body.innerHTML += data;
+		document.body.innerHTML += this.template();
 
 		if(LocalStorageData.getFromLS('TaskList') !== null) {
 			var list = JSON.parse(LocalStorageData.getFromLS('TaskList'));
@@ -760,19 +726,17 @@ class LoginTemplate {
 * @name LoginView
 * @summary Login views
 */
-/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
 
 class LoginView {
 	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile(template);
 	}
 /**
 * @memberof LoginView
 * @summary render function
 */
 	render() {
-		let hTemplate = Handlebars.compile(this.template);
-		let data = hTemplate();
+		let data = this.template();
 		document.body.innerHTML = data;
 		document.title = 'Log In';
 	}
@@ -842,59 +806,22 @@ class SettingsModel {
 }
 /**
 * @constructor
-* @name SettingsTemplate
-*/
-class SettingsTemplate {
-	constructor() {
-		this.template = '<div class="content-area">' +
-		'<header>' +
-			'<h1 class="main-page-title">Settings</h1>' +
-			'<h3 class="title-hint">SET TEXT HERE</h3>' +
-		'</header>' +
-		'<div id="tabs" class="tabs-block">' +
-			'<button class="tabs"><a href="#settings_pomodoros">Pomodoros</a></button>' +
-			'<button class="tabs"><a href="#settings_categories">Categories</a></button>' +
-		'</div>' +
-		'<div class="settings" id="settings-container"></div>'
-	'</div>';
-	}
-/**
-* @memberof SettingsTemplate
-*/
-	show() {
-		return this.template;
-	}
-}
-/**
-* @constructor
 * @param template
 * @name SettingsView
 */
-/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
 
 class SettingsView {
-	constructor(template) {
-		this.template = template;
+	constructor() {
+        this.template = Handlebars.compile($('#settingsTemplate').html());
 	}
 	render() {
-		let hTemplate = Handlebars.compile(this.template);
-		let data = hTemplate();
-		document.body.innerHTML += data;
+		document.body.innerHTML += this.template();
 		document.title = 'Settings';
 	}
 }
-/*import SettingsModel from './settings-model.js'
-import SettingsTemplate from './settings-template.js';
-import SettingsView from './settings-view.js';
-import SettingsController from './settings-controller.js';
-
-import SettingsCategories from '../../components/settings/settings_categories/settings_categories.js';
-import SettingsPomodoros from '../../components/settings/settings_pomodoros/settings_pomodoros.js';*/
-
 window.initSettings = function() {
 	let settingsModel = new SettingsModel;
-	let settingsTemplate = new SettingsTemplate;
-	let settingsView = new SettingsView(settingsTemplate.show());
+	let settingsView = new SettingsView();
 	let settingsController = new SettingsController(settingsModel, settingsView);
 	settingsView.render();
 
@@ -923,12 +850,11 @@ ArrowsTemplate.prototype.show = function() {
 	return this.template;
 }
 function ArrowsView(template) {
-	this.template = template;
+	this.template = Handlebars.compile(template);
 }
 ArrowsView.prototype.render = function() {
-	var hTemplate = Handlebars.compile(this.template);
-	var data = hTemplate();
-	document.querySelector('.content-area').innerHTML += data;
+	var hTemplate = this.template;
+	document.querySelector('.content-area').innerHTML += hTemplate();
 }
 class ModalWindowController {
 	constructor(model, view) {
@@ -1108,14 +1034,12 @@ class ModalWindowTemplate {
 	}
   
 }
-/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
-
 class ModalWindowView {
 	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile(template);
 	}
 	render(mode) {
-		var hTemplate = Handlebars.compile(this.template);
+		var hTemplate = this.template;
 		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],
 													category1: JSON.parse(LocalStorageData.getFromLS('Categories'))['1'][1],
 													category2: JSON.parse(LocalStorageData.getFromLS('Categories'))['2'][1],
@@ -1196,7 +1120,7 @@ $(function () {
 });*/
 
 //$(function () {
-    $(function initCharts(chartName) {
+    /*$(function initCharts(chartName) {
         //$(document).ready(dayInit);
         $('#' + chartName).click(function() {
             $('div.chart').empty();
@@ -1206,10 +1130,11 @@ $(function () {
             $('.chart').addClass('hidden');
             $('#' + chartName).removeClass('hidden');
         });  
-    });
+    });*/
     
 //});
 
+/*
 function ReportsController() {
 	location.hash = '#reports';
 	document.title = 'Reports';
@@ -1224,7 +1149,9 @@ function ReportsController() {
 	var chart = chartState.id;
 
 	ReportsModel(chart);
-}
+}*/
+
+/*
 function ReportsModel(chartName) {
 	var chartCommon = Highcharts.chart('container', {
 		chart: {
@@ -1441,7 +1368,9 @@ function ReportsModel(chartName) {
 
 
 	return chart;
-}
+}*/
+
+/*
 function ReportsTemplate() {
   var template = renderTemplate();
 
@@ -1465,7 +1394,9 @@ function ReportsTemplate() {
 	'</section>';
   }
   return template;
-}
+}*/
+
+/*
 function ReportsView() {
 	TaskListAppControllsController();
 	var template = ReportsTemplate();
@@ -1476,7 +1407,8 @@ function ReportsView() {
 	ArrowsController();
 	
 	return this;
-}
+}*/
+
 class StickyHeaderController {
 	constructor(view) {
 		var self = this;
@@ -1488,33 +1420,11 @@ class StickyHeaderController {
 		};
 	}
 }
-class StickyHeaderTemplate {
-	constructor() {
-		this.template = '<div id="stickyHeader" class="hidden-header-wrapper hidden">' +
-		'<header class="hidden-header">' +
-			'<a href="/"><img class="hidden-header-logo" src="img/Logo.svg"></a>' +
-			'<div class="nav-settings">' +
-				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="New Task"><i id="addIcon" class="icon-add setting-icons"></i></a></button>' +
-				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="To Trash"><i id="openTrash" class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a></button>' +
-				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="To Reports"><i id="goToReports" class="icon-statistics setting-icons"></i></a></button>' +
-				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="To Settings"><i id="settings" class="icon-settings setting-icons current"></i></a></button>' +
-				'<button class="nav-settings-btn app-controll"><a class="tooltip" title="Log out"><i id="logout2" class="icon-logout setting-icons"></i></a></button>' +
-			'</div>' +
-		'</header>' +
-	'</div>';
-	}
-	show() {
-		return this.template;
-	}
-}
-/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
-
 class StickyHeaderView {
-	constructor(template) {
+	constructor() {
 		var self = this;
-		self.hTemplate = Handlebars.compile(template);
-		var data = self.hTemplate();
-		document.body.innerHTML = data;
+		self.hTemplate = Handlebars.compile($('#stickyHeaderTemplate').html());
+		document.body.innerHTML = self.hTemplate();
 	}
 	run(scrolled) {
 		var scrolled = window.pageYOffset || document.documentElement.scrollTop;
@@ -1525,13 +1435,8 @@ class StickyHeaderView {
 		else if(scrolled <= 200) header.classList.add('hidden');
 	}
 }
-/*import StickyHeaderTemplate from './sticky-header-template.js';
-import StickyHeaderView from './sticky-header-view.js';
-import StickyHeaderController from './sticky-header-controller.js';*/
-
 window.initStickyHeader = function() {
-	var stickyHeaderTemplate = new StickyHeaderTemplate;
-	var stickyHeaderView = new StickyHeaderView(stickyHeaderTemplate.show());
+	var stickyHeaderView = new StickyHeaderView();
 	var stickyHeaderController = new StickyHeaderController(stickyHeaderView);
 }
 class TaskListAppControllsController {
@@ -1576,10 +1481,6 @@ class TaskListAppControllsView {
 		controllsWrapper.insertAdjacentHTML('afterbegin', this.template);
 	}
 }
-/*import TaskListAppControllsTemplate from './task-list-app-controlls-template.js';
-import TaskListAppControllsView from './task-list-app-controlls-view.js';
-import TaskListAppControllsController from './task-list-app-controlls-controller.js';*/
-
 window.initTaskListControlls = function() {
 	var taskListAppControllsTemplate = new TaskListAppControllsTemplate;
 	var taskListAppControllsView = new TaskListAppControllsView(taskListAppControllsTemplate.show());
@@ -1800,7 +1701,6 @@ class SettingsCategoriesTemplate {
 		return this.template;
 	}
 }
-/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
 /**
 * @constructor
 * @param template
@@ -1808,14 +1708,14 @@ class SettingsCategoriesTemplate {
 */
 class SettingsCategoriesView {
 	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile(template);
 	}
 /**
 * @memberof SettingsCategoriesView
 * @summary render function
 */
 	render() {
-		var hTemplate = Handlebars.compile(this.template);
+		var hTemplate = this.template;
 		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],
 							category1: JSON.parse(LocalStorageData.getFromLS('Categories'))['1'][1],
 							category2: JSON.parse(LocalStorageData.getFromLS('Categories'))['2'][1],
@@ -2011,7 +1911,6 @@ class SettingsPomodorosTemplate {
 	}
 }
 
-/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
 /**
 * @constructor
 * @param template
@@ -2020,7 +1919,7 @@ class SettingsPomodorosTemplate {
 
 class SettingsPomodorosView {
 	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile(template);
 	}
 /**
 * @memberof LoginView
@@ -2028,7 +1927,7 @@ class SettingsPomodorosView {
 */
 	render() {
 		//AppControllsController();
-		let hTemplate = Handlebars.compile(this.template);
+		let hTemplate = this.template;
 		let data = hTemplate({workTimeIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[0][1],
 							workIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[2][1],
 							shortBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[1][1],

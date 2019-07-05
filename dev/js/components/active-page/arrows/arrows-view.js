@@ -1,8 +1,7 @@
 function ArrowsView(template) {
-	this.template = template;
+	this.template = Handlebars.compile(template);
 }
 ArrowsView.prototype.render = function() {
-	var hTemplate = Handlebars.compile(this.template);
-	var data = hTemplate();
-	document.querySelector('.content-area').innerHTML += data;
+	var hTemplate = this.template;
+	document.querySelector('.content-area').innerHTML += hTemplate();
 }

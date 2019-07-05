@@ -3,18 +3,15 @@
 * @param template
 * @name ActivePageView
 */
-/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
 
 class ActivePageView {
 	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile(template);
 	}
 	render() {
 		var self = this;
 		document.title = 'Active Page';
-		var hTemplate = Handlebars.compile(this.template);
-		var data = hTemplate();
-		document.body.innerHTML += data;
+		document.body.innerHTML += this.template();
 
 		if(LocalStorageData.getFromLS('TaskList') !== null) {
 			var list = JSON.parse(LocalStorageData.getFromLS('TaskList'));

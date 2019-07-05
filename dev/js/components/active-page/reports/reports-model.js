@@ -1,3 +1,4 @@
+/*
 function ReportsModel(chartName) {
 	var chartCommon = Highcharts.chart('container', {
 		chart: {
@@ -214,4 +215,4 @@ function ReportsModel(chartName) {
 
 
 	return chart;
-}
+}*/

@@ -2,7 +2,6 @@ class Router {
 	static routing(location) {
 		let currentLocation = location || window.location.hash.substr(1);
 		EventBus.trigger('getRemoteFBData');
-		console.log('1');
 		switch(currentLocation) {
 			case 'login':
 				window.initLogin();

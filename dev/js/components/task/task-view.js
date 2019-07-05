@@ -1,11 +1,9 @@
-/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
-
 class TaskView {
 	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile(template);
 	}
 	render(task, key) {
-		var hTemplate = Handlebars.compile(this.template);
+		var hTemplate = this.template();
 		var data = hTemplate({
 								task: {
 									category: task.category[0],

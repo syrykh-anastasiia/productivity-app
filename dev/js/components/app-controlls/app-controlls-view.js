@@ -1,12 +1,9 @@
-/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
-
 class AppControllsView {
-	constructor(template) {
-		this.template = template;
+	constructor() {
+		var self = this;
+		this.template = Handlebars.compile($('#appControls').html());
 	}
 	render() {
-		var hTemplate = Handlebars.compile(this.template);
-		var data = hTemplate();
-		document.body.innerHTML = data;
+		document.body.innerHTML = this.template();
 	}
 }

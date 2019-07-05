@@ -1,3 +1,4 @@
+/*
 function ReportsView() {
 	TaskListAppControllsController();
 	var template = ReportsTemplate();
@@ -8,4 +9,4 @@ function ReportsView() {
 	ArrowsController();
 	
 	return this;
-}
+}*/

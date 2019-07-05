@@ -3,16 +3,13 @@
 * @param template
 * @name SettingsView
 */
-/*import Handlebars from '../../libs/handlebars-v4.0.5.js';*/
 
 class SettingsView {
-	constructor(template) {
-		this.template = template;
+	constructor() {
+        this.template = Handlebars.compile($('#settingsTemplate').html());
 	}
 	render() {
-		let hTemplate = Handlebars.compile(this.template);
-		let data = hTemplate();
-		document.body.innerHTML += data;
+		document.body.innerHTML += this.template();
 		document.title = 'Settings';
 	}
 }

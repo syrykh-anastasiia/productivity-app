@@ -37,7 +37,7 @@ $(function () {
 });*/
 
 //$(function () {
-    $(function initCharts(chartName) {
+    /*$(function initCharts(chartName) {
         //$(document).ready(dayInit);
         $('#' + chartName).click(function() {
             $('div.chart').empty();
@@ -47,6 +47,6 @@ $(function () {
             $('.chart').addClass('hidden');
             $('#' + chartName).removeClass('hidden');
         });  
-    });
+    });*/
     
 //});

@@ -1,4 +1,3 @@
-/*import Handlebars from '../../../libs/handlebars-v4.0.5.js';*/
 /**
 * @constructor
 * @param template
@@ -7,7 +6,7 @@
 
 class SettingsPomodorosView {
 	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile(template);
 	}
 /**
 * @memberof LoginView
@@ -15,7 +14,7 @@ class SettingsPomodorosView {
 */
 	render() {
 		//AppControllsController();
-		let hTemplate = Handlebars.compile(this.template);
+		let hTemplate = this.template;
 		let data = hTemplate({workTimeIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[0][1],
 							workIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[2][1],
 							shortBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[1][1],
