@@ -2,9 +2,11 @@ class ActivePageModel {
 	constructor() {
 		
 	}
+
 	init() {
 
 	}
+
 	removingItems(id) {
 		EventBus.trigger('removeTaskFromCollection', id);
 		EventBus.trigger('taskRemove', id);

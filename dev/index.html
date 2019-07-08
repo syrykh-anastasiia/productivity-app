@@ -26,6 +26,296 @@
 	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+	<script id="modalTemplate" type="text/x-handlebars-template">
+		<div id="modalWindow" class="modal modal-open hidden">
+			<div class="cover-wrapper"></div>
+			<div class="modal-window">
+				<div class="btns-group">
+					<button class="modal-action-btn"><i id="cancelAdding" class="icon-close"></i></button>
+					<button class="modal-action-btn"><i id="confirmAdding" class="{{mode}} icon-check"></i></button>
+				</div>
+				<div class="add-edit-task">
+					<h2 class="modal-title add-task-window">{{mode}} Task</h2>
+					<form class="modal-form">' +
+						<label for="title" class="input-title">TITLE</label>
+						<input id="title" type="text" class="input-content" placeholder="Add title here">
+						<label for="description" class="input-title">DESCRIPTION</label>
+						<input id="description" type="text" class="input-content" placeholder="Add description here">
+						<label for="category" class="input-title">CATEGORY</label>
+						<ul id="category" class="category-block input-content">
+							<li class="category-item">
+								<input id="input-work" class="list-item radio-list-item category-list" type="radio" name="category" checked>
+								<label for="input-work" class="c-radio-icon work"></label>
+								<span class="input-text">{{category0}}</span>
+							</li>' +
+							<li class="category-item">
+								<input id="input-educat" class="list-item radio-list-item category-list" type="radio" name="category">
+								<label for="input-educat" class="c-radio-icon education"></label>
+								<span class="input-text">{{category1}}</span>
+							</li>' +
+							<li class="category-item">
+								<input id="input-hobby" class="list-item radio-list-item category-list" type="radio" name="category">
+								<label for="input-hobby" class="c-radio-icon hobby"></label>
+								<span class="input-text">{{category2}}</span>
+							</li>' +
+							<li class="category-item">
+								<input id="input-sport" class="list-item radio-list-item category-list" type="radio" name="category">
+								<label for="input-sport" class="c-radio-icon sport"></label>
+								<span class="input-text">{{category3}}</span>
+							</li>
+							<li class="category-item">
+								<input id="input-other" class="list-item radio-list-item category-list" type="radio" name="category">
+								<label for="input-other" class="c-radio-icon other"></label>
+								<span class="input-text">{{category4}}</span>
+							</li>
+						</ul>
+						<label for="deadline" class="input-title">DEADLINE</label>
+						<input id="deadline" type="text" class="input-content" value="" placeholder="Pick a date">
+						<label for="estimation" class="input-title">ESTIMATION</label>
+						<ul id="estimation" class="estimation-block input-content">
+							<li class="estimation-item">
+								<input id="input-1-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox">
+								<label for="input-1-pomodoro" class="checkbox-element"></label>
+							</li>
+							<li class="estimation-item">
+								<input id="input-2-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox">
+								<label for="input-2-pomodoro" class="checkbox-element"></label>
+							</li>
+							<li class="estimation-item">
+								<input id="input-3-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox">
+								<label for="input-3-pomodoro" class="checkbox-element"></label>
+							</li>
+							<li class="estimation-item">
+								<input id="input-4-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox">
+								<label for="input-4-pomodoro" class="checkbox-element"></label>
+							</li>
+							<li class="estimation-item">
+								<input id="input-5-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox">
+								<label for="input-5-pomodoro" class="checkbox-element"></label>
+							</li>
+						</ul>
+						<label for="priority" class="input-title">PRIORITY</label>
+						<ul id="priority" class="priority-block input-content">
+							<li class="priority-item">
+								<input id="input-urgent" class="list-item radio-list-item priority-list" type="radio" name="priority" checked>
+								<label for="input-urgent" class="p-radio-icon urgent"></label>
+								<span class="input-text priority-value">Urgent</span>
+							</li>
+							<li class="priority-item">
+								<input id="input-high" class="list-item radio-list-item priority-list" type="radio" name="priority">
+								<label for="input-high" class="p-radio-icon high"></label>
+								<span class="input-text priority-value">High</span>
+							</li>
+							<li class="priority-item">
+								<input id="input-middle" class="list-item radio-list-item priority-list" type="radio" name="priority">
+								<label for="input-middle" class="p-radio-icon middle"></label>
+								<span class="input-text priority-value">Middle</span>
+							</li>
+							<li class="priority-item">
+								<input id="input-low" class="list-item radio-list-item priority-list" type="radio" name="priority">
+								<label for="input-low" class="p-radio-icon low"></label>
+								<span class="input-text priority-value">Low</span>
+							</li>
+						</ul>
+					</form>
+				</div>
+			</div>
+		</div>
+	</script>
+	<script id="taskListAppControlsTemplate" type="text/x-handlebars-template">
+		<button class="setting-btn app-controll" id="addIcon">
+			<a class="tooltip" title="Add New Task"><i class="icon-add setting-icons"></i></a>
+		</button>
+		<button class="setting-btn app-controll" id="openTrash">
+			<a class="tooltip" title="Add To Trash"><i class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a>
+		</button>
+	</script>
+	<script id="timerTemplate" type="text/x-handlebars-template">
+		<section class="content-area">
+			<header>
+				<h1 class="main-page-title">1. Creating a New Design</h1>
+				<h3 class="small-title-hint">Lorem ipsum dolor sit amet consectetur adipiscing</h3>
+			</header>
+			<div class="timer-area">
+				<ul class="pomodoros">
+					<li class="pomodoro-item">
+						<img src="img/tomato.svg" alt="tomato">
+					</li>
+					<li class="pomodoro-item">
+						<img src="img/tomato.svg" alt="tomato">
+					</li>
+					<li class="pomodoro-item">
+						<img src="img/tomato.svg" alt="tomato">
+					</li>
+				</ul>
+				<div class="timer-container border-' + '">
+					<div class="timer-out">
+						<div class="spin timer"></div>
+						<div class="addition-spin timer"></div>
+						<div class="mask"></div>
+					</div>
+					<div class="timer-in">
+						<p class="timer-text">Let\'s do it</p>
+						<p class="hidden timer-text double-line"><span>6</span><br> min</p>
+						<p class="hidden timer-text">Break<br> is over</p>
+						<p class="hidden timer-text triple-line">Break<br><span>3</span><br>min</p>
+						<p class="hidden timer-text trile-text">You Completed Task</p>
+					</div>
+				</div>
+			</div>
+			<div class="hidden btn-group">
+				<button class="action-btn fail-btn">Fail Pomodora</button>
+				<button class="action-btn finish-btn">Finish Pomodora</button>
+			</div>
+			<div class="hidden btn-group">
+				<button class="action-btn start-btn">Start Pomodora</button>
+				<button class="hidden action-btn finish-task-btn">Finish Task</button>
+			</div>
+			<button class="action-btn start-btn">Start</button>
+		</section>
+	</script>
+	<script id="settingsCategoriesTemplate" type="text/x-handlebars-template">
+		<div class="settings-categories" id="settings-categories">
+			<ul class="choose-categories">
+				<li class="category-item">
+					<input id="input-work" class="category-item-hidden" type="radio" name="category">
+					<label for="input-work" class="category-radio-icon work"></label>
+					<input id="0" class="category-input-text" type="text" value="{{category0}}">
+				</li>
+				<li class="category-item">
+					<input id="input-educat" class="category-item-hidden" type="radio" name="category">
+					<label for="input-educat" class="category-radio-icon education"></label>
+					<input id="1" class="category-input-text" type="text" value="{{category1}}">
+				</li>
+				<li class="category-item">
+					<input id="input-hobby" class="category-item-hidden" type="radio" name="category">
+					<label for="input-hobby" class="category-radio-icon hobby"></label>
+					<input id="2" class="category-input-text" type="text" value="{{category2}}">
+				</li>
+				<li class="category-item">
+					<input id="input-sport" class="category-item-hidden" type="radio" name="category">
+					<label for="input-sport" class="category-radio-icon sport"></label>
+					<input id="3" class="category-input-text" type="text" value="{{category3}}">
+				</li>
+				<li class="category-item">
+					<input id="input-other" class="category-item-hidden" type="radio" name="category">
+					<label for="input-other" class="category-radio-icon other"></label>
+					<input id="4" class="category-input-text" type="text" value="{{category4}}">
+				</li>
+			</ul>
+			<div class="btn-group">
+				<button id="nextToActPage" class="action-btn next-btn">Next</button>
+			</div>
+		</div>
+	</script>
+	<script id="settingsPomodorosTemplate" type="text/x-handlebars-template">
+    	<div id="settings-pomodoros">
+    		<div class="settings-pomodoros">
+    			<section class="settings-items">
+    				<div class="circle yellow"></div>
+    				<h4 class="settings-items-title">WORK TIME</h4>
+    				<div id="workTime" class="counter">
+    					<button id="work-time-minus" class="minus icon"><i class="icon-minus"></i></button>
+    					<input id="work-time-count" class="iterations" type="text" value="{{workTimeIterations}}" size="2" readonly> min
+    					<button id="work-time-plus" class="plus icon"><i class="icon-add"></i></button>
+    				</div>
+    				<br><span>Lorem ipsum dolor sit amet consectetur adipiscing</span>
+    			</section>
+    			<section class="settings-items">
+    				<div class="circle light-blue"></div>
+    				<h4 class="settings-items-title">WORK ITERATION</h4>
+    				<div id="workIteration" class="counter">
+    					<button id="work-iteration-minus" class="minus icon"><i class="icon-minus"></i></button>
+						<input id="work-iteration-count" class="iterations" type="text" value="{{workIterations}}" size="2" readonly>
+						<button id="work-iteration-plus" class="plus icon"><i class="icon-add"></i></button>
+    				</div>
+    				<br><span>Lorem ipsum dolor sit amet consectetur</span>
+				</section>
+    			<section class="settings-items">
+					<div class="circle blue"></div>
+					<h4 class="settings-items-title">SHORT BREAK</h4>
+    				<div id="shortBreak" class="counter">
+						<button id="short-break-minus" class="minus icon"><i class="icon-minus"></i></button>
+						<input id="short-break-count" class="iterations" type="text" value="{{shortBreakIterations}}" size="2" readonly> min
+						<button id="short-break-plus" class="plus icon"><i class="icon-add"></i></button>
+    				</div>
+    				<br><span>Lorem ipsum dolor sit amet consectetur adipiscing sed do eiusmod tempor</span>
+    			</section>
+				<section class="settings-items">
+					<div class="circle blue"></div>
+					<h4 class="settings-items-title">LONG BREAK</h4>
+					<div id="longBreak" class="counter">
+						<button id="long-break-minus" class="minus icon"><i class="icon-minus"></i></button>
+						<input id="long-break-count" class="iterations" type="text" size="2" value="{{longBreakIterations}}" readonly> min
+						<button id="long-break-plus" class="plus icon"><i class="icon-add"></i></button>
+					</div>
+					<br><span>Lorem ipsum dolor sit amet consectetur adipiscing</span>
+				</section>
+    		</div>
+			<section class="your-cycle">
+				<h2 class="cycle-title">Your cycle</h2>
+				<p class="full-cycle-point">Full cycle: </p>
+				<ul class="timeline blue"></ul>
+				<ul class="timeline-scale"></ul>
+			</section>
+			<div class="btn-group">
+				<button id="nextToSetCat" class="action-btn next-btn">Next</button>
+			</div>
+    	</div>
+	</script>
+	<script id="taskTemplate" type="text/x-handlebars-template">
+		<section class="tasks-categories">
+			<div class="span category-{{task.category}}"></div>
+			<div class="task-block block-border category-{{task.category}}" data-key="{{taskKey}}">
+				<button class="hidden add-to-trash category-{{task.category}}">
+					<i class="icon-trash removeItem"></i>
+				</button>
+				<p class="task-deadline">{{task.deadline}}</p>
+				<div class="task-description-wrapper">
+					<h4 class="task-name category-{{task.category}}">{{task.title}}</h4>
+					<p class="task-desciption">{{task.description}}</p>
+				</div>
+				<button class="open-timer pomodoro-priority priority-{{task.priority}}">
+					<i class="icon-toggle"></i>
+					<span class="priority-num">{{task.estimation}}</span>
+				</button>
+				<div class="task-edits">
+					<button class="arrow-to-top edit-btn"><i class="icon-arrows-up"></i></button>
+					<button id="editBtn" class="open-modal-btn edit-btn"><i class="icon-edit"></i></button>
+				</div>
+			</div>
+		</section>
+	</script>
+	<script id="activePageTemplate" type="text/x-handlebars-template">
+        <div class="content-area">
+			<header class="main-page-title">
+				<button id="addBtn" class="add-task-btn"><h1 class="add-task">Daily Task List +</h1></button>
+			</header>
+			<div class="title-to-task">
+				<p class="top-hint"><i class="icon-arrow_circle"></i><br>Add your first task</p>
+			</div>
+			<div class="today-task-list task-list">
+			</div>
+			<div class="hidden btn-groups">
+				<div class="global-group">
+					<button id="globalListToggle" class="global-list accordion-header">Global list<i class="accordion-icon icon-global-list-arrow-down"></i></button>
+					<div class="selection-type accordion-body">
+						<button class="priority-filter tabs active">All</button>
+						<button class="priority-filter tabs">Urgent</button>
+						<button class="priority-filter tabs">High</button>
+						<button class="priority-filter tabs">Middle</button>
+						<button class="priority-filter tabs">Low</button>
+					</div>
+				</div>
+				<!--<div class="global-list-hide selection-group accordion-body">
+					<button class="tabs">Select All</button>
+					<button class="tabs">Deselect All</button>
+				</div>-->
+			</div>
+			<div class="global-list-hide global-task-list task-list accordion-body">
+			</div>
+        </div>
+	</script>
 	<script id="loginTemplate" type="text/x-handlebars-template">
 		<div class="main-wrapper">
 			<div class="login-content-area">

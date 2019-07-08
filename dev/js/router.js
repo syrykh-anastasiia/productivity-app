@@ -4,22 +4,30 @@ class Router {
 		EventBus.trigger('getRemoteFBData');
 		switch(currentLocation) {
 			case 'login':
-				window.initLogin();
 				EventBus.trigger('renderLogin');
 			break;
 			case 'settings':
-				window.initSettings();
-				//EventBus.trigger('renderSettings');				
+				EventBus.trigger('renderSettings');
 			break;
 			case 'active_page':
-				window.initActivePage();
-				//EventBus.trigger('renderActivePage');	
+				EventBus.trigger('renderActivePage');
 			break;
 		}
 	}
 }
 
 window.addEventListener('load', function() {
+    window.initStickyHeader();
+    window.initTaskListControlls();
+    window.initModalWindow();
+    window.initTask();
+    window.initTimer();
+    window.initSettingsCategories();
+    window.initSettingsPomodoros();
+    window.initLogin();
+    window.initSettings();
+    window.initActivePage();
+
 	$('body').addClass('loaded');
 
 	let currentHash = location.hash;

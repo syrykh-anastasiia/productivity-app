@@ -4,8 +4,6 @@ window.initSettings = function() {
 	let settingsController = new SettingsController(settingsModel, settingsView);
 	//settingsView.render();
 
-	window.initSettingsPomodoros();
-
     EventBus.on('renderSettings', function() {
         settingsView.render();
     });

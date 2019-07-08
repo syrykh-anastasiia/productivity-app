@@ -1,10 +1,9 @@
 class StickyHeaderView {
 	constructor() {
-		var self = this;
-		self.hTemplate = Handlebars.compile($('#stickyHeaderTemplate').html());
-		document.body.innerHTML = self.hTemplate();
+		this.template = Handlebars.compile($('#stickyHeaderTemplate').html());
 	}
-	run(scrolled) {
+	render(scrolled) {
+        document.body.innerHTML = this.template();
 		var scrolled = window.pageYOffset || document.documentElement.scrollTop;
 		if(!document.getElementById('stickyHeader')) document.body.innerHTML = self.template;
 		

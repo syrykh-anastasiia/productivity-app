@@ -30,7 +30,8 @@ class SettingsController {
 			if(event.target.className === 'action-btn save-btn') {
 				//self.model.updateData([elem, parseInt(value)]);
 				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-				window.initSettingsCategories();
+				//window.initSettingsCategories();
+                EventBus.trigger('renderSettingsCategories');
 			} 
 		});
 	}

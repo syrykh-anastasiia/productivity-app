@@ -1,17 +1,9 @@
-/*
-import SettingsCategoriesModel from './settings_categories-model.js';
-import SettingsCategoriesTemplate from './settings_categories-template.js';
-import SettingsCategoriesView from './settings_categories-view.js';
-import SettingsCategoriesController from './settings_categories-controller.js';
-*/
-
 window.initSettingsCategories = function() {
 	var settingsCategoriesModel = new SettingsCategoriesModel;
 	settingsCategoriesModel.setDefaultData();
-	var settingsCategoriesTemplate = new SettingsCategoriesTemplate;
-	var settingsCategoriesView = new SettingsCategoriesView(settingsCategoriesTemplate.show());
+	var settingsCategoriesView = new SettingsCategoriesView();
 	var settingsCategoriesController = new SettingsCategoriesController(settingsCategoriesModel, settingsCategoriesView);
-	settingsCategoriesView.render();
+	//settingsCategoriesView.render();
 
 	EventBus.on('renderSettingsCategories', function() {
 		settingsCategoriesView.render();

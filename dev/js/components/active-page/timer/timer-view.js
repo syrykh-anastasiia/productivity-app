@@ -1,6 +1,6 @@
 class TimerView {
-	constructor(template) {
-		this.template = template;
+	constructor() {
+		this.template = Handlebars.compile($('#timerTemplate').html());;
 	}
 	render() {
 		document.title = 'Timer';

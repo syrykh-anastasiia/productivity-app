@@ -1,6 +1,3 @@
-/*import Inputs from './cycle-model.js';
-import Timeline from './cycle-view.js';*/
-
 function CycleController() {
 	var workTime = new Inputs({
 		elem: document.getElementById('workTime'),

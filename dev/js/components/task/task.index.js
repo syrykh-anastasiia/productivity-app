@@ -1,13 +1,6 @@
-/*import TaskCollectionModel from '../task-collection/task-collection-model.js';
-import TaskTemplate from './task-template.js';
-import TaskView from './task-view.js';
-import TaskModel from './task-model.js';
-import TaskController from './task-controller.js';*/
-
 window.initTask = function() {
 	var taskCollectionModel = new TaskCollectionModel;
-	var taskTemplate = new TaskTemplate;
-	var taskView = new TaskView(taskTemplate.show());
+	var taskView = new TaskView();
 	var taskModel = new TaskModel();
 	var taskController = new TaskController(taskModel, taskView);
 

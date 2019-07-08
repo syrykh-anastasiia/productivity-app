@@ -1,6 +1,6 @@
 class ModalWindowView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#modalTemplate').html());
 	}
 	render(mode) {
 		var hTemplate = this.template;

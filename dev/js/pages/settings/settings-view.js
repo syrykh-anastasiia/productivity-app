@@ -12,5 +12,6 @@ class SettingsView {
 	render() {
 		document.body.innerHTML += this.template();
 		document.title = 'Settings';
+        EventBus.trigger('renderSettingsPomodoros');
 	}
 }

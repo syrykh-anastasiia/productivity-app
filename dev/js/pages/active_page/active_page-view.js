@@ -5,9 +5,10 @@
 */
 
 class ActivePageView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#activePageTemplate').html());
 	}
+
 	render() {
 		var self = this;
 		document.title = 'Active Page';
@@ -27,16 +28,12 @@ class ActivePageView {
 			}, 3000); //hack for some time
 		}
 	}
-/**
-* @memberof ActivePageView
-*/
+
 	pageTitle() {
 		var titleContainer = document.getElementsByClassName('title-to-task')[0];
 		titleContainer.innerHTML = '<p class="top-hint">Task added,<br>drag it to the top 5 in daily task list<br><i class="icon-arrow_circle"></i></p>';
 	}
-/**
-* @memberof ActivePageView
-*/
+
 	setTaskToDaily(task) {
 		var taskBlock = task.children;
 		for(var i = 0; i < taskBlock.length; i++) {

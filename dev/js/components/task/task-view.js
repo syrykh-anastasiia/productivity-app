@@ -1,19 +1,19 @@
 class TaskView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#taskTemplate').html());
 	}
 	render(task, key) {
-		var hTemplate = this.template();
-		var data = hTemplate({
-								task: {
-									category: task.category[0],
-									deadline: task.deadline,
-									title: task.title,
-									description: task.description,
-									priority: task.priority.toLowerCase(),
-									estimation: task.estimation
-								},
-								taskKey: key});
+		//var hTemplate = this.template();
+		var data = this.template({
+			task: {
+				category: task.category[0],
+				deadline: task.deadline,
+				title: task.title,
+				description: task.description,
+				priority: task.priority.toLowerCase(),
+				estimation: task.estimation
+			},
+			taskKey: key});
 		var categoryWrapper = document.getElementsByClassName('category-' + task.category[0] + '-wrapper')[0];
 		if(categoryWrapper) {
 			categoryWrapper.innerHTML += data;

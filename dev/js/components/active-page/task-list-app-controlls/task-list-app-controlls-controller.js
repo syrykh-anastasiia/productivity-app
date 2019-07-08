@@ -2,7 +2,7 @@ class TaskListAppControllsController {
 	constructor(view) {
 		this.view = view;
 		window.initAppControlls();
-		this.view.render();
+		//this.view.render();
 
 		document.addEventListener('click', function(event) {
 			if(event.target.closest('#openTrash')) {

@@ -1,5 +1,8 @@
 window.initTaskListControlls = function() {
-	var taskListAppControllsTemplate = new TaskListAppControllsTemplate;
-	var taskListAppControllsView = new TaskListAppControllsView(taskListAppControllsTemplate.show());
+	var taskListAppControllsView = new TaskListAppControllsView();
 	var taskListAppControllsController = new TaskListAppControllsController(taskListAppControllsView);
+
+    EventBus.on('renderTaskListControls', function() {
+        taskListAppControllsView.render();
+    });
 }

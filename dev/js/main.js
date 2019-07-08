@@ -28,28 +28,39 @@ class Router {
 		EventBus.trigger('getRemoteFBData');
 		switch(currentLocation) {
 			case 'login':
-				window.initLogin();
 				EventBus.trigger('renderLogin');
 			break;
 			case 'settings':
-				window.initSettings();
-				//EventBus.trigger('renderSettings');				
+				EventBus.trigger('renderSettings');
 			break;
 			case 'active_page':
-				window.initActivePage();
-				//EventBus.trigger('renderActivePage');	
+				EventBus.trigger('renderActivePage');
 			break;
 		}
 	}
 }
 
 window.addEventListener('load', function() {
+    window.initStickyHeader();
+    window.initTaskListControlls();
+    window.initModalWindow();
+    window.initTask();
+    window.initTimer();
+    window.initSettingsCategories();
+    window.initSettingsPomodoros();
+    window.initLogin();
+    window.initSettings();
+    window.initActivePage();
+
+	$('body').addClass('loaded');
+
 	let currentHash = location.hash;
 	if(currentHash.length === 0 || currentHash === '#') {
 		location.hash = '#login';
 	} else {
 		Router.routing(location.hash.substr(1));
 	}
+
 });
 
 EventBus.on('routeChange', function(route) {
@@ -236,7 +247,7 @@ function notification(text) {
 class AppControllsController {
 	constructor(view) {
 		this.view = view;
-		this.view.render();
+		//this.view.render();
 		
 		document.addEventListener('click', function(event) {
 			if(event.target.closest('#logout')) {
@@ -254,7 +265,7 @@ class AppControllsController {
 class AppControllsView {
 	constructor() {
 		var self = this;
-		this.template = Handlebars.compile($('#appControls').html());
+		this.template = Handlebars.compile($('#appControlsTemplate').html());
 	}
 	render() {
 		document.body.innerHTML = this.template();
@@ -307,47 +318,22 @@ class TaskModel {
 		EventBus.trigger('getRemoteFBData');
 	}
 }
-class TaskTemplate {
-	constructor() {
-		this.template = '<section class="tasks-categories">' +
-							    '<div class="span category-{{task.category}}"></div>' +
-							    	'<div class="task-block block-border category-{{task.category}}" data-key="{{taskKey}}">' +
-											'<button class="hidden add-to-trash category-{{task.category}}">' +
-												'<i class="icon-trash removeItem"></i>' +
-											'</button>' +
-											'<p class="task-deadline">{{task.deadline}}</p>' +
-											'<div class="task-description-wrapper">' +
-												'<h4 class="task-name category-{{task.category}}">{{task.title}}</h4>' +
-												'<p class="task-desciption">{{task.description}}</p>' +
-											'</div>' +
-											'<button class="open-timer pomodoro-priority priority-{{task.priority}}"><i class="icon-toggle"></i><span class="priority-num">{{task.estimation}}</span></button>' +
-											'<div class="task-edits">' +
-													'<button class="arrow-to-top edit-btn"><i class="icon-arrows-up"></i></button>' +
-													'<button id="editBtn" class="open-modal-btn edit-btn"><i class="icon-edit"></i></button>' +
-												'</div>' +
-								'</div>' +
-					'</section>';
-	}
-	show() {
-		return this.template;
-	}
-}
 class TaskView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#taskTemplate').html());
 	}
 	render(task, key) {
-		var hTemplate = this.template();
-		var data = hTemplate({
-								task: {
-									category: task.category[0],
-									deadline: task.deadline,
-									title: task.title,
-									description: task.description,
-									priority: task.priority.toLowerCase(),
-									estimation: task.estimation
-								},
-								taskKey: key});
+		//var hTemplate = this.template();
+		var data = this.template({
+			task: {
+				category: task.category[0],
+				deadline: task.deadline,
+				title: task.title,
+				description: task.description,
+				priority: task.priority.toLowerCase(),
+				estimation: task.estimation
+			},
+			taskKey: key});
 		var categoryWrapper = document.getElementsByClassName('category-' + task.category[0] + '-wrapper')[0];
 		if(categoryWrapper) {
 			categoryWrapper.innerHTML += data;
@@ -371,16 +357,9 @@ class TaskView {
 		
 	}
 } 
-/*import TaskCollectionModel from '../task-collection/task-collection-model.js';
-import TaskTemplate from './task-template.js';
-import TaskView from './task-view.js';
-import TaskModel from './task-model.js';
-import TaskController from './task-controller.js';*/
-
 window.initTask = function() {
 	var taskCollectionModel = new TaskCollectionModel;
-	var taskTemplate = new TaskTemplate;
-	var taskView = new TaskView(taskTemplate.show());
+	var taskView = new TaskView();
 	var taskModel = new TaskModel();
 	var taskController = new TaskController(taskModel, taskView);
 
@@ -442,13 +421,7 @@ class ActivePageController {
 		self.view = view;
 		self.model = model;
 
-		window.initStickyHeader();
-		window.initTaskListControlls();
-		window.initModalWindow();
-		window.initTask();
-		window.initTimer();
-
-		self.view.render();
+		//self.view.render();
 
 		var $accordion = $('#globalListToggle');
 		$accordion.accordion();
@@ -494,9 +467,11 @@ class ActivePageModel {
 	constructor() {
 		
 	}
+
 	init() {
 
 	}
+
 	removingItems(id) {
 		EventBus.trigger('removeTaskFromCollection', id);
 		EventBus.trigger('taskRemove', id);
@@ -506,56 +481,15 @@ class ActivePageModel {
 }
 /**
 * @constructor
-* @name ActivePageTemplate
-*/
-class ActivePageTemplate {
-	constructor() {
-		this.template = '<div class="content-area">' +
-		'<header class="main-page-title">' +
-			'<button id="addBtn" class="add-task-btn"><h1 class="add-task">Daily Task List +</h1></button>' +
-		'</header>' +
-		'<div class="title-to-task">' +
-			'<p class="top-hint"><i class="icon-arrow_circle"></i><br>Add your first task</p>' +
-		'</div>' +
-		'<div class="today-task-list task-list">' +
-		'</div>' +
-			'<div class="hidden btn-groups">' +
-				'<div class="global-group">' +
-					'<button id="globalListToggle" class="global-list accordion-header">Global list<i class="accordion-icon icon-global-list-arrow-down"></i></button>' +
-					'<div class="selection-type accordion-body">' +
-						'<button class="priority-filter tabs active">All</button>' +
-						'<button class="priority-filter tabs">Urgent</button>' +
-						'<button class="priority-filter tabs">High</button>' +
-						'<button class="priority-filter tabs">Middle</button>' +
-						'<button class="priority-filter tabs">Low</button>' +
-					'</div>' +
-				'</div>' +
-				/*'<div class="global-list-hide selection-group accordion-body">' +
-					'<button class="tabs">Select All</button>' +
-					'<button class="tabs">Deselect All</button>' +
-				'</div>' +*/
-			'</div>' +
-			'<div class="global-list-hide global-task-list task-list accordion-body">' +
-			'</div>' +	
-		'</div>';
-	}
-/**
-* @memberof ActivePageTemplate
-*/
-	show() {
-		return this.template;
-	}
-  }
-/**
-* @constructor
 * @param template
 * @name ActivePageView
 */
 
 class ActivePageView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#activePageTemplate').html());
 	}
+
 	render() {
 		var self = this;
 		document.title = 'Active Page';
@@ -575,16 +509,12 @@ class ActivePageView {
 			}, 3000); //hack for some time
 		}
 	}
-/**
-* @memberof ActivePageView
-*/
+
 	pageTitle() {
 		var titleContainer = document.getElementsByClassName('title-to-task')[0];
 		titleContainer.innerHTML = '<p class="top-hint">Task added,<br>drag it to the top 5 in daily task list<br><i class="icon-arrow_circle"></i></p>';
 	}
-/**
-* @memberof ActivePageView
-*/
+
 	setTaskToDaily(task) {
 		var taskBlock = task.children;
 		for(var i = 0; i < taskBlock.length; i++) {
@@ -626,15 +556,9 @@ class ActivePageView {
 	}
 }
 	
-/*import ActivePageModel from './active_page-model.js';
-import ActivePageTemplate from './active_page-template.js';
-import ActivePageView from './active_page-view.js';
-import ActivePageController from './active_page-controller.js';*/
-
 window.initActivePage = function() {
 	let activePageModel = new ActivePageModel;
-	let activePageTemplate = new ActivePageTemplate;
-	let activePageView = new ActivePageView(activePageTemplate.show());
+	let activePageView = new ActivePageView();
 	let activePageController = new ActivePageController(activePageModel, activePageView);
 
 	EventBus.on('renderActivePage', function() {
@@ -680,6 +604,7 @@ class LoginController {
 			}
 		});
 	}
+	/*should be in router*/
 	findNextPage() {
 		if(LocalStorageData.getFromLS('Pomodoros') === null && LocalStorageData.getFromLS('Categories') === null) {
 			EventBus.trigger('routeChange', '#settings');
@@ -690,64 +615,23 @@ class LoginController {
 } 
 /**
 * @constructor
-* @name LoginTemplate
-* @summary Login template
-*/
-class LoginTemplate {
-  constructor() {
-    this.template = '<div class="main-wrapper">' +
-      '<div class="login-content-area">' +
-        '<h1 class="alt-logo-text">Pomodoro Login Page</h1>' +
-        '<div class="logo"></div>' +
-        '<form id="loginForm" class="log-in">' +
-           '<label class="input-wrap">' +
-             '<input id="login" class="form-input login-input" type="text" placeholder="Username" autocomplete="off"><i class="icon-login login"></i>' + 
-           '</label>' +
-           '<span class="hidden error-text">Lorem ipsum dolor sit amet, consectetu adipiscing elit</span>' +
-           '<label class="input-wrap">' +
-             '<input id="pass" class="form-input pass-input" type="password" placeholder="Password" autocomplete="off"><i class="icon-password password"></i>' +
-          ' </label>' +
-           '<input type="submit" value="Log In">' +
-        '</form>' +
-      '</div>' +
-      '</div>';
-  }
-/**
-* @memberof LoginTemplate
-* @summary show function
-*/
-  show() {
-    return this.template;
-  }
-}
-/**
-* @constructor
 * @param template
 * @name LoginView
 * @summary Login views
 */
 
 class LoginView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#loginTemplate').html());
 	}
-/**
-* @memberof LoginView
-* @summary render function
-*/
+
 	render() {
-		let data = this.template();
-		document.body.innerHTML = data;
+		document.body.innerHTML = this.template();
 		document.title = 'Log In';
 	}
 }
-/*import LoginTemplate from './login-template.js';
-import LoginView from './login-view.js';
-import LoginController from './login-controller.js';*/
-
 window.initLogin = function() {
-	let loginTemplate = new LoginTemplate;
-	let loginView = new LoginView(loginTemplate.show());
+	let loginView = new LoginView();
 	let loginController = new LoginController(loginView);
 
 	EventBus.on('renderLogin', function() {
@@ -787,7 +671,8 @@ class SettingsController {
 			if(event.target.className === 'action-btn save-btn') {
 				//self.model.updateData([elem, parseInt(value)]);
 				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-				window.initSettingsCategories();
+				//window.initSettingsCategories();
+                EventBus.trigger('renderSettingsCategories');
 			} 
 		});
 	}
@@ -814,18 +699,22 @@ class SettingsView {
 	constructor() {
         this.template = Handlebars.compile($('#settingsTemplate').html());
 	}
+
 	render() {
 		document.body.innerHTML += this.template();
 		document.title = 'Settings';
+        EventBus.trigger('renderSettingsPomodoros');
 	}
 }
 window.initSettings = function() {
 	let settingsModel = new SettingsModel;
 	let settingsView = new SettingsView();
 	let settingsController = new SettingsController(settingsModel, settingsView);
-	settingsView.render();
+	//settingsView.render();
 
-	window.initSettingsPomodoros();
+    EventBus.on('renderSettings', function() {
+        settingsView.render();
+    });
 };
 function ArrowsController(view) {
 	this.view = view;
@@ -955,88 +844,9 @@ class ModalWindowModel {
 		return result;
 	}
 }
-class ModalWindowTemplate {
-	constructor() {
-		this.template = '<div id="modalWindow" class="modal modal-open hidden">' +
-		'<div class="cover-wrapper"></div>' +
-		'<div class="modal-window">' +
-			'<div class="btns-group">' +
-				'<button class="modal-action-btn"><i id="cancelAdding" class="icon-close"></i></button>' +
-				'<button class="modal-action-btn"><i id="confirmAdding" class="{{mode}} icon-check"></i></button>' +
-			'</div>' +
-			'<div class="add-edit-task">' +
-				'<h2 class="modal-title add-task-window">{{mode}} Task</h2>' +
-				'<form class="modal-form">' +
-					'<label for="title" class="input-title">TITLE</label>' +
-					'<input id="title" type="text" class="input-content" placeholder="Add title here">' +
-					'<label for="description" class="input-title">DESCRIPTION</label>' +
-					'<input id="description" type="text" class="input-content" placeholder="Add description here">' +
-					'<label for="category" class="input-title">CATEGORY</label>' +
-					'<ul id="category" class="category-block input-content">' +
-						'<li class="category-item">' +
-							'<input id="input-work" class="list-item radio-list-item category-list" type="radio" name="category" checked><label for="input-work" class="c-radio-icon work"></label><span class="input-text">{{category0}}</span>' +
-						'</li>' +
-						'<li class="category-item">' +
-							'<input id="input-educat" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-educat" class="c-radio-icon education"></label><span class="input-text">{{category1}}</span>' +
-						'</li>' +
-						'<li class="category-item">' +
-							'<input id="input-hobby" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-hobby" class="c-radio-icon hobby"></label><span class="input-text">{{category2}}</span>' +
-						'</li>' +
-						'<li class="category-item">' +
-							'<input id="input-sport" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-sport" class="c-radio-icon sport"></label><span class="input-text">{{category3}}</span>' +
-						'</li>' +
-						'<li class="category-item">' +
-							'<input id="input-other" class="list-item radio-list-item category-list" type="radio" name="category"><label for="input-other" class="c-radio-icon other"></label><span class="input-text">{{category4}}</span>' +
-						'</li>' +
-					'</ul>' +
-					'<label for="deadline" class="input-title">DEADLINE</label>' +
-					'<input id="deadline" type="text" class="input-content" value="" placeholder="Pick a date">' +
-					'<label for="estimation" class="input-title">ESTIMATION</label>' +
-					'<ul id="estimation" class="estimation-block input-content">' +
-						'<li class="estimation-item">' +
-							'<input id="input-1-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox"><label for="input-1-pomodoro" class="checkbox-element"></label>' +
-						'</li>' +
-						'<li class="estimation-item">' +
-							'<input id="input-2-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox"><label for="input-2-pomodoro" class="checkbox-element"></label>' +
-						'</li>' +
-						'<li class="estimation-item">' +
-							'<input id="input-3-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox"><label for="input-3-pomodoro" class="checkbox-element"></label>' +
-						'</li>' +
-						'<li class="estimation-item">' +
-							'<input id="input-4-pomodoro" class="list-item checkbox-list-item estimation-list"  type="checkbox"><label for="input-4-pomodoro" class="checkbox-element"></label>' +
-						'</li>' +
-						'<li class="estimation-item">' +
-							'<input id="input-5-pomodoro" class="list-item checkbox-list-item estimation-list"  type="checkbox"><label for="input-5-pomodoro" class="checkbox-element"></label>' +
-						'</li>' +
-					'</ul>' +
-					'<label for="priority" class="input-title">PRIORITY</label>' +
-					'<ul id="priority" class="priority-block input-content">' +
-						'<li class="priority-item">' +
-							'<input id="input-urgent" class="list-item radio-list-item priority-list" type="radio" name="priority" checked><label for="input-urgent" class="p-radio-icon urgent"></label><span class="input-text priority-value">Urgent</span>' +
-						'</li>' +
-						'<li class="priority-item">' +
-							'<input id="input-high" class="list-item radio-list-item priority-list" type="radio" name="priority"><label for="input-high" class="p-radio-icon high"></label><span class="input-text priority-value">High</span>' +
-						'</li>' +
-						'<li class="priority-item">' +
-							'<input id="input-middle" class="list-item radio-list-item priority-list" type="radio" name="priority"><label for="input-middle" class="p-radio-icon middle"></label><span class="input-text priority-value">Middle</span>' +
-						'</li>' +
-						'<li class="priority-item">' +
-							'<input id="input-low" class="list-item radio-list-item priority-list" type="radio" name="priority"><label for="input-low" class="p-radio-icon low"></label><span class="input-text priority-value">Low</span>' +
-						'</li>' +
-					'</ul>' +
-				'</form>' +	
-			'</div>' +
-		'</div>' +
-	'</div>';
-	}
-	show() {
-		return this.template;
-	}
-  
-}
 class ModalWindowView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#modalTemplate').html());
 	}
 	render(mode) {
 		var hTemplate = this.template;
@@ -1061,14 +871,8 @@ class ModalWindowView {
 	for(var i in estimations) {
 	}
 }*/
-/*import ModalWindowTemplate from './modal-window-template.js';
-import ModalWindowView from './modal-window-view.js';
-import ModalWindowModel from './modal-window-model.js';
-import ModalWindowController from './modal-window-controller.js';*/
-
 window.initModalWindow = function() {
-	var modalWindowTemplate = new ModalWindowTemplate;
-	var modalWindowView = new ModalWindowView(modalWindowTemplate.show());
+	var modalWindowView = new ModalWindowView();
 	var modalWindowModel = new ModalWindowModel();
 	var modalWindowController = new ModalWindowController(modalWindowModel, modalWindowView);
 
@@ -1415,18 +1219,17 @@ class StickyHeaderController {
 		self.view = view;
 		window.onscroll = function() {
 			if(document.title == 'Task List') { //hack for some time
-				self.view.run();
+				//self.view.render();
 			}
 		};
 	}
 }
 class StickyHeaderView {
 	constructor() {
-		var self = this;
-		self.hTemplate = Handlebars.compile($('#stickyHeaderTemplate').html());
-		document.body.innerHTML = self.hTemplate();
+		this.template = Handlebars.compile($('#stickyHeaderTemplate').html());
 	}
-	run(scrolled) {
+	render(scrolled) {
+        document.body.innerHTML = this.template();
 		var scrolled = window.pageYOffset || document.documentElement.scrollTop;
 		if(!document.getElementById('stickyHeader')) document.body.innerHTML = self.template;
 		
@@ -1443,7 +1246,7 @@ class TaskListAppControllsController {
 	constructor(view) {
 		this.view = view;
 		window.initAppControlls();
-		this.view.render();
+		//this.view.render();
 
 		document.addEventListener('click', function(event) {
 			if(event.target.closest('#openTrash')) {
@@ -1459,22 +1262,9 @@ class TaskListAppControllsController {
 	}
 	
 }
-class TaskListAppControllsTemplate {
+ class TaskListAppControllsView {
 	constructor() {
-		this.template = '<button class="setting-btn app-controll" id="addIcon">' +
-  					'<a class="tooltip" title="Add New Task"><i class="icon-add setting-icons"></i></a>' + 
-  				'</button>' +
-      			'<button class="setting-btn app-controll" id="openTrash">' + 
-      				'<a class="tooltip" title="Add To Trash"><i class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a>' +
-      			'</button>';
-	}
-	show() {
-		return this.template;
-	}
-}
-class TaskListAppControllsView {
-	constructor(template) {
-		this.template = template;
+		this.template = Handlebars.compile($('#taskListAppControlsTemplate').html());;
 	}
 	render() {
 		var controllsWrapper = document.querySelector('.app-settings');
@@ -1482,9 +1272,12 @@ class TaskListAppControllsView {
 	}
 }
 window.initTaskListControlls = function() {
-	var taskListAppControllsTemplate = new TaskListAppControllsTemplate;
-	var taskListAppControllsView = new TaskListAppControllsView(taskListAppControllsTemplate.show());
+	var taskListAppControllsView = new TaskListAppControllsView();
 	var taskListAppControllsController = new TaskListAppControllsController(taskListAppControllsView);
+
+    EventBus.on('renderTaskListControls', function() {
+        taskListAppControllsView.render();
+    });
 }
 class TimerController {
 	constructor(view, model) {
@@ -1503,73 +1296,18 @@ class TimerModel {
 
 	}
 }
-class TimerTemplate {
-	constructor() {
-		this.template = '<section class="content-area">' +
-		'<header>' +
-			'<h1 class="main-page-title">1. Creating a New Design</h1>' +
-			'<h3 class="small-title-hint">Lorem ipsum dolor sit amet consectetur adipiscing</h3>' +
-		'</header>' +
-		'<div class="timer-area">' +
-			'<ul class="pomodoros">' +
-				'<li class="pomodoro-item">' +
-					'<img src="img/tomato.svg" alt="tomato">' +
-				'</li>' +
-				'<li class="pomodoro-item">' +
-					'<img src="img/tomato.svg" alt="tomato">' +
-				'</li>' +
-				'<li class="pomodoro-item">' +
-					'<img src="img/tomato.svg" alt="tomato">' +
-				'</li>' +
-			'</ul>' +
-			'<div class="timer-container border-' + '">' +
-				'<div class="timer-out">' +
-					'<div class="spin timer"></div>' +
-					'<div class="addition-spin timer"></div>' +
-					'<div class="mask"></div>' +
-				'</div>' +
-				'<div class="timer-in">' +
-					'<p class="timer-text">Let\'s do it</p>' +
-					'<p class="hidden timer-text double-line"><span>6</span><br> min</p>' +
-					'<p class="hidden timer-text">Break<br> is over</p>' +
-					'<p class="hidden timer-text triple-line">Break<br><span>3</span><br>min</p>' +
-					'<p class="hidden timer-text trile-text">You Completed Task</p>' +
-				'</div>' +
-			'</div>' +
-		'</div>' +
-		'<div class="hidden btn-group">' +
-			'<button class="action-btn fail-btn">Fail Pomodora</button>' +
-			'<button class="action-btn finish-btn">Finish Pomodora</button>' +
-		'</div>' +
-		'<div class="hidden btn-group">' +
-			'<button class="action-btn start-btn">Start Pomodora</button>' +
-			'<button class="hidden action-btn finish-task-btn">Finish Task</button>' +
-		'</div>' +
-		'<button class="action-btn start-btn">Start</button>' +
-	'</section>';
-	}
-	show() {
-		return this.template;
-	}
-}
 class TimerView {
-	constructor(template) {
-		this.template = template;
+	constructor() {
+		this.template = Handlebars.compile($('#timerTemplate').html());;
 	}
 	render() {
 		document.title = 'Timer';
 		document.body.innerHTML = this.template;
 	}
 }
-/*import TimerTemplate from './timer-template.js';
-import TimerView from './timer-view.js';
-import TimerModel from './timer-model.js';
-import TimerController from './timer-controller.js';*/
-
 window.initTimer = function() {
 	var timerModel = new TimerModel;
-	var timerTemplate = new TimerTemplate;
-	var timerView = new TimerView(timerTemplate.show());
+	var timerView = new TimerView();
 	var timerController = new TimerController(timerView, timerModel);
 
 	EventBus.on('renderTimer', function(taskId) {
@@ -1662,58 +1400,14 @@ class SettingsCategoriesModel {
 }
 /**
 * @constructor
-* @name SettingsCategoriesTemplate
-*/
-class SettingsCategoriesTemplate {
-	constructor() {
-		this.template = '<div class="settings-categories" id="settings-categories">' +
-			'<ul class="choose-categories">' +
-				'<li class="category-item">' +
-					'<input id="input-work" class="category-item-hidden" type="radio" name="category"><label for="input-work" class="category-radio-icon work"></label>' +
-					'<input id="0" class="category-input-text" type="text" value="{{category0}}">' +
-				'</li>' +
-				'<li class="category-item">' +
-					'<input id="input-educat" class="category-item-hidden" type="radio" name="category"><label for="input-educat" class="category-radio-icon education"></label>' +
-					'<input id="1" class="category-input-text" type="text" value="{{category1}}">' +
-				'</li>' +
-				'<li class="category-item">' +
-					'<input id="input-hobby" class="category-item-hidden" type="radio" name="category"><label for="input-hobby" class="category-radio-icon hobby"></label>' +
-					'<input id="2" class="category-input-text" type="text" value="{{category2}}">' +
-				'</li>' +
-				'<li class="category-item">' +
-					'<input id="input-sport" class="category-item-hidden" type="radio" name="category"><label for="input-sport" class="category-radio-icon sport"></label>' +
-					'<input id="3" class="category-input-text" type="text" value="{{category3}}">' +
-				'</li>' +
-				'<li class="category-item">' +
-					'<input id="input-other" class="category-item-hidden" type="radio" name="category"><label for="input-other" class="category-radio-icon other"></label>' +
-					'<input id="4" class="category-input-text" type="text" value="{{category4}}">' +
-				'</li>' +
-			'</ul>' +
-		'<div class="btn-group">' +
-			'<button id="nextToActPage" class="action-btn next-btn">Next</button>' +
-		'</div>' +
-		'</div>';
-	}
-/**
-* @memberof SettingsCategoriesTemplate
-*/
-	show() {
-		return this.template;
-	}
-}
-/**
-* @constructor
 * @param template
 * @name SettingsCategoriesView
 */
 class SettingsCategoriesView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#settingsCategoriesTemplate').html());
 	}
-/**
-* @memberof SettingsCategoriesView
-* @summary render function
-*/
+
 	render() {
 		var hTemplate = this.template;
 		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],
@@ -1728,20 +1422,12 @@ class SettingsCategoriesView {
 		
 	}
 }
-/*
-import SettingsCategoriesModel from './settings_categories-model.js';
-import SettingsCategoriesTemplate from './settings_categories-template.js';
-import SettingsCategoriesView from './settings_categories-view.js';
-import SettingsCategoriesController from './settings_categories-controller.js';
-*/
-
 window.initSettingsCategories = function() {
 	var settingsCategoriesModel = new SettingsCategoriesModel;
 	settingsCategoriesModel.setDefaultData();
-	var settingsCategoriesTemplate = new SettingsCategoriesTemplate;
-	var settingsCategoriesView = new SettingsCategoriesView(settingsCategoriesTemplate.show());
+	var settingsCategoriesView = new SettingsCategoriesView();
 	var settingsCategoriesController = new SettingsCategoriesController(settingsCategoriesModel, settingsCategoriesView);
-	settingsCategoriesView.render();
+	//settingsCategoriesView.render();
 
 	EventBus.on('renderSettingsCategories', function() {
 		settingsCategoriesView.render();
@@ -1844,87 +1530,15 @@ class SettingsPomodorosModel {
 }
 /**
 * @constructor
-* @name SettingsPomodorosTemplate
-*/
-class SettingsPomodorosTemplate {
-	constructor() {
-		this.template = '<div id="settings-pomodoros">' +
-		'<div class="settings-pomodoros">' +
-			'<section class="settings-items">' +
-				'<div class="circle yellow"></div>' +
-				'<h4 class="settings-items-title">WORK TIME</h4>' +
-				'<div id="workTime" class="counter">' +
-					'<button id="work-time-minus" class="minus icon"><i class="icon-minus"></i></button>' +
-					'<input id="work-time-count" class="iterations" type="text" value="{{workTimeIterations}}" size="2" readonly> min' +
-					'<button id="work-time-plus" class="plus icon"><i class="icon-add"></i></button>' +
-				'</div>' +
-				'<br><span>Lorem ipsum dolor sit amet consectetur adipiscing</span>' +
-			'</section>' +
-			'<section class="settings-items">' +
-				'<div class="circle light-blue"></div>' +
-				'<h4 class="settings-items-title">WORK ITERATION</h4>' +
-				'<div id="workIteration" class="counter">' +
-					'<button id="work-iteration-minus" class="minus icon"><i class="icon-minus"></i></button>' +
-					'<input id="work-iteration-count" class="iterations" type="text" value="{{workIterations}}" size="2" readonly>' +
-					'<button id="work-iteration-plus" class="plus icon"><i class="icon-add"></i></button>' +
-				'</div>' +
-				'<br><span>Lorem ipsum dolor sit amet consectetur</span>' +
-			'</section>' +
-			'<section class="settings-items">' +
-				'<div class="circle blue"></div>' +
-				'<h4 class="settings-items-title">SHORT BREAK</h4>' +
-				'<div id="shortBreak" class="counter">' +
-					'<button id="short-break-minus" class="minus icon"><i class="icon-minus"></i></button>' +
-					'<input id="short-break-count" class="iterations" type="text" value="{{shortBreakIterations}}" size="2" readonly> min' +
-					'<button id="short-break-plus" class="plus icon"><i class="icon-add"></i></button>' +
-				'</div>' +
-				'<br><span>Lorem ipsum dolor sit amet consectetur adipiscing sed do eiusmod tempor</span>' +
-			'</section>' +
-			'<section class="settings-items">' +
-				'<div class="circle blue"></div>' +
-				'<h4 class="settings-items-title">LONG BREAK</h4>' +
-				'<div id="longBreak" class="counter">' +
-					'<button id="long-break-minus" class="minus icon"><i class="icon-minus"></i></button>' +
-					'<input id="long-break-count" class="iterations" type="text" size="2" value="{{longBreakIterations}}" readonly> min' +
-					'<button id="long-break-plus" class="plus icon"><i class="icon-add"></i></button>' +
-				'</div>' +
-				'<br><span>Lorem ipsum dolor sit amet consectetur adipiscing</span>' +
-			'</section>' +
-		'</div>' +
-		'<section class="your-cycle">' +
-			'<h2 class="cycle-title">Your cycle</h2>' +
-			'<p class="full-cycle-point">Full cycle: </p>' +
-			'<ul class="timeline blue"></ul>' +
-			'<ul class="timeline-scale"></ul>' +
-		'</section>' +
-		'<div class="btn-group">' +
-			'<button id="nextToSetCat" class="action-btn next-btn">Next</button>' +
-		'</div>'
-		'</div>';
-	}
-/**
-* @memberof SettingsPomodorosTemplate
-* @summary show function
-*/
-	show(){
-		return this.template;
-	}
-}
-
-/**
-* @constructor
 * @param template
 * @name SettingsPomodorosView
 */
 
 class SettingsPomodorosView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#settingsPomodorosTemplate').html());
 	}
-/**
-* @memberof LoginView
-* @summary render function
-*/
+
 	render() {
 		//AppControllsController();
 		let hTemplate = this.template;
@@ -1942,26 +1556,18 @@ class SettingsPomodorosView {
 		}
 	}
 }
-/*import SettingsPomodorosModel from './settings_pomodoros-model.js'
-import SettingsPomodorosTemplate from './settings_pomodoros-template.js';
-import SettingsPomodorosView from './settings_pomodoros-view.js';
-import SettingsPomodorosController from './settings_pomodoros-controller.js';
-
-import CycleController from './cycle/cycle-controller.js';*/
-
 window.initSettingsPomodoros = function() {
 	let settingsPomodorosModel = new SettingsPomodorosModel;
 	settingsPomodorosModel.setDefaultData();
-	let settingsPomodorosTemplate = new SettingsPomodorosTemplate;
-	let settingsPomodorosView = new SettingsPomodorosView(settingsPomodorosTemplate.show());
+	let settingsPomodorosView = new SettingsPomodorosView();
 	let settingsPomodorosController = new SettingsPomodorosController(settingsPomodorosModel, settingsPomodorosView);
-	settingsPomodorosView.render();
+	//settingsPomodorosView.render();
 
-	settingsPomodorosController.component = CycleController();
+	//settingsPomodorosController.component = CycleController();
 
 	//app.settingsController.componentData = new CycleInput();
 	//app.settingsController.componentView = new CycleTimeline(self.componentData);
-	EventBus.on('renderSettings', function() {
+	EventBus.on('renderSettingsPomodoros', function() {
 		settingsPomodorosView.render();
 	});
 	EventBus.on('settingsDataSaving', function([key, value]) {
@@ -1972,9 +1578,6 @@ window.initSettingsPomodoros = function() {
 		settingsPomodorosController.changesTracking();
 	});
 };
-
-/*import Inputs from './cycle-model.js';
-import Timeline from './cycle-view.js';*/
 
 function CycleController() {
 	var workTime = new Inputs({

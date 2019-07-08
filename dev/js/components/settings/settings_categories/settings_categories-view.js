@@ -4,13 +4,10 @@
 * @name SettingsCategoriesView
 */
 class SettingsCategoriesView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#settingsCategoriesTemplate').html());
 	}
-/**
-* @memberof SettingsCategoriesView
-* @summary render function
-*/
+
 	render() {
 		var hTemplate = this.template;
 		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],

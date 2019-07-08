@@ -10,13 +10,7 @@ class ActivePageController {
 		self.view = view;
 		self.model = model;
 
-		window.initStickyHeader();
-		window.initTaskListControlls();
-		window.initModalWindow();
-		window.initTask();
-		window.initTimer();
-
-		self.view.render();
+		//self.view.render();
 
 		var $accordion = $('#globalListToggle');
 		$accordion.accordion();

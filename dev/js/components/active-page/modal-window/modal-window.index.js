@@ -1,11 +1,5 @@
-/*import ModalWindowTemplate from './modal-window-template.js';
-import ModalWindowView from './modal-window-view.js';
-import ModalWindowModel from './modal-window-model.js';
-import ModalWindowController from './modal-window-controller.js';*/
-
 window.initModalWindow = function() {
-	var modalWindowTemplate = new ModalWindowTemplate;
-	var modalWindowView = new ModalWindowView(modalWindowTemplate.show());
+	var modalWindowView = new ModalWindowView();
 	var modalWindowModel = new ModalWindowModel();
 	var modalWindowController = new ModalWindowController(modalWindowModel, modalWindowView);
 

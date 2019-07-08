@@ -1,23 +1,15 @@
-/*import SettingsPomodorosModel from './settings_pomodoros-model.js'
-import SettingsPomodorosTemplate from './settings_pomodoros-template.js';
-import SettingsPomodorosView from './settings_pomodoros-view.js';
-import SettingsPomodorosController from './settings_pomodoros-controller.js';
-
-import CycleController from './cycle/cycle-controller.js';*/
-
 window.initSettingsPomodoros = function() {
 	let settingsPomodorosModel = new SettingsPomodorosModel;
 	settingsPomodorosModel.setDefaultData();
-	let settingsPomodorosTemplate = new SettingsPomodorosTemplate;
-	let settingsPomodorosView = new SettingsPomodorosView(settingsPomodorosTemplate.show());
+	let settingsPomodorosView = new SettingsPomodorosView();
 	let settingsPomodorosController = new SettingsPomodorosController(settingsPomodorosModel, settingsPomodorosView);
-	settingsPomodorosView.render();
+	//settingsPomodorosView.render();
 
-	settingsPomodorosController.component = CycleController();
+	//settingsPomodorosController.component = CycleController();
 
 	//app.settingsController.componentData = new CycleInput();
 	//app.settingsController.componentView = new CycleTimeline(self.componentData);
-	EventBus.on('renderSettings', function() {
+	EventBus.on('renderSettingsPomodoros', function() {
 		settingsPomodorosView.render();
 	});
 	EventBus.on('settingsDataSaving', function([key, value]) {

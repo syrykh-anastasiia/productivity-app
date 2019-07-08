@@ -5,13 +5,10 @@
 */
 
 class SettingsPomodorosView {
-	constructor(template) {
-		this.template = Handlebars.compile(template);
+	constructor() {
+		this.template = Handlebars.compile($('#settingsPomodorosTemplate').html());
 	}
-/**
-* @memberof LoginView
-* @summary render function
-*/
+
 	render() {
 		//AppControllsController();
 		let hTemplate = this.template;
