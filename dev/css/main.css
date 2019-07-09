@@ -437,8 +437,10 @@ textarea {
   -webkit-appearance: none;
   -webkit-border-radius: 0;
   box-sizing: border-box;
-  border: 1px solid #000;
-  padding: 0.4em 0.7em;
+  border: 1px solid #4a5968;
+  padding: 0 44px;
+  font-size: 21px;
+  background-color: transparent;
 }
 input[type='text']:focus,
 input[type='tel']:focus,
@@ -446,10 +448,10 @@ input[type='email']:focus,
 input[type='search']:focus,
 input[type='password']:focus,
 textarea:focus {
-  border-color: #000;
+  border-color: #fff;
 }
 @include placeholder {
-  color: #000;
+  color: #8da5b8;
 }
 select {
   -webkit-border-radius: 0;
@@ -541,6 +543,24 @@ body.loaded:after {
   opacity: 0;
   visibility: hidden;
 }
+body.login-page {
+  background: url("../images/login-bg.jpg") no-repeat center;
+  background-size: cover;
+}
+body.login-page #header {
+  display: none !important;
+}
+body:before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2a3f50;
+  z-index: 1;
+  opacity: .92;
+}
 body:after {
   content: '';
   position: fixed;
@@ -552,6 +572,144 @@ body:after {
   transition: opacity ease .3s, visibility ease .3s;
   z-index: 999;
 }
+#wrapper {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.container {
+  padding: 0 15px;
+  margin: 0 auto;
+  max-width: 570px;
+}
+@media screen and (min-width: 1280px) {
+  .container {
+    max-width: 450px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .container {
+    max-width: 375px;
+  }
+}
+#main {
+  min-height: 100vh;
+  padding: 30px 0;
+}
+@media screen and (min-width: 768px) {
+  #main {
+    padding: 63px 0 119px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  #main {
+    padding: 50px 0 47px;
+  }
+}
+.logo {
+  display: block;
+  text-align: center;
+  margin: 0 auto 30px;
+}
+@media screen and (min-width: 768px) {
+  .logo {
+    margin-bottom: 136px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .logo {
+    width: 255px;
+    margin-bottom: 66px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .logo {
+    width: 315px;
+  }
+}
+.btn {
+  display: inline-block;
+  vertical-align: top;
+  padding: 22px 15px;
+  background-color: #1abc9c;
+  color: #fff;
+  font: 700 23px "PT Sans", "Roboto", 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
+  border: none;
+  outline: none;
+  transition: background-color 0.3s;
+}
+@media screen and (min-width: 1280px) {
+  .btn {
+    font-size: 20px;
+    min-width: 155px;
+    padding: 10px 15px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .btn {
+    font-size: 18px;
+    min-width: 123px;
+  }
+}
+.btn:hover {
+  background-color: #16a085;
+}
+.login-form {
+  text-align: center;
+}
+.login-form input[type="submit"],
+.login-form button[type="submit"] {
+  width: 100%;
+}
+@media screen and (min-width: 1280px) {
+  .login-form input[type="submit"],
+  .login-form button[type="submit"] {
+    width: auto;
+  }
+}
+.login-form input[type="text"],
+.login-form input[type="email"],
+.login-form input[type="password"] {
+  width: 100%;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  transition: border-color 0.3s, color 0.3s;
+  border: none;
+  border-bottom: 2px solid #4a5968;
+  height: 46px;
+  text-align: left;
+}
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  color: #fff;
+  outline: none;
+}
+.submit-holder {
+  padding-top: 20px;
+}
+@media screen and (min-width: 1024px) {
+  .submit-holder {
+    padding-top: 9px;
+  }
+}
+.input-wrap {
+  margin: 0 0 33px;
+  position: relative;
+  display: block;
+}
+.input-wrap i {
+  position: absolute;
+  top: 44%;
+  transform: translateY(-50%);
+  left: 7px;
+  display: block;
+  color: #93a3b6;
+  font-size: 18px;
+}
+/*not checked styles*/
 .main-page-title {
   color: #fff;
   padding-bottom: 30px;
@@ -590,70 +748,6 @@ body:after {
   overflow: hidden;
   box-sizing: border-box;
 }
-/* BUTTNS */
-button:hover {
-  cursor: pointer;
-  color: #fff;
-}
-input[type="submit"],
-.action-btn {
-  display: block;
-  margin: 0 auto;
-  /* width: 123px;
-	height: 42px; */
-  max-width: 123px;
-  padding: 11px 40px;
-  margin-top: 50px;
-  font-size: 18px;
-}
-@media screen and (max-width: 1023px) {
-  input[type="submit"],
-  .action-btn {
-    width: 100%;
-    max-width: 541px;
-  }
-}
-.back-btn,
-.finish-task-btn,
-.cancel-btn {
-  background-color: #57a6dc;
-}
-.fail-btn {
-  background-color: #f75c4c;
-}
-.remove-btn {
-  background-color: #f15a4a;
-}
-input[type="submit"],
-.next-btn,
-.start-btn,
-.finish-btn,
-.save-btn {
-  background-color: #1abc9c;
-}
-input[type="submit"]:focus,
-input[type="submit"]:hover {
-  cursor: pointer;
-  background-color: #16a085;
-}
-.next-btn:hover,
-.start-btn:hover,
-.finish-btn:hover,
-.save-btn:hover {
-  background-color: #16a085;
-}
-.back-btn:hover,
-.finish-task-btn:hover,
-.cancel-btn:hover {
-  background-color: #368bc5;
-}
-.fail-btn:hover {
-  background-color: #f08e19;
-}
-.remove-btn:hover {
-  background-color: #d93928;
-}
-/* END */
 /*app-settings*/
 .app-settings {
   /*display: none;*/
@@ -706,22 +800,6 @@ input[type="submit"]:hover {
   content: "";
 }
 /* end */
-/*radiobtn*/
-.work {
-  background-position-x: -1px;
-}
-.education {
-  background-position-x: -73px;
-}
-.hobby {
-  background-position-x: -55px;
-}
-.sport {
-  background-position-x: -37px;
-}
-.other {
-  background-position-x: -19px;
-}
 /* tooltip */
 .tooltips-block {
   position: absolute;
@@ -1048,11 +1126,6 @@ input[type="submit"]:hover {
   right: 0;
 }
 /*login page*/
-.main-wrapper {
-  background: linear-gradient(to top, rgba(8, 41, 63, 0.92), rgba(8, 41, 63, 0.92)), url("../images/login-bg.jpg") center center / cover no-repeat;
-  height: 100vh;
-  padding-top: 30px;
-}
 .login-content-area {
   max-width: 330px;
   margin: 0 auto;
@@ -1074,58 +1147,6 @@ input[type="submit"]:hover {
   text-indent: -9999px;
   position: absolute;
   font-size: 28px;
-}
-.logo {
-  margin: 0 auto;
-  padding-bottom: 20px;
-  width: 245px;
-  height: 371px;
-  background: url("../images/Logo_1.svg") -1% 0.5% no-repeat;
-}
-@media screen and (max-width: 1365px) {
-  .logo {
-    width: 312px;
-    height: 450px;
-  }
-}
-@media screen and (max-width: 1023px) {
-  .logo {
-    width: 257px;
-    height: 364px;
-  }
-}
-@media screen and (max-width: 767px) {
-  .logo {
-    width: 312px;
-    height: 450px;
-  }
-}
-.input-wrap {
-  position: relative;
-}
-.form-input {
-  box-sizing: border-box;
-  padding: 30px 0 15px 30px;
-  background: transparent;
-  border-bottom: 1px solid #425869;
-  width: 100%;
-  font-size: 16px;
-}
-@media screen and (max-width: 1365px) {
-  .form-input {
-    font-size: 19px;
-  }
-}
-@media screen and (max-width: 1023px) {
-  .form-input {
-    font-size: 21px;
-  }
-}
-.login,
-.password {
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 .invalid {
   border-bottom-color: #f75c4c;
@@ -1641,43 +1662,9 @@ input[type="submit"]:hover {
   padding: 0 5px;
 }
 /* animations */
-@-webkit-keyframes apear {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@-webkit-keyframes spining {
-  0% {
-    -webkit-transform: rotate(0);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes hiddenApear {
-  0% {
-    opacity: 0;
-  }
-  50%,
-  100% {
-    opacity: 1;
-  }
-}
-@-webkit-keyframes mask {
-  0% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
-.header {
+#header {
   text-align: center;
-  position: fixed;
+  position: absolute;
   z-index: 200;
   top: 0;
   left: 0;
@@ -1690,10 +1677,17 @@ input[type="submit"]:hover {
   border-bottom: 1px solid #223849;
   overflow: hidden;
 }
-.logo {
+#header.fixed {
+  position: fixed;
+}
+#header .logo {
   width: 242px;
   height: 74px;
   float: left;
+  margin: 0;
+}
+#header .container {
+  max-width: 100%;
 }
 .settings-list {
   margin: 0;

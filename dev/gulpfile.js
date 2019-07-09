@@ -1,7 +1,9 @@
 'use strict';
 const gulp = require('gulp');
+const postcss = require('gulp-postcss');
+const autoprefixer = require('autoprefixer')
 const plugins = require('gulp-load-plugins')({
-	pattern: ['gulp-*', 'gulp.*', 'webpack', 'autoprefixer', 'del']
+	pattern: ['gulp-*', 'gulp.*', 'webpack', 'del']
 });
 let isDevelopment = true;
 const path = require('path');
@@ -10,11 +12,11 @@ const concat = require('gulp-concat');
 const babel = require("gulp-babel");
 var clean = require('gulp-clean');
 const settings = require('./gulp-settings.js');
-const postcssPlagins = [
+/*const postcssPlagins = [
 	plugins.autoprefixer({
 		browsers: ['last 2 version']
 	})
-];
+];*/
 
 const reloadPage = (cb) => {
 	browserSync.reload();
@@ -64,6 +66,7 @@ gulp.task('allLess', function () {
         }
 	)
 	.pipe(less())
+        .pipe(postcss([ autoprefixer({browsers: ['last 2 version']}) ]))
 	.pipe(concat('css/main.css'))
 	.pipe(gulp.dest(function(file) {
         return file.stem === settings.lessDir.mainFileName || file.stem === settings.lessDir.mainFileName + '.css' ?
@@ -190,37 +193,9 @@ gulp.task('assets', (cb) => {
 });
 
 gulp.task('watch', function(cb) {
-	gulp.watch(
-		path.resolve(__dirname, settings.lessDir.entry + '/**/*.less'),
-		gulp.series('allLess')
-	).on('unlink', function(filePath) {
-		delete plugins.cached.caches.allLess[path.resolve(filePath)];
-	});
-
-	gulp.watch(
-		[
-			path.resolve(__dirname, settings.jsDir.entry + '/*')
-		],
-		gulp.series('copyScripts')
-	).on('unlink', function(filePath) {
-		delete plugins.cached.caches.copyScripts[path.resolve(filePath)];
-	});
-
-	gulp.watch(
-		path.resolve(__dirname, settings.assetsDir + '/**'),
-		gulp.series('assets')
-	).on('error', () => {})
-	.on('unlink', function(filePath) {
-		delete plugins.cached.caches.assets[path.resolve(filePath)];
-	});
-
-	gulp.watch(
-		[
-			path.resolve(__dirname, settings.jsDir.output + '/*.js'),
-			path.resolve(__dirname, settings.publicDir + '/*.html')
-		],
-		gulp.series(reloadPage)
-	);
+    gulp.watch(['js/**/*.js', '!js/libs/*.js', '!js/plugins/*.js'], gulp.series('allJs'));
+    gulp.watch('js/plugins/*.js', gulp.series('pluginsJS'));
+    gulp.watch('styles/**/*.less', gulp.series('allLess'));
 	cb();
 });
 
@@ -230,7 +205,7 @@ gulp.task('clear', (cb) => {
 });
 
 gulp.task('build', gulp.parallel(
-	'assets',
+	//'assets',
 	//'copyScripts',
 	'clear',
 	'allJs',

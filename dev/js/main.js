@@ -1,3 +1,35 @@
+window.addEventListener('load', function() {
+    $('body').addClass('loaded');
+
+    window.initApp();
+});
+
+window.initApp = function() {
+    let mainTemplate = Handlebars.compile($('#mainTemplate').html());
+    let mainHeadlineTemplate = Handlebars.compile($('#pageHeadlineTemplate').html());
+
+    window.initHeader();
+    window.initModalWindow();
+    window.initTask();
+    window.initTimer();
+    window.initSettingsCategories();
+    window.initSettingsPomodoros();
+    window.initLogin();
+    window.initSettings();
+    window.initActivePage();
+
+    document.body.innerHTML = '<div id="wrapper"></div>';
+
+    let wrapper = document.getElementById('wrapper');
+
+    EventBus.trigger('renderHeader', wrapper);
+    wrapper.innerHTML += mainTemplate();
+
+    let currentHash = location.hash;
+
+    if(currentHash.length === 0 || currentHash === '#') EventBus.trigger('routeChange', '#login');
+    else Router.routing(location.hash.substr(1));
+}
 EventBus = {
 	events: {},
 	on: function(eventName, func) { //subscribe
@@ -26,6 +58,9 @@ class Router {
 	static routing(location) {
 		let currentLocation = location || window.location.hash.substr(1);
 		EventBus.trigger('getRemoteFBData');
+        if(LocalStorageData.getFromLS('username')) {
+            EventBus.trigger('afterLogin');
+        }
 		switch(currentLocation) {
 			case 'login':
 				EventBus.trigger('renderLogin');
@@ -39,29 +74,6 @@ class Router {
 		}
 	}
 }
-
-window.addEventListener('load', function() {
-    window.initStickyHeader();
-    window.initTaskListControlls();
-    window.initModalWindow();
-    window.initTask();
-    window.initTimer();
-    window.initSettingsCategories();
-    window.initSettingsPomodoros();
-    window.initLogin();
-    window.initSettings();
-    window.initActivePage();
-
-	$('body').addClass('loaded');
-
-	let currentHash = location.hash;
-	if(currentHash.length === 0 || currentHash === '#') {
-		location.hash = '#login';
-	} else {
-		Router.routing(location.hash.substr(1));
-	}
-
-});
 
 EventBus.on('routeChange', function(route) {
 	route = route.substr(1);
@@ -77,6 +89,15 @@ EventBus.on('routeChange', function(route) {
 		break;
 	}
 });
+
+EventBus.on('afterLogin', function() {
+    if(LocalStorageData.getFromLS('Pomodoros') === null && LocalStorageData.getFromLS('Categories') === null) {
+        EventBus.trigger('routeChange', '#settings');
+    } else {
+        EventBus.trigger('routeChange', '#active_page');
+    }
+})
+
 window.addEventListener('hashchange', function() {
 	Router.routing();
 });
@@ -191,23 +212,6 @@ window.LocalStorageData = {
 		localStorage.removeItem(key);
 	}
 }
-
-/*
-class LocalStorageData {
-    setToLS(key, value) {
-        localStorage.setItem(key, value);
-        //EventBus.trigger('initData', [key, value]);
-	}
-
-    getFromLS(key) {
-        return localStorage.getItem(key);
-	}
-
-    removeFromLS(key) {
-        localStorage.removeItem(key);
-	}
-}*/
-
 /* NOT WORKING */
 function AuthData() {
 	var userName = 'admin';
@@ -243,37 +247,6 @@ function notification(text) {
       }
     });
   }
-}
-class AppControllsController {
-	constructor(view) {
-		this.view = view;
-		//this.view.render();
-		
-		document.addEventListener('click', function(event) {
-			if(event.target.closest('#logout')) {
-				LocalStorageData.removeFromLS('username');
-				EventBus.trigger('routeChange', '#login');
-			} else if(event.target.closest('#settings')) {
-				EventBus.trigger('routeChange', '#settings');
-			} else if(event.target.closest('#goToReports')) {
-				//EventBus.trigger('routeChange', '#reports');
-				alert('Sorry, service is not available');
-			}
-		});
-	}
-}
-class AppControllsView {
-	constructor() {
-		var self = this;
-		this.template = Handlebars.compile($('#appControlsTemplate').html());
-	}
-	render() {
-		document.body.innerHTML = this.template();
-	}
-}
-window.initAppControlls = function() {
-	var appControllsView = new AppControllsView();
-	var appControllsController = new AppControllsController(appControllsView);
 }
 class TaskController {
 	constructor(model, view) {
@@ -492,13 +465,14 @@ class ActivePageView {
 
 	render() {
 		var self = this;
+        let container = document.getElementById('main').querySelector('.container');
 		document.title = 'Active Page';
-		document.body.innerHTML += this.template();
+        container.innerHTML = this.template();
 
 		if(LocalStorageData.getFromLS('TaskList') !== null) {
 			var list = JSON.parse(LocalStorageData.getFromLS('TaskList'));
-			document.getElementsByClassName('btn-groups')[0].classList.remove('hidden');
-			this.pageTitle();
+			//document.getElementsByClassName('btn-groups')[0].classList.remove('hidden');
+			//this.pageTitle();
 			setTimeout(function() {
 				if(document.getElementsByClassName('global-task-list')[0].childNodes.length === 0) { //fix with async fb
 					for(var i in list) {
@@ -576,58 +550,26 @@ window.initActivePage = function() {
 	});
 }
 
-/**
-* @constructor
-* @param view
-* @name LoginController
-* @summary Login controller
-*/
 class LoginController {
 	constructor(view) {
-		if(LocalStorageData.getFromLS('username') !== null) {
-			this.findNextPage();
-		}
 		this.view = view;
-		let auth = window.auth;
-		let self = this;
-		document.addEventListener('submit', function(event) {
-			event.preventDefault();
-			let inputUser = document.getElementById('login').value;
-			let inputPass = document.getElementById('pass').value;
-			let validation = false;
-			if(inputUser.length > 0 && inputPass.length > 0) validation = auth(inputUser, inputPass);
-			document.getElementById('login').value = '';
-			document.getElementById('pass').value = '';
-			if(validation) {
-				LocalStorageData.setToLS('username', inputUser);
-				self.findNextPage();
-			}
-		});
 	}
-	/*should be in router*/
-	findNextPage() {
-		if(LocalStorageData.getFromLS('Pomodoros') === null && LocalStorageData.getFromLS('Categories') === null) {
-			EventBus.trigger('routeChange', '#settings');
-		} else {
-			EventBus.trigger('routeChange', '#active_page');
-		}
-	}
-} 
-/**
-* @constructor
-* @param template
-* @name LoginView
-* @summary Login views
-*/
-
+}
 class LoginView {
 	constructor() {
 		this.template = Handlebars.compile($('#loginTemplate').html());
 	}
 
 	render() {
-		document.body.innerHTML = this.template();
+        let container = document.getElementById('main').querySelector('.container');
+        container.innerHTML = this.template();
 		document.title = 'Log In';
+		document.body.classList.add('login-page');
+		EventBus.trigger('loginRendered');
+	}
+
+	destroy() {
+        document.body.classList.remove('login-page');
 	}
 }
 window.initLogin = function() {
@@ -637,6 +579,26 @@ window.initLogin = function() {
 	EventBus.on('renderLogin', function() {
 		loginView.render();
 	});
+
+    EventBus.on('loginRendered', function() {
+        var loginForm = document.getElementsByClassName('login-form')[0];
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let inputUser = document.querySelector('input[name="username"]').value;
+            let inputPass = document.querySelector('input[name="password"]').value;
+            let validation = false;
+            if(inputUser.length > 0 && inputPass.length > 0) validation = window.auth(inputUser, inputPass);
+            if(validation) {
+                LocalStorageData.setToLS('username', inputUser);
+                EventBus.trigger('afterLogin');
+                loginView.destroy();
+            } else {
+                document.getElementById('login').value = '';
+                document.getElementById('pass').value = '';
+            }
+        });
+    });
 };
 
 /**
@@ -653,7 +615,7 @@ class SettingsController {
 		self.componentData;
 		self.componentView;
 
-		window.initAppControlls();
+		//window.initAppControlls();
 		
 		var $tabs = $('#tabs');
 		$tabs.tabs();
@@ -701,7 +663,8 @@ class SettingsView {
 	}
 
 	render() {
-		document.body.innerHTML += this.template();
+        let container = document.getElementById('main').querySelector('.container');
+        container.innerHTML = this.template();
 		document.title = 'Settings';
         EventBus.trigger('renderSettingsPomodoros');
 	}
@@ -710,7 +673,6 @@ window.initSettings = function() {
 	let settingsModel = new SettingsModel;
 	let settingsView = new SettingsView();
 	let settingsController = new SettingsController(settingsModel, settingsView);
-	//settingsView.render();
 
     EventBus.on('renderSettings', function() {
         settingsView.render();
@@ -744,6 +706,41 @@ function ArrowsView(template) {
 ArrowsView.prototype.render = function() {
 	var hTemplate = this.template;
 	document.querySelector('.content-area').innerHTML += hTemplate();
+}
+class HeaderController {
+	constructor(view) {
+        this.view = view;
+
+        document.addEventListener('click', function(event) {
+            if(event.target.closest('#logout')) {
+                LocalStorageData.removeFromLS('username');
+                EventBus.trigger('routeChange', '#login');
+            } else if(event.target.closest('#settings')) {
+                EventBus.trigger('routeChange', '#settings');
+            } else if(event.target.closest('#goToReports')) {
+                //EventBus.trigger('routeChange', '#reports');
+                alert('Sorry, service is not available');
+            }
+        });
+	}
+}
+class HeaderView {
+	constructor() {
+		this.template = Handlebars.compile($('#headerTemplate').html());
+	}
+
+	render(holder) {
+        holder.innerHTML += this.template();
+		$('.sticky-header').stickyHeader();
+	}
+}
+window.initHeader = function() {
+	var headerView = new HeaderView();
+	var headerController = new HeaderController(headerView);
+
+    EventBus.on('renderHeader', function(holder) {
+        headerView.render(holder);
+    });
 }
 class ModalWindowController {
 	constructor(model, view) {
@@ -1213,72 +1210,6 @@ function ReportsView() {
 	return this;
 }*/
 
-class StickyHeaderController {
-	constructor(view) {
-		var self = this;
-		self.view = view;
-		window.onscroll = function() {
-			if(document.title == 'Task List') { //hack for some time
-				//self.view.render();
-			}
-		};
-	}
-}
-class StickyHeaderView {
-	constructor() {
-		this.template = Handlebars.compile($('#stickyHeaderTemplate').html());
-	}
-	render(scrolled) {
-        document.body.innerHTML = this.template();
-		var scrolled = window.pageYOffset || document.documentElement.scrollTop;
-		if(!document.getElementById('stickyHeader')) document.body.innerHTML = self.template;
-		
-		var header = document.getElementById('stickyHeader');
-		if(scrolled > 200) header.classList.remove('hidden');
-		else if(scrolled <= 200) header.classList.add('hidden');
-	}
-}
-window.initStickyHeader = function() {
-	var stickyHeaderView = new StickyHeaderView();
-	var stickyHeaderController = new StickyHeaderController(stickyHeaderView);
-}
-class TaskListAppControllsController {
-	constructor(view) {
-		this.view = view;
-		window.initAppControlls();
-		//this.view.render();
-
-		document.addEventListener('click', function(event) {
-			if(event.target.closest('#openTrash')) {
-				var trashes = document.getElementsByClassName('add-to-trash');
-				for(var i = 0; i < trashes.length; i++) {
-					if(trashes[i].classList.contains('hidden')) {
-						trashes[i].classList.remove('hidden');
-					}
-					else trashes[i].classList.add('hidden');
-				}
-			}
-		});
-	}
-	
-}
- class TaskListAppControllsView {
-	constructor() {
-		this.template = Handlebars.compile($('#taskListAppControlsTemplate').html());;
-	}
-	render() {
-		var controllsWrapper = document.querySelector('.app-settings');
-		controllsWrapper.insertAdjacentHTML('afterbegin', this.template);
-	}
-}
-window.initTaskListControlls = function() {
-	var taskListAppControllsView = new TaskListAppControllsView();
-	var taskListAppControllsController = new TaskListAppControllsController(taskListAppControllsView);
-
-    EventBus.on('renderTaskListControls', function() {
-        taskListAppControllsView.render();
-    });
-}
 class TimerController {
 	constructor(view, model) {
 		this.view = view;

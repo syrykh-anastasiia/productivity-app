@@ -35,6 +35,19 @@
 	};
 }(jQuery));
 (function($) {
+    $.fn.stickyHeader = function() {
+        var sticky = $(this);
+        $(window).on('scroll', function() {
+            if($(window).scrollTop() > sticky.outerHeight()) {
+                sticky.addClass('fixed');
+                console.log(sticky);
+            }
+        });
+        console.log(this);
+        return this;
+    };
+}(jQuery));
+(function($) {
 
 	$.fn.tabs = function(prop) {
 		$('.tabs').click(function(event) {

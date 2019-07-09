@@ -2,6 +2,9 @@ class Router {
 	static routing(location) {
 		let currentLocation = location || window.location.hash.substr(1);
 		EventBus.trigger('getRemoteFBData');
+        if(LocalStorageData.getFromLS('username')) {
+            EventBus.trigger('afterLogin');
+        }
 		switch(currentLocation) {
 			case 'login':
 				EventBus.trigger('renderLogin');
@@ -15,29 +18,6 @@ class Router {
 		}
 	}
 }
-
-window.addEventListener('load', function() {
-    window.initStickyHeader();
-    window.initTaskListControlls();
-    window.initModalWindow();
-    window.initTask();
-    window.initTimer();
-    window.initSettingsCategories();
-    window.initSettingsPomodoros();
-    window.initLogin();
-    window.initSettings();
-    window.initActivePage();
-
-	$('body').addClass('loaded');
-
-	let currentHash = location.hash;
-	if(currentHash.length === 0 || currentHash === '#') {
-		location.hash = '#login';
-	} else {
-		Router.routing(location.hash.substr(1));
-	}
-
-});
 
 EventBus.on('routeChange', function(route) {
 	route = route.substr(1);
@@ -53,6 +33,15 @@ EventBus.on('routeChange', function(route) {
 		break;
 	}
 });
+
+EventBus.on('afterLogin', function() {
+    if(LocalStorageData.getFromLS('Pomodoros') === null && LocalStorageData.getFromLS('Categories') === null) {
+        EventBus.trigger('routeChange', '#settings');
+    } else {
+        EventBus.trigger('routeChange', '#active_page');
+    }
+})
+
 window.addEventListener('hashchange', function() {
 	Router.routing();
 });

@@ -10,7 +10,8 @@ class SettingsView {
 	}
 
 	render() {
-		document.body.innerHTML += this.template();
+        let container = document.getElementById('main').querySelector('.container');
+        container.innerHTML = this.template();
 		document.title = 'Settings';
         EventBus.trigger('renderSettingsPomodoros');
 	}

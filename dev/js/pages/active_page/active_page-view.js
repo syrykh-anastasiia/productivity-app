@@ -11,13 +11,14 @@ class ActivePageView {
 
 	render() {
 		var self = this;
+        let container = document.getElementById('main').querySelector('.container');
 		document.title = 'Active Page';
-		document.body.innerHTML += this.template();
+        container.innerHTML = this.template();
 
 		if(LocalStorageData.getFromLS('TaskList') !== null) {
 			var list = JSON.parse(LocalStorageData.getFromLS('TaskList'));
-			document.getElementsByClassName('btn-groups')[0].classList.remove('hidden');
-			this.pageTitle();
+			//document.getElementsByClassName('btn-groups')[0].classList.remove('hidden');
+			//this.pageTitle();
 			setTimeout(function() {
 				if(document.getElementsByClassName('global-task-list')[0].childNodes.length === 0) { //fix with async fb
 					for(var i in list) {

@@ -12,7 +12,7 @@ class SettingsController {
 		self.componentData;
 		self.componentView;
 
-		window.initAppControlls();
+		//window.initAppControlls();
 		
 		var $tabs = $('#tabs');
 		$tabs.tabs();

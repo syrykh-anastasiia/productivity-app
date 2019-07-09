@@ -38,15 +38,18 @@
 
 // Buttons
 @btn-color: @white;
-@btn-background: @black;
-@btn-padding: 0.4em 0.7em;
-@btn-font-size: inherit;
+@btn-background: @green;
+@btn-padding: 22px 15px;
+@btn-font-size: 23px;
+@btn-font: @pt-sans, @base-font-sans-serif;
 
 // Forms
-@form-element-padding: @btn-padding;
-@form-element-border-color: @black;
-@form-element-focus-border-color: @black;
-@placeholder-color: @black;
+@form-element-font-size: 21px;
+@form-element-padding: 0 44px;
+@form-element-border-color: #4a5968;
+@form-element-focus-border-color: @white;
+@form-element-bg: transparent;
+@placeholder-color: @grayLight;
 
 // Headers
 @h1-font-size: 30px;
@@ -63,9 +66,7 @@
 
 /* mobile first breakpoints */
 @phone: ~"screen and (min-width: 375px)";
-@phone-md: ~"screen and (min-width: 480px)";
 @tablet:  ~"screen and (min-width: 768px)";
 @tablet-md: ~"screen and (min-width: 1024px)";
-@desktop: ~"screen and (min-width: 1366px)";
-@desktop-md: ~"screen and (min-width: 1440px)";
-@widescreen: ~"screen and (min-width: 1920px)";
+@desktop: ~"screen and (min-width: 1280px)";
+@desktop-md: ~"screen and (min-width: 1366px)";

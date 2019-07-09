@@ -26,6 +26,44 @@
 	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+	<script id="headerTemplate" type="text/x-handlebars-template">
+		<header id="header" class="sticky-header">
+			<div class="container">
+				<strong class="logo">
+					<a href="/"><img src="images/Logo.svg" alt="Productivity app"></a>
+				</strong>
+				<ul class="main-menu">
+					<li>
+						<a href="#" class="tooltip" title="New Task"><i class="icon-add"></i></a>
+					</li>
+					<li>
+						<a href="#" class="tooltip" title="To Trash"><i class="icon-trash"></i></a>
+					</li>
+					<li>
+						<a href="#" class="tooltip" title="To Reports"><i class="icon-statistics"></i></a>
+					</li>
+					<li>
+						<a href="#" class="tooltip" title="To Settings"><i class="icon-settings"></i></a>
+					</li>
+					<li>
+						<a href="#" class="tooltip" title="Log Out"><i class="icon-logout"></i></a>
+					</li>
+				</ul>
+			</div>
+		</header>
+	</script>
+	<script id="mainTemplate" type="text/x-handlebars-template">
+		<main id="main">
+			<div class="container"></div>
+		</main>
+	</script>
+	<script id="pageHeadlineTemplate" type="text/x-handlebars-template">
+		<h2>{{ title }}</h2>
+		<div class="page-subheadline">
+			<strong class="subtitle">{{ subtitle }}</strong>
+			<div class="page-subnav"></div>
+		</div>
+	</script>
 	<script id="modalTemplate" type="text/x-handlebars-template">
 		<div id="modalWindow" class="modal modal-open hidden">
 			<div class="cover-wrapper"></div>
@@ -121,14 +159,6 @@
 				</div>
 			</div>
 		</div>
-	</script>
-	<script id="taskListAppControlsTemplate" type="text/x-handlebars-template">
-		<button class="setting-btn app-controll" id="addIcon">
-			<a class="tooltip" title="Add New Task"><i class="icon-add setting-icons"></i></a>
-		</button>
-		<button class="setting-btn app-controll" id="openTrash">
-			<a class="tooltip" title="Add To Trash"><i class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a>
-		</button>
 	</script>
 	<script id="timerTemplate" type="text/x-handlebars-template">
 		<section class="content-area">
@@ -317,69 +347,25 @@
         </div>
 	</script>
 	<script id="loginTemplate" type="text/x-handlebars-template">
-		<div class="main-wrapper">
-			<div class="login-content-area">
-				<h1 class="alt-logo-text">Pomodoro Login Page</h1>
-				<div class="logo"></div>
-				<form id="loginForm" class="log-in">
-					<label class="input-wrap">
-						<input id="login" class="form-input login-input" type="text" placeholder="Username" autocomplete="off">
-						<i class="icon-login login"></i>
-					</label>
-					<span class="hidden error-text">Lorem ipsum dolor sit amet, consectetu adipiscing elit</span>
-					<label class="input-wrap">
-						<input id="pass" class="form-input pass-input" type="password" placeholder="Password" autocomplete="off">
-						<i class="icon-password password"></i>
-					</label>
-					<input type="submit" value="Log In">
-				</form>
+		<strong class="logo">
+			<a href="#">
+				<img src="images/Logo_1.svg" width="310" alt="Productivity tracker">
+			</a>
+		</strong>
+		<form class="login-form">
+			<label class="input-wrap">
+				<input name="username" type="text" placeholder="Username" autocomplete="off">
+				<i class="icon-login"></i>
+			</label>
+			<span class="hidden error-text">Lorem ipsum dolor sit amet, consectetu adipiscing elit</span>
+			<label class="input-wrap">
+				<input name="password" type="password" placeholder="Password" autocomplete="off">
+				<i class="icon-password"></i>
+			</label>
+			<div class="submit-holder">
+				<input type="submit" class="btn" value="Log In">
 			</div>
-		</div>
-	</script>
-	<script id="appControlsTemplate" type="text/x-handlebars-template">
-		<ul class="settings-list">
-			<!--<li>
-				<a href="#" class="tooltip" title="New Task"><i id="addIcon" class="icon-add setting-icons"></i></a>
-			</li>
-			<li>
-				<a href="#" class="tooltip" title="To Trash"><i id="openTrash" class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a>
-			</li>-->
-			<li class="app-controll">
-				<a href="#" class="tooltip" title="To Reports"><i id="goToReports" class="icon-statistics setting-icons"></i></a>
-			</li>
-			<li class="nav-settings-btn app-controll">
-				<a href="#" class="tooltip" title="To Settings"><i id="settings" class="icon-settings setting-icons current"></i></a>
-			</li>
-			<li class="nav-settings-btn app-controll">
-				<a href="#" class="tooltip" title="Log out"><i id="logout2" class="icon-logout setting-icons"></i></a>
-			</li>
-		</ul>
-	</script>
-	<script id="stickyHeaderTemplate" type="text/x-handlebars-template">
-		<header id="stickyHeader" class="header hidden">
-			<div class="container">
-				<strong class="logo">
-					<a href="/"><img src="images/Logo.svg" alt="Productivity app"></a>
-				</strong>
-				<ul class="settings-list">
-					<!--<li>
-						<a href="#" class="tooltip" title="New Task"><i id="addIcon" class="icon-add setting-icons"></i></a>
-					</li>
-					<li>
-						<a href="#" class="tooltip" title="To Trash"><i id="openTrash" class="icon-trash setting-icons"></i><span class="hidden trash-count-mark"></span></a>
-					</li>-->
-					<li class="app-controll">
-						<a href="#" class="tooltip" title="To Reports"><i id="goToReports" class="icon-statistics setting-icons"></i></a>
-					</li>
-					<li class="nav-settings-btn app-controll">
-						<a href="#" class="tooltip" title="To Settings"><i id="settings" class="icon-settings setting-icons current"></i></a>
-					</li>
-					<li class="nav-settings-btn app-controll">
-						<a href="#" class="tooltip" title="Log out"><i id="logout2" class="icon-logout setting-icons"></i></a>
-					</li>
-				</ul>
-			</div>
-		</header>
+		</form>
 	</script>
 	<script id="settingsTemplate" type="text/x-handlebars-template">
 		<div class="content-area">

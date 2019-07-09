@@ -1,6 +1,6 @@
-.header {
+#header {
   text-align: center;
-  position: fixed;
+  position: absolute;
   z-index: 200;
   top: 0;
   left: 0;
@@ -12,12 +12,21 @@
   box-shadow: 0 -5px 10px 10px rgba(34, 56, 73, 0.7);
   border-bottom: 1px solid #223849;
   overflow: hidden;
-}
 
-.logo {
-  width: 242px;
-  height: 74px;
-  float: left;
+  &.fixed {
+    position: fixed;
+  }
+
+  .logo {
+    width: 242px;
+    height: 74px;
+    float: left;
+    margin: 0;
+  }
+
+  .container {
+    max-width: 100%;
+  }
 }
 
 .settings-list {
