@@ -56,7 +56,7 @@ body {
 	}
 
 	@media @desktop-md {
-		max-width: 375px;
+		max-width: 360px;
 	}
 }
 
@@ -70,6 +70,14 @@ body {
 
 	@media @tablet-md {
 		padding: 50px 0 47px;
+	}
+
+	@media @desktop {
+		padding: 116px 0 177px;
+	}
+
+	@media @desktop-md {
+		padding: 49px 0 113px;
 	}
 }
 
@@ -89,6 +97,12 @@ body {
 
 	@media @desktop {
 		width: 315px;
+		margin-bottom: 73px;
+	}
+
+	@media @desktop-md {
+		width: 250px;
+		margin-bottom: 44px;
 	}
 }
 
@@ -106,12 +120,13 @@ body {
 	@media @desktop {
 		font-size: @btn-font-size - 3px;
 		min-width: 155px;
-		padding: 10px 15px;
+		padding: 13px 15px;
 	}
 
 	@media @desktop-md {
 		font-size: @btn-font-size - 5px;
 		min-width: 123px;
+		padding: 10px 15px;
 	}
 
 	&:hover {
@@ -121,6 +136,19 @@ body {
 
 .login-form {
 	text-align: center;
+
+	&.validation-error {
+		.error-text {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		input[type="text"],
+		input[type="email"],
+		input[type="password"] {
+			border-bottom-color: @redDark;
+		}
+	}
 
 	input[type="submit"],
 	button[type="submit"] {
@@ -146,10 +174,30 @@ input[type="password"] {
 	border-bottom: 2px solid @form-element-border-color;
 	height: 46px;
 	text-align: left;
+	color: @grayLight;
+
+	@media @desktop {
+		font-size: 19px;
+	}
+
+	@media @desktop-md {
+		border-bottom-width: 1px;
+		font-size: 16px;
+		height: 39px;
+		padding: 0 30px;
+	}
+
+	&::placeholder {
+		color: inherit;
+	}
 
 	&:focus {
 		color: @white;
 		outline: none;
+
+		& + i {
+			color: @white;
+		}
 	}
 }
 
@@ -159,6 +207,14 @@ input[type="password"] {
 	@media @tablet-md {
 		padding-top: 9px;
 	}
+
+	@media @desktop {
+		padding-top: 36px;
+	}
+
+	@media @desktop-md {
+		padding-top: 30px;
+	}
 }
 
 .input-wrap {
@@ -166,15 +222,40 @@ input[type="password"] {
 	position: relative;
 	display: block;
 
+	@media @desktop {
+		margin: 0 0 14px;
+	}
+
+	@media @desktop-md {
+		margin: 0 0 20px;
+	}
+
 	i {
+		transition: color .3s;
 		position: absolute;
 		top: 44%;
 		transform: translateY(-50%);
 		left: 7px;
 		display: block;
-		color: #93a3b6;
+		color: @grayLight;
 		font-size: 18px;
+
+		@media @desktop-md {
+			font-size: 14px;
+			left: 0;
+		}
 	}
+}
+
+.error-text {
+	transition: opacity .3s, visibility .3s;
+	color: @redDark;
+	font-size: 12px;
+	opacity: 0;
+	visibility: hidden;
+	position: absolute;
+	bottom: -20px;
+	left: 0;
 }
 
 
@@ -792,13 +873,8 @@ input[type="password"] {
 
 
 
-.invalid {
-	border-bottom-color: #f75c4c;
-}
-.error-text {
-	color: #bc5049;
-	font-size: 12px;
-}
+
+
 
 
 /*modal window*/

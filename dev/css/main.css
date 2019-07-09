@@ -589,7 +589,7 @@ body:after {
 }
 @media screen and (min-width: 1366px) {
   .container {
-    max-width: 375px;
+    max-width: 360px;
   }
 }
 #main {
@@ -604,6 +604,16 @@ body:after {
 @media screen and (min-width: 1024px) {
   #main {
     padding: 50px 0 47px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  #main {
+    padding: 116px 0 177px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  #main {
+    padding: 49px 0 113px;
   }
 }
 .logo {
@@ -625,6 +635,13 @@ body:after {
 @media screen and (min-width: 1280px) {
   .logo {
     width: 315px;
+    margin-bottom: 73px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .logo {
+    width: 250px;
+    margin-bottom: 44px;
   }
 }
 .btn {
@@ -642,13 +659,14 @@ body:after {
   .btn {
     font-size: 20px;
     min-width: 155px;
-    padding: 10px 15px;
+    padding: 13px 15px;
   }
 }
 @media screen and (min-width: 1366px) {
   .btn {
     font-size: 18px;
     min-width: 123px;
+    padding: 10px 15px;
   }
 }
 .btn:hover {
@@ -656,6 +674,15 @@ body:after {
 }
 .login-form {
   text-align: center;
+}
+.login-form.validation-error .error-text {
+  opacity: 1;
+  visibility: visible;
+}
+.login-form.validation-error input[type="text"],
+.login-form.validation-error input[type="email"],
+.login-form.validation-error input[type="password"] {
+  border-bottom-color: #f75c4c;
 }
 .login-form input[type="submit"],
 .login-form button[type="submit"] {
@@ -680,12 +707,45 @@ input[type="password"] {
   border-bottom: 2px solid #4a5968;
   height: 46px;
   text-align: left;
+  color: #8da5b8;
+}
+@media screen and (min-width: 1280px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    font-size: 19px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    border-bottom-width: 1px;
+    font-size: 16px;
+    height: 39px;
+    padding: 0 30px;
+  }
+}
+input[type="text"]:-ms-input-placeholder,
+input[type="email"]:-ms-input-placeholder,
+input[type="password"]:-ms-input-placeholder {
+  color: inherit;
+}
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: inherit;
 }
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus {
   color: #fff;
   outline: none;
+}
+input[type="text"]:focus + i,
+input[type="email"]:focus + i,
+input[type="password"]:focus + i {
+  color: #fff;
 }
 .submit-holder {
   padding-top: 20px;
@@ -695,19 +755,56 @@ input[type="password"]:focus {
     padding-top: 9px;
   }
 }
+@media screen and (min-width: 1280px) {
+  .submit-holder {
+    padding-top: 36px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .submit-holder {
+    padding-top: 30px;
+  }
+}
 .input-wrap {
   margin: 0 0 33px;
   position: relative;
   display: block;
 }
+@media screen and (min-width: 1280px) {
+  .input-wrap {
+    margin: 0 0 14px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .input-wrap {
+    margin: 0 0 20px;
+  }
+}
 .input-wrap i {
+  transition: color .3s;
   position: absolute;
   top: 44%;
   transform: translateY(-50%);
   left: 7px;
   display: block;
-  color: #93a3b6;
+  color: #8da5b8;
   font-size: 18px;
+}
+@media screen and (min-width: 1366px) {
+  .input-wrap i {
+    font-size: 14px;
+    left: 0;
+  }
+}
+.error-text {
+  transition: opacity .3s, visibility .3s;
+  color: #f75c4c;
+  font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  bottom: -20px;
+  left: 0;
 }
 /*not checked styles*/
 .main-page-title {
@@ -1147,13 +1244,6 @@ input[type="password"]:focus {
   text-indent: -9999px;
   position: absolute;
   font-size: 28px;
-}
-.invalid {
-  border-bottom-color: #f75c4c;
-}
-.error-text {
-  color: #bc5049;
-  font-size: 12px;
 }
 /*modal window*/
 .cover-wrapper {
