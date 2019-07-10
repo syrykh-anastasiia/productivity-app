@@ -11,7 +11,7 @@ class SettingsCategoriesView {
 							category3: JSON.parse(LocalStorageData.getFromLS('Categories'))['3'][1],
 							category4: JSON.parse(LocalStorageData.getFromLS('Categories'))['4'][1]});
         document.getElementsByClassName('settings-holder')[0].innerHTML = data;
-		document.title = 'Choose Categories';
-        document.getElementsByTagName('h2')[0].innerHTML = 'Pomodoros settings';
+		document.title = 'Settings Categories';
+        document.getElementsByTagName('h2')[0].innerHTML = 'Choose Categories';
 	}
 }

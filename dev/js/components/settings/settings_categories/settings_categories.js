@@ -3,10 +3,11 @@ window.initSettingsCategories = function() {
 	settingsCategoriesModel.setDefaultData();
 	var settingsCategoriesView = new SettingsCategoriesView();
 	var settingsCategoriesController = new SettingsCategoriesController(settingsCategoriesModel, settingsCategoriesView);
-	//settingsCategoriesView.render();
 
 	EventBus.on('renderSettingsCategories', function() {
 		settingsCategoriesView.render();
+        settingsCategoriesController.classOnFocus();
+
 	});
 	EventBus.on('settingsCategoriesDataSaving', function([key, value]) {
 		settingsCategoriesModel.saveData(key, value);

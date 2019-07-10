@@ -23,5 +23,9 @@ class SettingsCategoriesController {
 		 	}
 		});
 	}
+
+	classOnFocus() {
+        $('.category-input input').focus();
+	}
 }
 

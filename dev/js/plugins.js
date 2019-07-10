@@ -12,6 +12,17 @@
 	};
 }(jQuery));
 (function($) {
+    $.fn.focus = function() {
+        $(this).on('focusin', function() {
+            $(this).parent('.category-input').addClass('focus');
+        });
+        $(this).on('focusout', function() {
+            $(this).parent('.category-input').removeClass('focus');
+        });
+        return this;
+    };
+}(jQuery));
+(function($) {
 
 	$.fn.modal = function(prop) {
 		var modalContainer = $('.modal');

@@ -76,6 +76,10 @@ body {
 		padding: 100px 0 0;
 	}
 
+	@media @desktop-md {
+		padding: 94px 0 0;
+	}
+
 	.login-page & {
 		padding: 30px 0;
 
@@ -361,6 +365,11 @@ input[type="password"] {
 		position: relative;
 		padding-left: 23px;
 
+		@media @desktop-md {
+			padding-left: 16px;
+		}
+
+
 		&.active {
 			a {
 				color: @white;
@@ -373,6 +382,10 @@ input[type="password"] {
 			position: absolute;
 			top: 0;
 			left: 6px;
+
+			@media @desktop-md {
+				left: 4px;
+			}
 		}
 
 		&:first-child {
@@ -403,6 +416,17 @@ input[type="password"] {
 	@media @desktop {
 		margin: 0 0 60px;
 	}
+
+	@media @desktop-md {
+		flex-direction: column;
+		margin: 0 0 12px;
+	}
+
+	.tabs-block {
+		@media @desktop-md {
+			margin-top: -27px;
+		}
+	}
 }
 
 .settings-pomodoros-holder {
@@ -423,6 +447,10 @@ input[type="password"] {
 			padding: 0 0 0 96px;
 			max-width: 400px;
 			margin-bottom: 64px;
+		}
+
+		@media @desktop-md {
+			margin-bottom: 45px;
 		}
 	}
 
@@ -497,6 +525,74 @@ input[type="password"] {
 		background-color: #77a9e0;
 	}
 }*/
+
+.categories-list {
+	.listreset();
+
+	max-width: 540px;
+	margin: 0 auto;
+
+	li {
+		padding-left: 25px;
+	}
+
+	.category-input {
+		position: relative;
+		display: block;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			border-radius: 50%;
+			width: 9px;
+			height: 9px;
+			background-color: #77d3d8;
+			border: 2px solid #77d3d8;
+			box-shadow: 0 0 0 4px #77d3d8;
+			transition: border-color .3s;
+		}
+
+		&.focus {
+			&:before {
+				border-color: @base-background-color;
+			}
+		}
+	}
+
+	.category-0 {
+		&:before {
+			background-color: #ecb029;
+			border-color: #ecb029;
+			box-shadow: 0 0 0 4px #ecb029;
+		}
+	}
+
+	.category-1 {
+		&:before {
+			background-color: #77a9e0;
+			border-color: #77a9e0;
+			box-shadow: 0 0 0 4px #77a9e0;
+		}
+	}
+
+	.category-2 {
+		&:before {
+			background-color: #a36fcc;
+			border-color: #a36fcc;
+			box-shadow: 0 0 0 4px #a36fcc;
+		}
+	}
+
+	.category-3 {
+		&:before {
+			background-color: #c76c65;
+			border-color: #c76c65;
+			box-shadow: 0 0 0 4px #c76c65;
+		}
+	}
+}
 
 
 /*not checked styles*/

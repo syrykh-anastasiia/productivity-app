@@ -618,9 +618,10 @@ class SettingsController {
 		var btnHolder = document.getElementsByClassName('btn-group')[0];
 
         tabHolder.addEventListener('click', function(e) {
+            e.preventDefault();
             var target = e.target;
 			if(target.tagName == 'A') {
-                tabHolder.querySelector('li').classList.remove('active');
+                tabHolder.getElementsByClassName('active')[0].classList.remove('active');
                 target.closest('li').classList.add('active');
 				switch(target.innerHTML) {
 					case 'Pomodoros':
@@ -634,6 +635,7 @@ class SettingsController {
 		});
 
         btnHolder.addEventListener('click', function(e) {
+            e.preventDefault();
             var target = e.target;
             if(target.classList.contains('next-btn')) {
                 switch(document.title) {
@@ -680,6 +682,35 @@ window.initSettings = function() {
         settingsController.eventListeners();
     });
 };
+function ArrowsController(view) {
+	this.view = view;
+
+	this.view.render();
+
+	document.addEventListener('click', function() {
+		if(event.target.classList.contains('icon-arrow-left')) {
+			EventBus.trigger('routeChange', '#active_page');
+		} /*else if(event.target.classList.contains('icon-arrow-right')) {
+
+		}*/
+	});
+}
+function ArrowsTemplate() {
+  this.template = '<div class="arrow">' +
+		'<button class="arrows arrow-left"><a class="tooltip" title="Go To Task List"><i class="icons icon-arrow-left"></i></a></button>' +
+		'<button class="arrows arrow-right"><i class="icons icon-arrow-right"></i></button>' +
+	'</div>';
+}
+ArrowsTemplate.prototype.show = function() {
+	return this.template;
+}
+function ArrowsView(template) {
+	this.template = Handlebars.compile(template);
+}
+ArrowsView.prototype.render = function() {
+	var hTemplate = this.template;
+	document.querySelector('.content-area').innerHTML += hTemplate();
+}
 class HeaderController {
 	constructor(view) {
         this.view = view;
@@ -1245,6 +1276,10 @@ class SettingsCategoriesController {
 		 	}
 		});
 	}
+
+	classOnFocus() {
+        $('.category-input input').focus();
+	}
 }
 
 
@@ -1295,8 +1330,8 @@ class SettingsCategoriesView {
 							category3: JSON.parse(LocalStorageData.getFromLS('Categories'))['3'][1],
 							category4: JSON.parse(LocalStorageData.getFromLS('Categories'))['4'][1]});
         document.getElementsByClassName('settings-holder')[0].innerHTML = data;
-		document.title = 'Choose Categories';
-        document.getElementsByTagName('h2')[0].innerHTML = 'Pomodoros settings';
+		document.title = 'Settings Categories';
+        document.getElementsByTagName('h2')[0].innerHTML = 'Choose Categories';
 	}
 }
 window.initSettingsCategories = function() {
@@ -1304,10 +1339,11 @@ window.initSettingsCategories = function() {
 	settingsCategoriesModel.setDefaultData();
 	var settingsCategoriesView = new SettingsCategoriesView();
 	var settingsCategoriesController = new SettingsCategoriesController(settingsCategoriesModel, settingsCategoriesView);
-	//settingsCategoriesView.render();
 
 	EventBus.on('renderSettingsCategories', function() {
 		settingsCategoriesView.render();
+        settingsCategoriesController.classOnFocus();
+
 	});
 	EventBus.on('settingsCategoriesDataSaving', function([key, value]) {
 		settingsCategoriesModel.saveData(key, value);
@@ -1441,35 +1477,6 @@ window.initSettingsPomodoros = function() {
 	});
 };
 
-function ArrowsController(view) {
-	this.view = view;
-
-	this.view.render();
-
-	document.addEventListener('click', function() {
-		if(event.target.classList.contains('icon-arrow-left')) {
-			EventBus.trigger('routeChange', '#active_page');
-		} /*else if(event.target.classList.contains('icon-arrow-right')) {
-
-		}*/
-	});
-}
-function ArrowsTemplate() {
-  this.template = '<div class="arrow">' +
-		'<button class="arrows arrow-left"><a class="tooltip" title="Go To Task List"><i class="icons icon-arrow-left"></i></a></button>' +
-		'<button class="arrows arrow-right"><i class="icons icon-arrow-right"></i></button>' +
-	'</div>';
-}
-ArrowsTemplate.prototype.show = function() {
-	return this.template;
-}
-function ArrowsView(template) {
-	this.template = Handlebars.compile(template);
-}
-ArrowsView.prototype.render = function() {
-	var hTemplate = this.template;
-	document.querySelector('.content-area').innerHTML += hTemplate();
-}
 function CycleController() {
 	var workTime = new Inputs({
 		elem: document.getElementById('workTime'),

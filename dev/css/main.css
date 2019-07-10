@@ -609,6 +609,11 @@ body:after {
     padding: 100px 0 0;
   }
 }
+@media screen and (min-width: 1366px) {
+  #main {
+    padding: 94px 0 0;
+  }
+}
 .login-page #main {
   padding: 30px 0;
 }
@@ -912,6 +917,11 @@ input[type="password"]:focus + i {
   position: relative;
   padding-left: 23px;
 }
+@media screen and (min-width: 1366px) {
+  .tabs-block li {
+    padding-left: 16px;
+  }
+}
 .tabs-block li.active a {
   color: #fff;
   pointer-events: none;
@@ -921,6 +931,11 @@ input[type="password"]:focus + i {
   position: absolute;
   top: 0;
   left: 6px;
+}
+@media screen and (min-width: 1366px) {
+  .tabs-block li:before {
+    left: 4px;
+  }
 }
 .tabs-block li:first-child:before {
   content: none;
@@ -948,6 +963,18 @@ input[type="password"]:focus + i {
     margin: 0 0 60px;
   }
 }
+@media screen and (min-width: 1366px) {
+  .subtitle-holder {
+    -ms-flex-direction: column;
+        flex-direction: column;
+    margin: 0 0 12px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .subtitle-holder .tabs-block {
+    margin-top: -27px;
+  }
+}
 .settings-pomodoros-holder {
   text-align: left;
 }
@@ -970,6 +997,11 @@ input[type="password"]:focus + i {
     padding: 0 0 0 96px;
     max-width: 400px;
     margin-bottom: 64px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .settings-pomodoros-holder .column {
+    margin-bottom: 45px;
   }
 }
 .settings-pomodoros-holder h4 {
@@ -1036,6 +1068,56 @@ input[type="password"]:focus + i {
 		background-color: #77a9e0;
 	}
 }*/
+.categories-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  max-width: 540px;
+  margin: 0 auto;
+}
+.categories-list li {
+  padding-left: 25px;
+}
+.categories-list .category-input {
+  position: relative;
+  display: block;
+}
+.categories-list .category-input:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  width: 9px;
+  height: 9px;
+  background-color: #77d3d8;
+  border: 2px solid #77d3d8;
+  box-shadow: 0 0 0 4px #77d3d8;
+  transition: border-color 0.3s;
+}
+.categories-list .category-input.focus:before {
+  border-color: #2a3f50;
+}
+.categories-list .category-0:before {
+  background-color: #ecb029;
+  border-color: #ecb029;
+  box-shadow: 0 0 0 4px #ecb029;
+}
+.categories-list .category-1:before {
+  background-color: #77a9e0;
+  border-color: #77a9e0;
+  box-shadow: 0 0 0 4px #77a9e0;
+}
+.categories-list .category-2:before {
+  background-color: #a36fcc;
+  border-color: #a36fcc;
+  box-shadow: 0 0 0 4px #a36fcc;
+}
+.categories-list .category-3:before {
+  background-color: #c76c65;
+  border-color: #c76c65;
+  box-shadow: 0 0 0 4px #c76c65;
+}
 /*not checked styles*/
 /* tooltip */
 .tooltips-block {
@@ -1911,6 +1993,11 @@ input[type="password"]:focus + i {
     padding: 47px 0 5px;
   }
 }
+@media screen and (min-width: 1366px) {
+  #header {
+    padding: 48px 0 5px;
+  }
+}
 #header.fixed {
   position: fixed;
   z-index: 200;
@@ -1939,6 +2026,11 @@ input[type="password"]:focus + i {
 @media screen and (min-width: 1280px) {
   .main-menu {
     font-size: 24px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .main-menu {
+    font-size: 18px;
   }
 }
 .main-menu li {
