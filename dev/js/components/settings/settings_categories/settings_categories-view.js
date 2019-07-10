@@ -1,8 +1,3 @@
-/**
-* @constructor
-* @param template
-* @name SettingsCategoriesView
-*/
 class SettingsCategoriesView {
 	constructor() {
 		this.template = Handlebars.compile($('#settingsCategoriesTemplate').html());
@@ -15,10 +10,8 @@ class SettingsCategoriesView {
 							category2: JSON.parse(LocalStorageData.getFromLS('Categories'))['2'][1],
 							category3: JSON.parse(LocalStorageData.getFromLS('Categories'))['3'][1],
 							category4: JSON.parse(LocalStorageData.getFromLS('Categories'))['4'][1]});
-		document.getElementById('settings-container').innerHTML += data;
-		document.title = 'Settings Categories';
-	}
-	destroy() {
-		
+        document.getElementsByClassName('settings-holder')[0].innerHTML = data;
+		document.title = 'Choose Categories';
+        document.getElementsByTagName('h2')[0].innerHTML = 'Pomodoros settings';
 	}
 }

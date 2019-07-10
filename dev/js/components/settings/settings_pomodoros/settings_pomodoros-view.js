@@ -9,7 +9,7 @@ class SettingsPomodorosView {
 							workIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[2][1],
 							shortBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[1][1],
 							longBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[3][1]});
-		document.getElementsByClassName('settings-holder')[0].innerHTML += data;
+		document.getElementsByClassName('settings-holder')[0].innerHTML = data;
 		document.title = 'Settings Pomodoros';
 		document.getElementsByTagName('h2')[0].innerHTML = 'Pomodoros settings';
 	}

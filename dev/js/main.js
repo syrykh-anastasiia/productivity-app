@@ -244,33 +244,6 @@ function notification(text) {
     });
   }
 }
-class TaskCollectionModel {
-	constructor() {
-		this.collection = this.collection || {};
-		//
-	}
-	add(key, task) {
-		this.collection[key] = task;
-		LocalStorageData.setToLS('TaskList', JSON.stringify(this.collection));
-		if(location.hash === '#active_page') {
-			EventBus.trigger('renderTask', [task, key]);
-			//TaskView(task, key);
-		}
-	}
-	getTask(taskId) {
-		return this.collection[taskId];	
-	}
-	removeTask(taskId) {
-		delete this.collection[taskId];
-	}
-	getByProperty(property, sortValue) {
-		var keys = Object.keys(this.collection);
-		console.log(keys);
-		for(var i = 0; i < keys.length; i++) {
-			console.log(this.collection[i]);
-		}
-	}
-}
 class TaskController {
 	constructor(model, view) {
 		this.model = model;
@@ -378,6 +351,33 @@ window.initTask = function() {
 	
 }
 
+class TaskCollectionModel {
+	constructor() {
+		this.collection = this.collection || {};
+		//
+	}
+	add(key, task) {
+		this.collection[key] = task;
+		LocalStorageData.setToLS('TaskList', JSON.stringify(this.collection));
+		if(location.hash === '#active_page') {
+			EventBus.trigger('renderTask', [task, key]);
+			//TaskView(task, key);
+		}
+	}
+	getTask(taskId) {
+		return this.collection[taskId];	
+	}
+	removeTask(taskId) {
+		delete this.collection[taskId];
+	}
+	getByProperty(property, sortValue) {
+		var keys = Object.keys(this.collection);
+		console.log(keys);
+		for(var i = 0; i < keys.length; i++) {
+			console.log(this.collection[i]);
+		}
+	}
+}
 /**
 * @constructor
 * @param model
@@ -612,27 +612,40 @@ class SettingsController {
 		//self.componentData;
 		//self.componentView;
 	}
-	changesTracking() {
-		var container = document.getElementsByClassName('btn-group')[0];
 
-		container.addEventListener('click', function(event) {
-            if(event.target.classList.contains('next-btn')) {
-                //self.model.updateData([elem, parseInt(value)]);
-                //EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-                //window.initSettingsCategories();
+    eventListeners() {
+		var tabHolder = document.getElementsByClassName('tabs-block')[0];
+		var btnHolder = document.getElementsByClassName('btn-group')[0];
 
-                /*working variant*/
-                //EventBus.trigger('renderSettingsCategories');
-            }
-            if(event.target.classList.contains('save-btn')) {
-				//self.model.updateData([elem, parseInt(value)]);
-				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-				//window.initSettingsCategories();
-
-				/*working variant*/
-				//EventBus.trigger('renderSettingsCategories');
-			} 
+        tabHolder.addEventListener('click', function(e) {
+            var target = e.target;
+			if(target.tagName == 'A') {
+                tabHolder.querySelector('li').classList.remove('active');
+                target.closest('li').classList.add('active');
+				switch(target.innerHTML) {
+					case 'Pomodoros':
+						EventBus.trigger('renderSettingsPomodoros');
+					break;
+                    case 'Categories':
+                        EventBus.trigger('renderSettingsCategories');
+                    break;
+				}
+			}
 		});
+
+        btnHolder.addEventListener('click', function(e) {
+            var target = e.target;
+            if(target.classList.contains('next-btn')) {
+                switch(document.title) {
+                    case 'Settings Pomodoros':
+                        EventBus.trigger('renderSettingsCategories');
+                    break;
+                    case 'Settings Categories':
+                        EventBus.trigger('renderActivePage');
+                    break;
+                }
+            }
+        });
 	}
 }
 
@@ -664,37 +677,9 @@ window.initSettings = function() {
 
     EventBus.on('renderSettings', function() {
         settingsView.render();
+        settingsController.eventListeners();
     });
 };
-function ArrowsController(view) {
-	this.view = view;
-
-	this.view.render();
-
-	document.addEventListener('click', function() {
-		if(event.target.classList.contains('icon-arrow-left')) {
-			EventBus.trigger('routeChange', '#active_page');
-		} /*else if(event.target.classList.contains('icon-arrow-right')) {
-
-		}*/
-	});
-}
-function ArrowsTemplate() {
-  this.template = '<div class="arrow">' +
-		'<button class="arrows arrow-left"><a class="tooltip" title="Go To Task List"><i class="icons icon-arrow-left"></i></a></button>' +
-		'<button class="arrows arrow-right"><i class="icons icon-arrow-right"></i></button>' +
-	'</div>';
-}
-ArrowsTemplate.prototype.show = function() {
-	return this.template;
-}
-function ArrowsView(template) {
-	this.template = Handlebars.compile(template);
-}
-ArrowsView.prototype.render = function() {
-	var hTemplate = this.template;
-	document.querySelector('.content-area').innerHTML += hTemplate();
-}
 class HeaderController {
 	constructor(view) {
         this.view = view;
@@ -1235,12 +1220,6 @@ window.initTimer = function() {
 		timerView.render();
 	});
 };
-/**
-* @constructor
-* @param model
-* @param view
-* @name SettingsCategoriesController
-*/
 class SettingsCategoriesController {
 	constructor(model, view) {
 		this.view = view;
@@ -1250,11 +1229,6 @@ class SettingsCategoriesController {
 			var target = event.target;
 			if(target.closest('.category-input-text')) {
 				EventBus.trigger('savingCategoriesData', [target.id, target.value]);
-				var container = document.querySelector('.btn-group');
-
-				var btnTemplate = '<button class="action-btn back-btn">Back</button>' +
-					'<button class="action-btn save-btn">Save</button>';
-				container.innerHTML = btnTemplate;
 
 				container.addEventListener('click', function(event) {
 					if(event.target.className === 'action-btn save-btn') {
@@ -1274,10 +1248,6 @@ class SettingsCategoriesController {
 }
 
 
-/**
-* @constructor
-* @name SettingsCategoriesModel
-*/
 class SettingsCategoriesModel {
 	constructor() {
 		//let self = this;
@@ -1288,18 +1258,14 @@ class SettingsCategoriesModel {
 		LocalStorageData.setToLS('Categories', self.parseLSData(index, title));
 		EventBus.trigger('dataSet', 'Categories');
 	}
-/**
-* @memberof SettingsCategoriesModel
-*/
+
 	setDefaultData() {
-		if(LocalStorageData.getFromLS('Categories') === null  && location.hash == '#settings_categories') {
+		if(LocalStorageData.getFromLS('Categories') === null && location.hash == '#settings' ) {
 			LocalStorageData.setToLS('Categories', JSON.stringify([[0, 'Work'], [1, 'Education'], [2, 'Hobby'], [3, 'Sport'], [4, 'Other']]));
 			EventBus.trigger('dataSet', 'Categories');
 		}
 	}
-/**
-* @memberof SettingsCategoriesModel
-*/
+
 	parseLSData(index, title) {
 		let obj = {};
 		obj = JSON.parse(LocalStorageData.getFromLS('Categories'));
@@ -1310,19 +1276,12 @@ class SettingsCategoriesModel {
 		}
 		return JSON.stringify(obj);
 	}
-/**
-* @memberof SettingsCategoriesModel
-*/
+
 	saveData(id, value) {
 		let self = this;
 		LocalStorageData.setToLS('Categories', self.parseLSData(id, value));
 	}
 }
-/**
-* @constructor
-* @param template
-* @name SettingsCategoriesView
-*/
 class SettingsCategoriesView {
 	constructor() {
 		this.template = Handlebars.compile($('#settingsCategoriesTemplate').html());
@@ -1335,11 +1294,9 @@ class SettingsCategoriesView {
 							category2: JSON.parse(LocalStorageData.getFromLS('Categories'))['2'][1],
 							category3: JSON.parse(LocalStorageData.getFromLS('Categories'))['3'][1],
 							category4: JSON.parse(LocalStorageData.getFromLS('Categories'))['4'][1]});
-		document.getElementById('settings-container').innerHTML += data;
-		document.title = 'Settings Categories';
-	}
-	destroy() {
-		
+        document.getElementsByClassName('settings-holder')[0].innerHTML = data;
+		document.title = 'Choose Categories';
+        document.getElementsByTagName('h2')[0].innerHTML = 'Pomodoros settings';
 	}
 }
 window.initSettingsCategories = function() {
@@ -1384,7 +1341,6 @@ class SettingsPomodorosController {
 	}
 
 	eventListeners() {
-
         var holder = document.getElementsByClassName('settings-pomodoros-holder')[0];
 
         holder.addEventListener('click', function(e) {
@@ -1400,20 +1356,6 @@ class SettingsPomodorosController {
                 if(valueHolder.innerHTML > 0) valueHolder.innerHTML = +valueHolder.innerHTML - 1;
             }
         });
-	}
-
-
-	changesTracking() {
-
-		container.addEventListener('click', function(event) {
-			if(event.target.className === 'action-btn save-btn') {
-				//self.model.updateData([elem, parseInt(value)]);
-				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-
-				//self.view.destroy();
-				//window.initSettingsCategories();
-			} 
-		});
 	}
 }
 
@@ -1463,7 +1405,7 @@ class SettingsPomodorosView {
 							workIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[2][1],
 							shortBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[1][1],
 							longBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[3][1]});
-		document.getElementsByClassName('settings-holder')[0].innerHTML += data;
+		document.getElementsByClassName('settings-holder')[0].innerHTML = data;
 		document.title = 'Settings Pomodoros';
 		document.getElementsByTagName('h2')[0].innerHTML = 'Pomodoros settings';
 	}
@@ -1496,10 +1438,38 @@ window.initSettingsPomodoros = function() {
 	});
 	EventBus.on('settingInputsChanges', function([elem, value]) {
 		settingsPomodorosModel.savingSettings(elem, parseInt(value));
-		settingsPomodorosController.changesTracking();
 	});
 };
 
+function ArrowsController(view) {
+	this.view = view;
+
+	this.view.render();
+
+	document.addEventListener('click', function() {
+		if(event.target.classList.contains('icon-arrow-left')) {
+			EventBus.trigger('routeChange', '#active_page');
+		} /*else if(event.target.classList.contains('icon-arrow-right')) {
+
+		}*/
+	});
+}
+function ArrowsTemplate() {
+  this.template = '<div class="arrow">' +
+		'<button class="arrows arrow-left"><a class="tooltip" title="Go To Task List"><i class="icons icon-arrow-left"></i></a></button>' +
+		'<button class="arrows arrow-right"><i class="icons icon-arrow-right"></i></button>' +
+	'</div>';
+}
+ArrowsTemplate.prototype.show = function() {
+	return this.template;
+}
+function ArrowsView(template) {
+	this.template = Handlebars.compile(template);
+}
+ArrowsView.prototype.render = function() {
+	var hTemplate = this.template;
+	document.querySelector('.content-area').innerHTML += hTemplate();
+}
 function CycleController() {
 	var workTime = new Inputs({
 		elem: document.getElementById('workTime'),

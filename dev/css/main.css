@@ -580,18 +580,18 @@ body:after {
 .container {
   padding: 0 30px;
   margin: 0 auto;
-  max-width: 1179px;
+  max-width: 1238px;
 }
-.login .container {
+.login-page .container {
   max-width: 600px;
 }
 @media screen and (min-width: 1280px) {
-  .login .container {
+  .login-page .container {
     max-width: 480px;
   }
 }
 @media screen and (min-width: 1366px) {
-  .login .container {
+  .login-page .container {
     max-width: 390px;
   }
 }
@@ -604,26 +604,31 @@ body:after {
     padding: 108px 0 0;
   }
 }
-.login #main {
+@media screen and (min-width: 1280px) {
+  #main {
+    padding: 100px 0 0;
+  }
+}
+.login-page #main {
   padding: 30px 0;
 }
 @media screen and (min-width: 768px) {
-  .login #main {
+  .login-page #main {
     padding: 63px 0 119px;
   }
 }
 @media screen and (min-width: 1024px) {
-  .login #main {
+  .login-page #main {
     padding: 50px 0 47px;
   }
 }
 @media screen and (min-width: 1280px) {
-  .login #main {
+  .login-page #main {
     padding: 116px 0 177px;
   }
 }
 @media screen and (min-width: 1366px) {
-  .login #main {
+  .login-page #main {
     padding: 49px 0 113px;
   }
 }
@@ -671,6 +676,7 @@ h1 {
 @media screen and (min-width: 1280px) {
   h1 {
     position: static;
+    margin: 0 0 23px;
   }
 }
 @media screen and (min-width: 1366px) {
@@ -884,9 +890,15 @@ input[type="password"]:focus + i {
   font-size: 24px;
   margin: 0 0 50px;
 }
+@media screen and (min-width: 1024px) {
+  .tabs-block {
+    margin: 0 0 31px;
+  }
+}
 @media screen and (min-width: 1280px) {
   .tabs-block {
     font-size: 22px;
+    margin: 0 0 63px;
   }
 }
 @media screen and (min-width: 1366px) {
@@ -902,6 +914,7 @@ input[type="password"]:focus + i {
 }
 .tabs-block li.active a {
   color: #fff;
+  pointer-events: none;
 }
 .tabs-block li:before {
   content: '|';
@@ -925,6 +938,16 @@ input[type="password"]:focus + i {
       flex-direction: column-reverse;
   margin: 0 0 45px;
 }
+@media screen and (min-width: 1024px) {
+  .subtitle-holder {
+    margin: 0 0 40px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .subtitle-holder {
+    margin: 0 0 60px;
+  }
+}
 .settings-pomodoros-holder {
   text-align: left;
 }
@@ -939,15 +962,24 @@ input[type="password"]:focus + i {
 .settings-pomodoros-holder .column {
   width: 50%;
   padding: 0 0 0 42px;
-  position: relative;
   max-width: 345px;
   margin: 0 auto 43px;
+}
+@media screen and (min-width: 1024px) {
+  .settings-pomodoros-holder .column {
+    padding: 0 0 0 96px;
+    max-width: 400px;
+    margin-bottom: 64px;
+  }
+}
+.settings-pomodoros-holder h4 {
+  position: relative;
 }
 .settings-pomodoros-holder h4:before {
   content: '';
   position: absolute;
-  top: 4px;
-  left: 5px;
+  top: 2px;
+  left: -38px;
   display: block;
   border-radius: 50%;
   width: 17px;
@@ -1874,6 +1906,11 @@ input[type="password"]:focus + i {
     padding: 35px 0 20px;
   }
 }
+@media screen and (min-width: 1280px) {
+  #header {
+    padding: 47px 0 5px;
+  }
+}
 #header.fixed {
   position: fixed;
   z-index: 200;
@@ -1898,6 +1935,11 @@ input[type="password"]:focus + i {
   list-style-type: none;
   float: right;
   font-size: 28px;
+}
+@media screen and (min-width: 1280px) {
+  .main-menu {
+    font-size: 24px;
+  }
 }
 .main-menu li {
   padding: 10px 0 10px 44px;

@@ -5,5 +5,6 @@ window.initSettings = function() {
 
     EventBus.on('renderSettings', function() {
         settingsView.render();
+        settingsController.eventListeners();
     });
 };

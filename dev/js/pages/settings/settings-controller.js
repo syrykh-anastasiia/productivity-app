@@ -6,27 +6,40 @@ class SettingsController {
 		//self.componentData;
 		//self.componentView;
 	}
-	changesTracking() {
-		var container = document.getElementsByClassName('btn-group')[0];
 
-		container.addEventListener('click', function(event) {
-            if(event.target.classList.contains('next-btn')) {
-                //self.model.updateData([elem, parseInt(value)]);
-                //EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-                //window.initSettingsCategories();
+    eventListeners() {
+		var tabHolder = document.getElementsByClassName('tabs-block')[0];
+		var btnHolder = document.getElementsByClassName('btn-group')[0];
 
-                /*working variant*/
-                //EventBus.trigger('renderSettingsCategories');
-            }
-            if(event.target.classList.contains('save-btn')) {
-				//self.model.updateData([elem, parseInt(value)]);
-				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-				//window.initSettingsCategories();
-
-				/*working variant*/
-				//EventBus.trigger('renderSettingsCategories');
-			} 
+        tabHolder.addEventListener('click', function(e) {
+            var target = e.target;
+			if(target.tagName == 'A') {
+                tabHolder.querySelector('li').classList.remove('active');
+                target.closest('li').classList.add('active');
+				switch(target.innerHTML) {
+					case 'Pomodoros':
+						EventBus.trigger('renderSettingsPomodoros');
+					break;
+                    case 'Categories':
+                        EventBus.trigger('renderSettingsCategories');
+                    break;
+				}
+			}
 		});
+
+        btnHolder.addEventListener('click', function(e) {
+            var target = e.target;
+            if(target.classList.contains('next-btn')) {
+                switch(document.title) {
+                    case 'Settings Pomodoros':
+                        EventBus.trigger('renderSettingsCategories');
+                    break;
+                    case 'Settings Categories':
+                        EventBus.trigger('renderActivePage');
+                    break;
+                }
+            }
+        });
 	}
 }
 

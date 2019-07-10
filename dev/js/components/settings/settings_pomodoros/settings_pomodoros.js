@@ -19,6 +19,5 @@ window.initSettingsPomodoros = function() {
 	});
 	EventBus.on('settingInputsChanges', function([elem, value]) {
 		settingsPomodorosModel.savingSettings(elem, parseInt(value));
-		settingsPomodorosController.changesTracking();
 	});
 };

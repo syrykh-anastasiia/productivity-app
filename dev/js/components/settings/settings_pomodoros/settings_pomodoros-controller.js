@@ -22,7 +22,6 @@ class SettingsPomodorosController {
 	}
 
 	eventListeners() {
-
         var holder = document.getElementsByClassName('settings-pomodoros-holder')[0];
 
         holder.addEventListener('click', function(e) {
@@ -38,20 +37,6 @@ class SettingsPomodorosController {
                 if(valueHolder.innerHTML > 0) valueHolder.innerHTML = +valueHolder.innerHTML - 1;
             }
         });
-	}
-
-
-	changesTracking() {
-
-		container.addEventListener('click', function(event) {
-			if(event.target.className === 'action-btn save-btn') {
-				//self.model.updateData([elem, parseInt(value)]);
-				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-
-				//self.view.destroy();
-				//window.initSettingsCategories();
-			} 
-		});
 	}
 }
 
