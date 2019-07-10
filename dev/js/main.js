@@ -6,7 +6,6 @@ window.addEventListener('load', function() {
 
 window.initApp = function() {
     let mainTemplate = Handlebars.compile($('#mainTemplate').html());
-    let mainHeadlineTemplate = Handlebars.compile($('#pageHeadlineTemplate').html());
 
     window.initHeader();
     window.initModalWindow();
@@ -27,9 +26,9 @@ window.initApp = function() {
 
     let currentHash = location.hash;
 
-    if(currentHash.length === 0 || currentHash === '#') EventBus.trigger('routeChange', '#login');
+    if(currentHash.length === 0 || currentHash === '#' || !LocalStorageData.getFromLS('username')) EventBus.trigger('routeChange', '#login');
     else Router.routing(location.hash.substr(1));
-}
+};
 EventBus = {
 	events: {},
 	on: function(eventName, func) { //subscribe
@@ -58,9 +57,6 @@ class Router {
 	static routing(location) {
 		let currentLocation = location || window.location.hash.substr(1);
 		EventBus.trigger('getRemoteFBData');
-        if(LocalStorageData.getFromLS('username')) {
-            EventBus.trigger('afterLogin');
-        }
 		switch(currentLocation) {
 			case 'login':
 				EventBus.trigger('renderLogin');
@@ -96,7 +92,7 @@ EventBus.on('afterLogin', function() {
     } else {
         EventBus.trigger('routeChange', '#active_page');
     }
-})
+});
 
 window.addEventListener('hashchange', function() {
 	Router.routing();
@@ -248,6 +244,33 @@ function notification(text) {
     });
   }
 }
+class TaskCollectionModel {
+	constructor() {
+		this.collection = this.collection || {};
+		//
+	}
+	add(key, task) {
+		this.collection[key] = task;
+		LocalStorageData.setToLS('TaskList', JSON.stringify(this.collection));
+		if(location.hash === '#active_page') {
+			EventBus.trigger('renderTask', [task, key]);
+			//TaskView(task, key);
+		}
+	}
+	getTask(taskId) {
+		return this.collection[taskId];	
+	}
+	removeTask(taskId) {
+		delete this.collection[taskId];
+	}
+	getByProperty(property, sortValue) {
+		var keys = Object.keys(this.collection);
+		console.log(keys);
+		for(var i = 0; i < keys.length; i++) {
+			console.log(this.collection[i]);
+		}
+	}
+}
 class TaskController {
 	constructor(model, view) {
 		this.model = model;
@@ -355,33 +378,6 @@ window.initTask = function() {
 	
 }
 
-class TaskCollectionModel {
-	constructor() {
-		this.collection = this.collection || {};
-		//
-	}
-	add(key, task) {
-		this.collection[key] = task;
-		LocalStorageData.setToLS('TaskList', JSON.stringify(this.collection));
-		if(location.hash === '#active_page') {
-			EventBus.trigger('renderTask', [task, key]);
-			//TaskView(task, key);
-		}
-	}
-	getTask(taskId) {
-		return this.collection[taskId];	
-	}
-	removeTask(taskId) {
-		delete this.collection[taskId];
-	}
-	getByProperty(property, sortValue) {
-		var keys = Object.keys(this.collection);
-		console.log(keys);
-		for(var i = 0; i < keys.length; i++) {
-			console.log(this.collection[i]);
-		}
-	}
-}
 /**
 * @constructor
 * @param model
@@ -552,7 +548,8 @@ window.initActivePage = function() {
 
 class LoginController {
 	constructor(view) {
-		this.view = view;
+	    var self = this;
+        self.view = view;
 	}
 
 	formValidation() {
@@ -568,7 +565,7 @@ class LoginController {
             if(validation) {
                 LocalStorageData.setToLS('username', inputUser);
                 EventBus.trigger('afterLogin');
-                this.view.destroy();
+                //self.view.destroy();
             } else {
                 document.querySelector('input[name="username"]').value = '';
                 document.querySelector('input[name="password"]').value = '';
@@ -607,62 +604,45 @@ window.initLogin = function() {
     });
 };
 
-/**
-* @constructor
-* @param model
-* @param view
-* @name SettingsController
-*/
 class SettingsController {
 	constructor(model, view) {
 		let self = this;
 		self.view = view;
 		self.model = model;
-		self.componentData;
-		self.componentView;
-
-		//window.initAppControlls();
-		
-		var $tabs = $('#tabs');
-		$tabs.tabs();
-
-		$('.setting-btn').tooltips();
+		//self.componentData;
+		//self.componentView;
 	}
 	changesTracking() {
 		var container = document.getElementsByClassName('btn-group')[0];
 
-		var btnTemplate = '<button class="action-btn back-btn">Back</button>' +
-			'<button class="action-btn save-btn">Save</button>';
-		container.innerHTML = btnTemplate;
-
 		container.addEventListener('click', function(event) {
-			if(event.target.className === 'action-btn save-btn') {
+            if(event.target.classList.contains('next-btn')) {
+                //self.model.updateData([elem, parseInt(value)]);
+                //EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
+                //window.initSettingsCategories();
+
+                /*working variant*/
+                //EventBus.trigger('renderSettingsCategories');
+            }
+            if(event.target.classList.contains('save-btn')) {
 				//self.model.updateData([elem, parseInt(value)]);
 				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
 				//window.initSettingsCategories();
-                EventBus.trigger('renderSettingsCategories');
+
+				/*working variant*/
+				//EventBus.trigger('renderSettingsCategories');
 			} 
 		});
 	}
 }
 
 
-/**
-* @constructor
-* @name SettingsModel
-*/
 class SettingsModel {
 	constructor() {
 		let self = this;
 	}
 	/*move same methods here and just send params*/
 }
-/**
-* @constructor
-* @param template
-* @name SettingsView
-*/
-
 class SettingsView {
 	constructor() {
         this.template = Handlebars.compile($('#settingsTemplate').html());
@@ -673,6 +653,8 @@ class SettingsView {
         container.innerHTML = this.template();
 		document.title = 'Settings';
         EventBus.trigger('renderSettingsPomodoros');
+
+        //$('.tabs-block').tabs();
 	}
 }
 window.initSettings = function() {
@@ -738,6 +720,7 @@ class HeaderView {
 	render(holder) {
         holder.innerHTML += this.template();
 		$('.sticky-header').stickyHeader();
+        //$('.tooltip').tooltips();
 	}
 }
 window.initHeader = function() {
@@ -1385,7 +1368,7 @@ window.initSettingsCategories = function() {
 */
 class SettingsPomodorosController {
 	constructor(model, view) {
-		let self = this;
+		var self = this;
 		self.view = view;
 		self.model = model;
 		self.componentData;
@@ -1394,58 +1377,65 @@ class SettingsPomodorosController {
 		document.addEventListener('click', function(event) {
 		 	var target = event.target;
 		 	if(target.closest('#nextToSetCat')){
-				self.view.destroy();
-				window.initSettingsCategories();
+				//self.view.destroy();
+				//window.initSettingsCategories();
 		 	}
 		});
 	}
-	changesTracking() {
-		let self = this;
-		let container = document.querySelector('.btn-group');
 
-		let btnTemplate = '<button class="action-btn back-btn">Back</button>' +
-			'<button class="action-btn save-btn">Save</button>';
-		container.innerHTML = btnTemplate;
+	eventListeners() {
+
+        var holder = document.getElementsByClassName('settings-pomodoros-holder')[0];
+
+        holder.addEventListener('click', function(e) {
+            e.preventDefault();
+            var target = e.target;
+            if(target.closest('.increase')) {
+                var valueHolder = target.closest('.counter-holder').querySelector('.value');
+                valueHolder.innerHTML = +valueHolder.innerHTML + 1;
+            }
+
+            if(target.closest('.decrease')) {
+                var valueHolder = target.closest('.counter-holder').querySelector('.value');
+                if(valueHolder.innerHTML > 0) valueHolder.innerHTML = +valueHolder.innerHTML - 1;
+            }
+        });
+	}
+
+
+	changesTracking() {
 
 		container.addEventListener('click', function(event) {
 			if(event.target.className === 'action-btn save-btn') {
 				//self.model.updateData([elem, parseInt(value)]);
 				//EventBus.trigger('savingPomodorosData', [elem, parseInt(value)]);
-				self.view.destroy();
-				window.initSettingsCategories();
+
+				//self.view.destroy();
+				//window.initSettingsCategories();
 			} 
 		});
 	}
 }
 
 
-/**
-* @constructor
-* @name SettingsModel
-*/
 class SettingsPomodorosModel {
 	constructor() {
 		let self = this;
 	}
+
 	savingSettings(index, title) {
 		let self = this;
 		LocalStorageData.setToLS('Pomodoros', self.parseLSData(index, title));
 		EventBus.trigger('dataSet', 'Pomodoros');
 	}
-/**
-* @memberof SettingsModel
-* @summary setDefaultData function
-*/
+
 	setDefaultData() {
 		if(LocalStorageData.getFromLS('Pomodoros') === null && location.hash == '#settings') {
 			LocalStorageData.setToLS('Pomodoros', JSON.stringify([['workTime', 25], ['shortBreak', 1], ['workIteration', 5], ['longBreak', 45]]));
 			EventBus.trigger('dataSet', 'Pomodoros');
 		}
 	}
-/**
-* @memberof SettingsModel
-* @summary parseLSData function
-*/
+
 	parseLSData(elemId, newValue) {
 		let obj = {};
 		obj = JSON.parse(LocalStorageData.getFromLS('Pomodoros'));
@@ -1456,42 +1446,34 @@ class SettingsPomodorosModel {
 		}
 		return JSON.stringify(obj);
 	}
-/**
-* @memberof SettingsModel
-* @summary saveData function
-*/
+
 	saveData(id, value) {
 		let self = this;
 		LocalStorageData.setToLS('Pomodoros', self.parseLSData(id, value));
 	}
 }
-/**
-* @constructor
-* @param template
-* @name SettingsPomodorosView
-*/
-
 class SettingsPomodorosView {
 	constructor() {
 		this.template = Handlebars.compile($('#settingsPomodorosTemplate').html());
 	}
 
 	render() {
-		//AppControllsController();
 		let hTemplate = this.template;
 		let data = hTemplate({workTimeIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[0][1],
 							workIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[2][1],
 							shortBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[1][1],
 							longBreakIterations: JSON.parse(LocalStorageData.getFromLS('Pomodoros'))[3][1]});
-		document.getElementById('settings-container').innerHTML += data;
+		document.getElementsByClassName('settings-holder')[0].innerHTML += data;
 		document.title = 'Settings Pomodoros';
+		document.getElementsByTagName('h2')[0].innerHTML = 'Pomodoros settings';
 	}
-	destroy() {
+
+	/*destroy() {
 		let container = document.getElementById('settings-pomodoros');
 		if(container) {
 			document.getElementById('settings-container').removeChild(container);
 		}
-	}
+	}*/
 }
 window.initSettingsPomodoros = function() {
 	let settingsPomodorosModel = new SettingsPomodorosModel;
@@ -1504,8 +1486,10 @@ window.initSettingsPomodoros = function() {
 
 	//app.settingsController.componentData = new CycleInput();
 	//app.settingsController.componentView = new CycleTimeline(self.componentData);
+
 	EventBus.on('renderSettingsPomodoros', function() {
 		settingsPomodorosView.render();
+        settingsPomodorosController.eventListeners();
 	});
 	EventBus.on('settingsDataSaving', function([key, value]) {
 		settingsPomodorosModel.saveData(key, value);

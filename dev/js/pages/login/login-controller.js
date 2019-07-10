@@ -1,6 +1,7 @@
 class LoginController {
 	constructor(view) {
-		this.view = view;
+	    var self = this;
+        self.view = view;
 	}
 
 	formValidation() {
@@ -16,7 +17,7 @@ class LoginController {
             if(validation) {
                 LocalStorageData.setToLS('username', inputUser);
                 EventBus.trigger('afterLogin');
-                this.view.destroy();
+                //self.view.destroy();
             } else {
                 document.querySelector('input[name="username"]').value = '';
                 document.querySelector('input[name="password"]').value = '';

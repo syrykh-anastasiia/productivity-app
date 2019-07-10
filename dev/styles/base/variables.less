@@ -3,7 +3,7 @@
 @black: #000;
 
 @primaryDark: #2a3f50;
-@blue: #59abe3;
+@blue: #57a6dc;
 @yellow: #ffb200;
 @yellowLight: #fddc43;
 @violet: #b470d0;
@@ -12,6 +12,7 @@
 @green: #1abc9c;
 @orange: #ffa841;
 
+@grayLighter: #93a3b6;
 @grayLight: #8da5b8;
 @gray: #7f7f7f;
 
@@ -22,12 +23,12 @@
 @roboto: "Roboto";
 @pt-sans: "PT Sans";
 @base-font-serif: 'Times New Roman', 'Times', 'Baskerville', 'Georgia', serif;
-@base-font-sans-serif: @roboto, 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
+@base-font-sans-serif: @pt-sans, 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
 
 /* basics */
 @base-text-color: @grayLight;
 @base-background-color: @primaryDark;
-@font-size-base: 16px;
+@font-size-base: 14px;
 @line-height-base: 1.2;
 @base-font-family: @base-font-sans-serif;
 
@@ -41,7 +42,7 @@
 @btn-background: @green;
 @btn-padding: 22px 15px;
 @btn-font-size: 23px;
-@btn-font: @pt-sans, @base-font-sans-serif;
+@btn-font: inherit;
 
 // Forms
 @form-element-font-size: 21px;
@@ -52,14 +53,14 @@
 @placeholder-color: @grayLight;
 
 // Headers
-@h1-font-size: 30px;
+@h1-font-size: 32px;
 @h2-font-size: 27px;
 @h3-font-size: 24px;
 @h4-font-size: 21px;
 @h5-font-size: 17px;
 @h6-font-size: 15px;
 
-@headings-font-family: inherit;
+@headings-font-family: @roboto, @base-font-sans-serif;
 @headings-color: inherit;
 
 @animation-speed: 0.3s;

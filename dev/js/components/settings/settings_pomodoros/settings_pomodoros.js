@@ -9,8 +9,10 @@ window.initSettingsPomodoros = function() {
 
 	//app.settingsController.componentData = new CycleInput();
 	//app.settingsController.componentView = new CycleTimeline(self.componentData);
+
 	EventBus.on('renderSettingsPomodoros', function() {
 		settingsPomodorosView.render();
+        settingsPomodorosController.eventListeners();
 	});
 	EventBus.on('settingsDataSaving', function([key, value]) {
 		settingsPomodorosModel.saveData(key, value);

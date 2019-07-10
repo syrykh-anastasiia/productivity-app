@@ -1,7 +1,3 @@
-/**
-* @constructor
-* @name SettingsModel
-*/
 class SettingsModel {
 	constructor() {
 		let self = this;

@@ -4,10 +4,9 @@
         $(window).on('scroll', function() {
             if($(window).scrollTop() > sticky.outerHeight()) {
                 sticky.addClass('fixed');
-                console.log(sticky);
             }
         });
-        console.log(this);
-        return this;
+        //console.log(this);
+        //return this;
     };
 }(jQuery));

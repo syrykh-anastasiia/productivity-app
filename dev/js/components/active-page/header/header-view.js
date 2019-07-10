@@ -6,5 +6,6 @@ class HeaderView {
 	render(holder) {
         holder.innerHTML += this.template();
 		$('.sticky-header').stickyHeader();
+        //$('.tooltip').tooltips();
 	}
 }

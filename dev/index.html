@@ -34,16 +34,16 @@
 				</strong>
 				<ul class="main-menu">
 					<li>
-						<a href="#" class="tooltip" title="New Task"><i class="icon-add"></i></a>
+						<a href="#" class="tooltip add-task" title="New Task"><i class="icon-add"></i></a>
 					</li>
 					<li>
-						<a href="#" class="tooltip" title="To Trash"><i class="icon-trash"></i></a>
+						<a href="#" class="tooltip remove-tasks" title="To Trash"><i class="icon-trash"></i></a>
 					</li>
 					<li>
 						<a href="#" class="tooltip" title="To Reports"><i class="icon-statistics"></i></a>
 					</li>
 					<li>
-						<a href="#" class="tooltip" title="To Settings"><i class="icon-settings"></i></a>
+						<a href="#settings" class="tooltip" title="To Settings"><i class="icon-settings"></i></a>
 					</li>
 					<li>
 						<a href="#" class="tooltip" title="Log Out"><i class="icon-logout"></i></a>
@@ -53,16 +53,9 @@
 		</header>
 	</script>
 	<script id="mainTemplate" type="text/x-handlebars-template">
-		<main id="main">
+		<main id="main" class="text-center">
 			<div class="container"></div>
 		</main>
-	</script>
-	<script id="pageHeadlineTemplate" type="text/x-handlebars-template">
-		<h2>{{ title }}</h2>
-		<div class="page-subheadline">
-			<strong class="subtitle">{{ subtitle }}</strong>
-			<div class="page-subnav"></div>
-		</div>
 	</script>
 	<script id="modalTemplate" type="text/x-handlebars-template">
 		<div id="modalWindow" class="modal modal-open hidden">
@@ -205,93 +198,93 @@
 		</section>
 	</script>
 	<script id="settingsCategoriesTemplate" type="text/x-handlebars-template">
-		<div class="settings-categories" id="settings-categories">
-			<ul class="choose-categories">
-				<li class="category-item">
-					<input id="input-work" class="category-item-hidden" type="radio" name="category">
-					<label for="input-work" class="category-radio-icon work"></label>
-					<input id="0" class="category-input-text" type="text" value="{{category0}}">
-				</li>
-				<li class="category-item">
-					<input id="input-educat" class="category-item-hidden" type="radio" name="category">
-					<label for="input-educat" class="category-radio-icon education"></label>
-					<input id="1" class="category-input-text" type="text" value="{{category1}}">
-				</li>
-				<li class="category-item">
-					<input id="input-hobby" class="category-item-hidden" type="radio" name="category">
-					<label for="input-hobby" class="category-radio-icon hobby"></label>
-					<input id="2" class="category-input-text" type="text" value="{{category2}}">
-				</li>
-				<li class="category-item">
-					<input id="input-sport" class="category-item-hidden" type="radio" name="category">
-					<label for="input-sport" class="category-radio-icon sport"></label>
-					<input id="3" class="category-input-text" type="text" value="{{category3}}">
-				</li>
-				<li class="category-item">
-					<input id="input-other" class="category-item-hidden" type="radio" name="category">
-					<label for="input-other" class="category-radio-icon other"></label>
-					<input id="4" class="category-input-text" type="text" value="{{category4}}">
-				</li>
-			</ul>
-			<div class="btn-group">
-				<button id="nextToActPage" class="action-btn next-btn">Next</button>
-			</div>
-		</div>
+		<ul class="choose-categories">
+			<li class="category-item">
+				<input id="input-work" class="category-item-hidden" type="radio" name="category">
+				<label for="input-work" class="category-radio-icon work"></label>
+				<input id="0" class="category-input-text" type="text" value="{{category0}}">
+			</li>
+			<li class="category-item">
+				<input id="input-educat" class="category-item-hidden" type="radio" name="category">
+				<label for="input-educat" class="category-radio-icon education"></label>
+				<input id="1" class="category-input-text" type="text" value="{{category1}}">
+			</li>
+			<li class="category-item">
+				<input id="input-hobby" class="category-item-hidden" type="radio" name="category">
+				<label for="input-hobby" class="category-radio-icon hobby"></label>
+				<input id="2" class="category-input-text" type="text" value="{{category2}}">
+			</li>
+			<li class="category-item">
+				<input id="input-sport" class="category-item-hidden" type="radio" name="category">
+				<label for="input-sport" class="category-radio-icon sport"></label>
+				<input id="3" class="category-input-text" type="text" value="{{category3}}">
+			</li>
+			<li class="category-item">
+				<input id="input-other" class="category-item-hidden" type="radio" name="category">
+				<label for="input-other" class="category-radio-icon other"></label>
+				<input id="4" class="category-input-text" type="text" value="{{category4}}">
+			</li>
+		</ul>
 	</script>
 	<script id="settingsPomodorosTemplate" type="text/x-handlebars-template">
-    	<div id="settings-pomodoros">
-    		<div class="settings-pomodoros">
-    			<section class="settings-items">
-    				<div class="circle yellow"></div>
-    				<h4 class="settings-items-title">WORK TIME</h4>
-    				<div id="workTime" class="counter">
-    					<button id="work-time-minus" class="minus icon"><i class="icon-minus"></i></button>
-    					<input id="work-time-count" class="iterations" type="text" value="{{workTimeIterations}}" size="2" readonly> min
-    					<button id="work-time-plus" class="plus icon"><i class="icon-add"></i></button>
-    				</div>
-    				<br><span>Lorem ipsum dolor sit amet consectetur adipiscing</span>
-    			</section>
-    			<section class="settings-items">
-    				<div class="circle light-blue"></div>
-    				<h4 class="settings-items-title">WORK ITERATION</h4>
-    				<div id="workIteration" class="counter">
-    					<button id="work-iteration-minus" class="minus icon"><i class="icon-minus"></i></button>
-						<input id="work-iteration-count" class="iterations" type="text" value="{{workIterations}}" size="2" readonly>
-						<button id="work-iteration-plus" class="plus icon"><i class="icon-add"></i></button>
-    				</div>
-    				<br><span>Lorem ipsum dolor sit amet consectetur</span>
-				</section>
-    			<section class="settings-items">
-					<div class="circle blue"></div>
-					<h4 class="settings-items-title">SHORT BREAK</h4>
-    				<div id="shortBreak" class="counter">
-						<button id="short-break-minus" class="minus icon"><i class="icon-minus"></i></button>
-						<input id="short-break-count" class="iterations" type="text" value="{{shortBreakIterations}}" size="2" readonly> min
-						<button id="short-break-plus" class="plus icon"><i class="icon-add"></i></button>
-    				</div>
-    				<br><span>Lorem ipsum dolor sit amet consectetur adipiscing sed do eiusmod tempor</span>
-    			</section>
-				<section class="settings-items">
-					<div class="circle blue"></div>
-					<h4 class="settings-items-title">LONG BREAK</h4>
-					<div id="longBreak" class="counter">
-						<button id="long-break-minus" class="minus icon"><i class="icon-minus"></i></button>
-						<input id="long-break-count" class="iterations" type="text" size="2" value="{{longBreakIterations}}" readonly> min
-						<button id="long-break-plus" class="plus icon"><i class="icon-add"></i></button>
+		<div class="settings-pomodoros-holder">
+			<div class="column work-time">
+				<div class="holder">
+					<h4 class="h5">WORK TIME</h4>
+					<div class="counter-holder">
+						<button class="decrease"><i class="icon-minus"></i></button>
+						<div class="value-holder">
+							<strong class="value">{{ workTimeIterations }}</strong><span>min</span>
+						</div>
+						<button class="increase"><i class="icon-add"></i></button>
 					</div>
-					<br><span>Lorem ipsum dolor sit amet consectetur adipiscing</span>
-				</section>
-    		</div>
-			<section class="your-cycle">
-				<h2 class="cycle-title">Your cycle</h2>
-				<p class="full-cycle-point">Full cycle: </p>
-				<ul class="timeline blue"></ul>
-				<ul class="timeline-scale"></ul>
-			</section>
-			<div class="btn-group">
-				<button id="nextToSetCat" class="action-btn next-btn">Next</button>
+				</div>
+				<p>Lorem ipsum dolor sit amet consectetur adipiscing</p>
 			</div>
-    	</div>
+			<div class="column work-iteration">
+				<div class="holder">
+					<h4 class="h5">WORK ITERATION</h4>
+					<div class="counter-holder">
+						<button class="decrease"><i class="icon-minus"></i></button>
+						<div class="value-holder">
+							<strong class="value">{{ workIterations }}</strong><span></span>
+						</div>
+						<button class="increase"><i class="icon-add"></i></button>
+					</div>
+				</div>
+				<p>Lorem ipsum dolor sit amet consectetur adipiscing</p>
+			</div>
+			<div class="column short-break">
+				<div class="holder">
+					<h4 class="h5">SHORT BREAK</h4>
+					<div class="counter-holder">
+						<button class="decrease"><i class="icon-minus"></i></button>
+						<div class="value-holder">
+							<strong class="value">{{ shortBreakIterations }}</strong><span>min</span>
+						</div>
+						<button class="increase"><i class="icon-add"></i></button>
+					</div>
+				</div>
+				<p>Lorem ipsum dolor sit amet consectetur adipiscing sed do eiusmod tempor</p>
+			</div>
+			<div class="column long-break">
+				<div class="holder">
+					<h4 class="h5">LONG BREAK</h4>
+					<div class="counter-holder">
+						<button class="decrease"><i class="icon-minus"></i></button>
+						<div class="value-holder">
+							<strong class="value">{{ longBreakIterations }}</strong><span>min</span>
+						</div>
+						<button class="increase"><i class="icon-add"></i></button>
+					</div>
+				</div>
+				<p>Lorem ipsum dolor sit amet consectetur adipiscing sed do eiusmod tempor</p>
+			</div>
+		</div>
+			<h2 class="cycle-title">Your cycle</h2>
+			<p class="full-cycle-point">Full cycle: </p>
+			<ul class="timeline blue"></ul>
+			<ul class="timeline-scale"></ul>
 	</script>
 	<script id="taskTemplate" type="text/x-handlebars-template">
 		<section class="tasks-categories">
@@ -368,17 +361,21 @@
 		</form>
 	</script>
 	<script id="settingsTemplate" type="text/x-handlebars-template">
-		<div class="content-area">
-			<header>
-				<h1 class="main-page-title">Settings</h1>
-				<h3 class="title-hint">SET TEXT HERE</h3>
-			</header>
-			<div id="tabs" class="tabs-block">
-				<button class="tabs"><a href="#settings_pomodoros">Pomodoros</a></button>
-				<button class="tabs"><a href="#settings_categories">Categories</a></button>
+		<section class="settings-section">
+			<h1>Settings</h1>
+			<div class="subtitle-holder">
+				<h2></h2>
+				<ul class="tabs-block">
+					<li><a href="#">Pomodoros</a></li>
+					<li><a href="#">Categories</a></li>
+				</ul>
 			</div>
-			<div class="settings" id="settings-container"></div>
-		</div>
+			<div class="settings-holder"></div>
+			<div class="btn-group">
+				<a href="#" class="btn btn-blue next-btn">Next</a>
+				<a href="#" class="btn save-btn">Save</a>
+			</div>
+		</section>
 	</script>
 </body>
 </html>

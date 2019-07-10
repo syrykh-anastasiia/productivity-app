@@ -2,9 +2,6 @@ class Router {
 	static routing(location) {
 		let currentLocation = location || window.location.hash.substr(1);
 		EventBus.trigger('getRemoteFBData');
-        if(LocalStorageData.getFromLS('username')) {
-            EventBus.trigger('afterLogin');
-        }
 		switch(currentLocation) {
 			case 'login':
 				EventBus.trigger('renderLogin');
@@ -40,7 +37,7 @@ EventBus.on('afterLogin', function() {
     } else {
         EventBus.trigger('routeChange', '#active_page');
     }
-})
+});
 
 window.addEventListener('hashchange', function() {
 	Router.routing();

@@ -1,43 +1,46 @@
 #header {
   text-align: center;
   position: absolute;
-  z-index: 200;
   top: 0;
   left: 0;
   right: 0;
-  width: 100%;
-  background-color: #2a3f50;
-  padding: 10px 90px;
-  box-sizing: border-box;
-  box-shadow: 0 -5px 10px 10px rgba(34, 56, 73, 0.7);
-  border-bottom: 1px solid #223849;
-  overflow: hidden;
+  background-color: @primaryDark;
+  padding: 40px 0 33px;
+
+  @media @tablet-md {
+    padding: 35px 0 20px;
+  }
 
   &.fixed {
     position: fixed;
+    z-index: 200;
+    border-bottom: 1px solid #223849;
+    box-shadow: 0 -5px 10px 10px rgba(34, 56, 73, 0.7);
+    display: block;
   }
 
   .logo {
     width: 242px;
-    height: 74px;
     float: left;
     margin: 0;
+    display: none;
   }
 
   .container {
-    max-width: 100%;
+    .clearfix();
   }
 }
 
-.settings-list {
+.main-menu {
   .listreset();
 
   float: right;
-  padding-top: 25px;
+  font-size: 28px;
 
   li {
-    background-color: transparent;
-    padding-left: 20px;
+    padding: 10px 0 10px 44px;
+    display: inline-block;
+    vertical-align: top;
   }
 
   a {
@@ -46,5 +49,10 @@
     &:hover {
       color: @white;
     }
+  }
+
+  .remove-tasks,
+  .add-task {
+    display: none;
   }
 }
