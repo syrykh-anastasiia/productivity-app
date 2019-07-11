@@ -515,11 +515,11 @@ h2,
 }
 h3,
 .h3 {
-  font-size: 24px;
+  font-size: 20px;
 }
 h4,
 .h4 {
-  font-size: 21px;
+  font-size: 20px;
 }
 h5,
 .h5 {
@@ -597,21 +597,21 @@ body:after {
 }
 #main {
   min-height: 100vh;
-  padding: 126px 0 0;
+  padding: 126px 0 62px;
 }
 @media screen and (min-width: 1024px) {
   #main {
-    padding: 108px 0 0;
+    padding: 108px 0 50px;
   }
 }
 @media screen and (min-width: 1280px) {
   #main {
-    padding: 100px 0 0;
+    padding: 100px 0 106px;
   }
 }
 @media screen and (min-width: 1366px) {
   #main {
-    padding: 94px 0 0;
+    padding: 94px 0 75px;
   }
 }
 .login-page #main {
@@ -703,6 +703,16 @@ h2 {
     font-size: 20px;
   }
 }
+h3 {
+  font-family: "PT Sans", 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
+  color: #fff;
+  margin: 0 0 59px;
+}
+@media screen and (min-width: 1280px) {
+  h3 {
+    margin: 0 0 36px;
+  }
+}
 .h5 {
   font: 400 14px "PT Sans", "PT Sans", 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
   color: #fff;
@@ -727,7 +737,7 @@ a {
   padding: 22px 15px;
   background-color: #1abc9c;
   color: #fff;
-  font: 700 23px inherit;
+  font: 700 23px "PT Sans", 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
   border: none;
   outline: none;
   transition: background-color 0.3s;
@@ -977,6 +987,7 @@ input[type="password"]:focus + i {
 }
 .settings-pomodoros-holder {
   text-align: left;
+  margin: 0 0 48px;
 }
 @media screen and (min-width: 1024px) {
   .settings-pomodoros-holder {
@@ -984,6 +995,16 @@ input[type="password"]:focus + i {
     display: flex;
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .settings-pomodoros-holder {
+    margin: 0 0 36px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .settings-pomodoros-holder {
+    margin: 0 0 1px;
   }
 }
 .settings-pomodoros-holder .column {
@@ -1159,6 +1180,67 @@ input[type="password"]:focus + i {
   background-color: #c76c65;
   border-color: #c76c65;
   box-shadow: 0 0 0 4px #c76c65;
+}
+.timeline {
+  height: 10px;
+  position: relative;
+  margin: 0 0 99px;
+}
+@media screen and (min-width: 1280px) {
+  .timeline {
+    margin: 0 0 136px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .timeline {
+    margin: 0 0 84px;
+  }
+}
+.timeline > div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+.timeline .work-time {
+  background-color: #ffb200;
+}
+.timeline .short-break {
+  background-color: #57a6dc;
+}
+.timeline .long-break {
+  background-color: #57a6dc;
+}
+.btn-group .btn {
+  margin: 0 7px;
+  font-weight: 700;
+  width: 37%;
+  font-size: 23px;
+}
+@media screen and (min-width: 1024px) {
+  .btn-group .btn {
+    width: 27%;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .btn-group .btn {
+    width: auto;
+    font-size: 18px;
+    padding: 10px 15px;
+    min-width: 125px;
+  }
+}
+.btn-group .btn:only-child {
+  width: 76%;
+}
+@media screen and (min-width: 1024px) {
+  .btn-group .btn:only-child {
+    width: 56%;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .btn-group .btn:only-child {
+    width: auto;
+  }
 }
 /*not checked styles*/
 /* tooltip */
@@ -1655,266 +1737,6 @@ input[type="password"]:focus + i {
 }
 .category-item .radio-list-item:checked + .other {
   background-position-x: -19px;
-}
-/*HOVER AND CHECK ON PRIORITIES RADIOBUTTONS*/
-.priority-item:hover .p-radio-icon {
-  background-position-y: -21px;
-  cursor: pointer;
-}
-.priority-item:hover .urgent {
-  background-position-x: -2px;
-}
-.priority-item:hover .high {
-  background-position-x: -20px;
-}
-.priority-item:hover .middle {
-  background-position-x: -38px;
-}
-.priority-item:hover .low {
-  background-position-x: -56px;
-}
-.priority-item .radio-list-item:checked + .p-radio-icon {
-  background-position-y: -2px;
-}
-.priority-item .radio-list-item:checked + .urgent {
-  background-position-x: -2px;
-}
-.priority-item .radio-list-item:checked + .high {
-  background-position-x: -20px;
-}
-.priority-item .radio-list-item:checked + .middle {
-  background-position-x: -38px;
-}
-.priority-item .radio-list-item:checked + .low {
-  background-position-x: -56px;
-}
-.remove-task {
-  text-align: center;
-}
-.remove-question {
-  font-size: 36px;
-  text-align: center;
-  padding: 120px 30px;
-}
-.remove-task-btn {
-  display: inline-block;
-}
-.upper-filter {
-  margin-bottom: 0;
-}
-.upper-filter,
-.bottom-filter,
-.tabs {
-  text-align: center;
-}
-.reports-area {
-  /* width: 50%; */
-  margin: 0 auto;
-  display: block;
-  padding: 20px 0 70px;
-}
-.chart {
-  margin: 0 auto;
-  min-height: 300px;
-  min-width: 300px;
-}
-.choose-categories {
-  overflow: hidden;
-  width: 324px;
-  margin: 0 auto;
-  padding-top: 40px;
-}
-.category-item {
-  overflow: hidden;
-  padding-bottom: 17px;
-  list-style-type: none;
-}
-.category-item:focus .category-radio-icon {
-  background-position-y: -1px;
-}
-.category-item:hover .category-input-text {
-  border-bottom: 1px solid #fff;
-  cursor: pointer;
-}
-.category-input-text {
-  border-bottom: 1px solid #425869;
-  float: left;
-  width: 80%;
-  padding-bottom: 7px;
-  background-color: transparent;
-  font-size: 16px;
-}
-.category-input-text:focus {
-  cursor: pointer;
-}
-@media screen and (max-width: 1365px) {
-  .category-input-text {
-    font-size: 19px;
-  }
-}
-@media screen and (max-width: 1023px) {
-  .category-input-text {
-    font-size: 23px;
-  }
-}
-.category-radio-icon {
-  margin-right: 20px;
-  /*it was necessary*/
-  background-position-y: -20px;
-  width: 17px;
-  height: 17px;
-  display: inline-block;
-  float: left;
-  background-image: url("../images/radiobtn-sprite.png");
-}
-.category-item-hidden {
-  display: none;
-}
-.category-item-hidden:checked + .category-radio-icon {
-  background-position-y: -1px;
-}
-.btn-group {
-  text-align: center;
-}
-.btn-group .action-btn {
-  display: inline-block;
-}
-@media screen and (max-width: 1023px) {
-  .content-area {
-    padding-top: 0;
-  }
-}
-@media screen and (max-width: 390px) {
-  .content-area {
-    padding: 0 10px;
-  }
-}
-.main-page-title {
-  padding-bottom: 40px;
-}
-.settings-pomodoros {
-  max-width: 776px;
-  margin: 80px auto 0;
-  overflow: hidden;
-}
-@media screen and (max-width: 767px) {
-  .settings-pomodoros {
-    max-width: 400px;
-  }
-}
-.settings-items {
-  float: left;
-  max-width: 365px;
-  width: 50%;
-  padding-bottom: 60px;
-  font-size: 14px;
-}
-.settings-items .circle {
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  float: left;
-}
-@media screen and (max-width: 1365px) {
-  .settings-items {
-    max-width: 365px;
-    width: 50%;
-    font-size: 16px;
-  }
-}
-@media screen and (max-width: 1023px) {
-  .settings-items {
-    max-width: 365px;
-    width: 50%;
-  }
-}
-@media screen and (max-width: 767px) {
-  .settings-items {
-    max-width: 365px;
-    width: 100%;
-    font-size: 14px;
-  }
-}
-.your-cycle,
-.settings-items br {
-  text-align: center;
-  clear: both;
-}
-.settings-items-title,
-.counter {
-  float: left;
-}
-.settings-items-title {
-  padding-left: 20px;
-}
-.settings-items span {
-  color: #7e95a8;
-  clear: both;
-}
-@media screen and (max-width: 1365px) {
-  .settings-items span {
-    font-size: 14px;
-  }
-}
-.counter {
-  width: auto;
-  border-bottom: 1px solid #8da5b8;
-  margin: 0 0 15px 50px;
-  padding-bottom: 6px;
-}
-@media screen and (max-width: 390px) {
-  .counter {
-    margin: 0 0 15px 25px;
-  }
-}
-.counter:hover {
-  border-bottom-color: #fff;
-}
-.counter .icon {
-  cursor: pointer;
-}
-.iterations {
-  font-size: 16px;
-  background-color: transparent;
-  padding: 0 5px;
-}
-.icon {
-  background-color: transparent;
-}
-.minus {
-  padding-right: 30px;
-}
-.plus {
-  padding-left: 30px;
-}
-.timeline {
-  height: 10px;
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
-  overflow: hidden;
-}
-.timeline-scale {
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  padding-bottom: 40px;
-}
-.timeline-blocks {
-  list-style-type: none;
-  height: 100%;
-  float: left;
-}
-.hourPin {
-  font-size: 12px;
-  color: #7e95a8;
-  display: inline-block;
-  box-sizing: border-box;
-  text-align: right;
-}
-.full-cycle-point {
-  font-size: 14px;
-  color: #7e95a8;
 }
 .small-title-hint {
   color: #fff;
