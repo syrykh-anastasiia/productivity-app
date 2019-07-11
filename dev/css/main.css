@@ -1074,19 +1074,56 @@ input[type="password"]:focus + i {
   list-style-type: none;
   max-width: 540px;
   margin: 0 auto;
+  font-family: "PT Sans", 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
+}
+@media screen and (min-width: 1280px) {
+  .categories-list {
+    max-width: 440px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .categories-list {
+    max-width: 288px;
+  }
 }
 .categories-list li {
-  padding-left: 25px;
+  margin: 0 0 37px;
+}
+@media screen and (min-width: 1024px) {
+  .categories-list li {
+    margin: 0 0 25px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .categories-list li {
+    margin: 0 0 23px;
+  }
+}
+.categories-list input {
+  width: 100%;
+  font-size: 23px;
+  padding: 0;
+}
+@media screen and (min-width: 1280px) {
+  .categories-list input {
+    font-size: 19px;
+  }
+}
+@media screen and (min-width: 1366px) {
+  .categories-list input {
+    font-size: 16px;
+  }
 }
 .categories-list .category-input {
   position: relative;
   display: block;
+  padding-left: 42px;
 }
 .categories-list .category-input:before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 21px;
+  left: 5px;
   border-radius: 50%;
   width: 9px;
   height: 9px;
@@ -1094,6 +1131,11 @@ input[type="password"]:focus + i {
   border: 2px solid #77d3d8;
   box-shadow: 0 0 0 4px #77d3d8;
   transition: border-color 0.3s;
+}
+@media screen and (min-width: 1366px) {
+  .categories-list .category-input:before {
+    top: 15px;
+  }
 }
 .categories-list .category-input.focus:before {
   border-color: #2a3f50;

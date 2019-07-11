@@ -79,7 +79,7 @@ gulp.task('allLess', function () {
 
 //concat main JS files
 gulp.task('allJs', function () {
-    return gulp.src(['js/**/*.js', '!js/libs/*.js', '!js/plugins/*.js'])
+    return gulp.src(['js/**/*.js', '!js/libs/*.js', '!js/plugins/*.js', '!js/main.js', '!js/plugins.js'])
 	/*.pipe(babel(
         {
             "presets": [
@@ -93,6 +93,7 @@ gulp.task('allJs', function () {
         }
 	))*/
 	.pipe(concat('main.js'))
+    .pipe(plugins.cached('copyScripts'))
 	.pipe(gulp.dest(settings.jsDir.output))
 	.pipe(browserSync.stream({match: 'js/*.js'}));
 });
@@ -100,6 +101,7 @@ gulp.task('allJs', function () {
 gulp.task('pluginsJS', function () {
     return gulp.src(['js/plugins/*.js'])
         .pipe(concat('plugins.js'))
+        .pipe(plugins.cached('copyScripts'))
         .pipe(gulp.dest(settings.jsDir.output))
         .pipe(browserSync.stream({match: 'js/*.js'}));
 });

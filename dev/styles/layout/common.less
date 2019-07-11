@@ -531,20 +531,52 @@ input[type="password"] {
 
 	max-width: 540px;
 	margin: 0 auto;
+	font-family: @base-font-sans-serif;
+
+	@media @desktop {
+		max-width: 440px;
+	}
+
+	@media @desktop-md {
+		max-width: 288px;
+	}
 
 	li {
-		padding-left: 25px;
+		margin: 0 0 37px;
+
+		@media @tablet-md {
+			margin: 0 0 25px;
+		}
+
+		@media @desktop-md {
+			margin: 0 0 23px;
+		}
+	}
+
+	input {
+		width: 100%;
+		font-size: 23px;
+		padding: 0;
+
+		@media @desktop {
+			font-size: 19px;
+		}
+
+		@media @desktop-md {
+			font-size: 16px;
+		}
 	}
 
 	.category-input {
 		position: relative;
 		display: block;
+		padding-left: 42px;
 
 		&:before {
 			content: '';
 			position: absolute;
-			top: 0;
-			left: 0;
+			top: 21px;
+			left: 5px;
 			border-radius: 50%;
 			width: 9px;
 			height: 9px;
@@ -552,6 +584,10 @@ input[type="password"] {
 			border: 2px solid #77d3d8;
 			box-shadow: 0 0 0 4px #77d3d8;
 			transition: border-color .3s;
+
+			@media @desktop-md {
+				top: 15px;
+			}
 		}
 
 		&.focus {
@@ -593,6 +629,8 @@ input[type="password"] {
 		}
 	}
 }
+
+
 
 
 /*not checked styles*/
