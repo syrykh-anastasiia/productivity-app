@@ -17,7 +17,6 @@ class LoginController {
             if(validation) {
                 LocalStorageData.setToLS('username', inputUser);
                 EventBus.trigger('afterLogin');
-                //self.view.destroy();
             } else {
                 document.querySelector('input[name="username"]').value = '';
                 document.querySelector('input[name="password"]').value = '';

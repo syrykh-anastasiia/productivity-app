@@ -37,7 +37,7 @@ class SettingsController {
                         EventBus.trigger('renderSettingsCategories');
                     break;
                     case 'Settings Categories':
-                        EventBus.trigger('renderActivePage');
+                        EventBus.trigger('routeChange', '#active_page');
                     break;
                 }
             }

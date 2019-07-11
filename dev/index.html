@@ -58,98 +58,88 @@
 		</main>
 	</script>
 	<script id="modalTemplate" type="text/x-handlebars-template">
-		<div id="modalWindow" class="modal modal-open hidden">
-			<div class="cover-wrapper"></div>
+		<div id="modalWindow" class="modal modal-open">
 			<div class="modal-window">
-				<div class="btns-group">
-					<button class="modal-action-btn"><i id="cancelAdding" class="icon-close"></i></button>
-					<button class="modal-action-btn"><i id="confirmAdding" class="{{mode}} icon-check"></i></button>
-				</div>
-				<div class="add-edit-task">
-					<h2 class="modal-title add-task-window">{{mode}} Task</h2>
-					<form class="modal-form">' +
-						<label for="title" class="input-title">TITLE</label>
-						<input id="title" type="text" class="input-content" placeholder="Add title here">
-						<label for="description" class="input-title">DESCRIPTION</label>
-						<input id="description" type="text" class="input-content" placeholder="Add description here">
-						<label for="category" class="input-title">CATEGORY</label>
-						<ul id="category" class="category-block input-content">
-							<li class="category-item">
-								<input id="input-work" class="list-item radio-list-item category-list" type="radio" name="category" checked>
-								<label for="input-work" class="c-radio-icon work"></label>
-								<span class="input-text">{{category0}}</span>
-							</li>' +
-							<li class="category-item">
-								<input id="input-educat" class="list-item radio-list-item category-list" type="radio" name="category">
-								<label for="input-educat" class="c-radio-icon education"></label>
-								<span class="input-text">{{category1}}</span>
-							</li>' +
-							<li class="category-item">
-								<input id="input-hobby" class="list-item radio-list-item category-list" type="radio" name="category">
-								<label for="input-hobby" class="c-radio-icon hobby"></label>
-								<span class="input-text">{{category2}}</span>
-							</li>' +
-							<li class="category-item">
-								<input id="input-sport" class="list-item radio-list-item category-list" type="radio" name="category">
-								<label for="input-sport" class="c-radio-icon sport"></label>
-								<span class="input-text">{{category3}}</span>
-							</li>
-							<li class="category-item">
-								<input id="input-other" class="list-item radio-list-item category-list" type="radio" name="category">
-								<label for="input-other" class="c-radio-icon other"></label>
-								<span class="input-text">{{category4}}</span>
-							</li>
+				<form action="#">
+					<div class="modal-head">
+						<i class="icon-trash"></i>
+						<ul class="modal-btn">
+							<li><button type="reset"><i class="icon-close"></i></button></li>
+							<li><button type="submit"><i class="icon-check"></i></button></li>
 						</ul>
-						<label for="deadline" class="input-title">DEADLINE</label>
-						<input id="deadline" type="text" class="input-content" value="" placeholder="Pick a date">
-						<label for="estimation" class="input-title">ESTIMATION</label>
-						<ul id="estimation" class="estimation-block input-content">
-							<li class="estimation-item">
-								<input id="input-1-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox">
-								<label for="input-1-pomodoro" class="checkbox-element"></label>
-							</li>
-							<li class="estimation-item">
-								<input id="input-2-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox">
-								<label for="input-2-pomodoro" class="checkbox-element"></label>
-							</li>
-							<li class="estimation-item">
-								<input id="input-3-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox">
-								<label for="input-3-pomodoro" class="checkbox-element"></label>
-							</li>
-							<li class="estimation-item">
-								<input id="input-4-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox">
-								<label for="input-4-pomodoro" class="checkbox-element"></label>
-							</li>
-							<li class="estimation-item">
-								<input id="input-5-pomodoro" class="list-item checkbox-list-item estimation-list" type="checkbox">
-								<label for="input-5-pomodoro" class="checkbox-element"></label>
-							</li>
-						</ul>
-						<label for="priority" class="input-title">PRIORITY</label>
-						<ul id="priority" class="priority-block input-content">
-							<li class="priority-item">
-								<input id="input-urgent" class="list-item radio-list-item priority-list" type="radio" name="priority" checked>
-								<label for="input-urgent" class="p-radio-icon urgent"></label>
-								<span class="input-text priority-value">Urgent</span>
-							</li>
-							<li class="priority-item">
-								<input id="input-high" class="list-item radio-list-item priority-list" type="radio" name="priority">
-								<label for="input-high" class="p-radio-icon high"></label>
-								<span class="input-text priority-value">High</span>
-							</li>
-							<li class="priority-item">
-								<input id="input-middle" class="list-item radio-list-item priority-list" type="radio" name="priority">
-								<label for="input-middle" class="p-radio-icon middle"></label>
-								<span class="input-text priority-value">Middle</span>
-							</li>
-							<li class="priority-item">
-								<input id="input-low" class="list-item radio-list-item priority-list" type="radio" name="priority">
-								<label for="input-low" class="p-radio-icon low"></label>
-								<span class="input-text priority-value">Low</span>
-							</li>
-						</ul>
-					</form>
-				</div>
+					</div>
+					<h3>{{mode}} Task</h3>
+					<label for="title">tITLE</label>
+					<input id="title" type="text" placeholder="Add title here">
+					<label for="description">DESCRIPTION</label>
+					<input id="description" type="text" placeholder="Add description here">
+					<label>CATEGORY</label>
+					<div class="checkbox-row">
+						<label class="custom-radio category-{{category0}}">
+							<input type="radio" name="category" checked>
+							<span class="fake-input"></span>
+							<span class="fake-label">{{category0}}</span>
+						</label>
+						<label class="custom-radio category-{{category1}}">
+							<input type="radio" name="category" checked>
+							<span class="fake-input"></span>
+							<span class="fake-label">{{category1}}</span>
+						</label>
+						<label class="custom-radio category-{{category2}}">
+							<input type="radio" name="category" checked>
+							<span class="fake-input"></span>
+							<span class="fake-label">{{category2}}</span>
+						</label>
+						<label class="custom-radio category-{{category3}}">
+							<input type="radio" name="category" checked>
+							<span class="fake-input"></span>
+							<span class="fake-label">{{category3}}</span>
+						</label>
+						<label class="custom-radio category-{{category4}}">
+							<input type="radio" name="category" checked>
+							<span class="fake-input"></span>
+							<span class="fake-label">{{category4}}</span>
+						</label>
+					</div>
+					<label for="deadline">DEADLINE</label>
+					<input id="deadline" class="datepicker" type="text" value="" placeholder="Pick a date">
+					<label>ESTIMATION</label>
+					<div class="input-row checkbox-rating">
+						<input id="input-5-pomodoro" value="5" type="checkbox">
+						<label for="input-5-pomodoro" title="5"><i class="icon"></i></label>
+						<input id="input-4-pomodoro" value="4" type="checkbox">
+						<label for="input-4-pomodoro" title="4"><i class="icon"></i></label>
+						<input id="input-3-pomodoro" value="3" type="checkbox">
+						<label for="input-3-pomodoro" title="3"><i class="icon"></i></label>
+						<input id="input-2-pomodoro" value="2" type="checkbox">
+						<label for="input-2-pomodoro" title="2"><i class="icon"></i></label>
+						<input id="input-1-pomodoro" value="5" type="checkbox">
+						<label for="input-1-pomodoro" title="5"><i class="icon"></i></label>
+					</div>
+					<label>PRIORITY</label>
+					<div class="checkbox-row">
+						<label class="custom-radio priority-{{priority0}}">
+							<input type="radio" name="priority" checked>
+							<span class="fake-input"></span>
+							<span class="fake-label">{{priority0}}</span>
+						</label>
+						<label class="custom-radio priority-{{priority1}}">
+							<input type="radio" name="priority" checked>
+							<span class="fake-input"></span>
+							<span class="fake-label">{{priority1}}</span>
+						</label>
+						<label class="custom-radio priority-{{priority2}}">
+							<input type="radio" name="priority" checked>
+							<span class="fake-input"></span>
+							<span class="fake-label">{{priority2}}</span>
+						</label>
+						<label class="custom-radio priority-{{priority3}}">
+							<input type="radio" name="priority" checked>
+							<span class="fake-input"></span>
+							<span class="fake-label">{{priority3}}</span>
+						</label>
+					</div>
+				</form>
 			</div>
 		</div>
 	</script>
@@ -289,57 +279,74 @@
 			</div>
 	</script>
 	<script id="taskTemplate" type="text/x-handlebars-template">
-		<section class="tasks-categories">
-			<div class="span category-{{task.category}}"></div>
-			<div class="task-block block-border category-{{task.category}}" data-key="{{taskKey}}">
-				<button class="hidden add-to-trash category-{{task.category}}">
-					<i class="icon-trash removeItem"></i>
-				</button>
-				<p class="task-deadline">{{task.deadline}}</p>
-				<div class="task-description-wrapper">
-					<h4 class="task-name category-{{task.category}}">{{task.title}}</h4>
-					<p class="task-desciption">{{task.description}}</p>
+		<div class="tasklist-category">
+			<div class="category-{{task.category}}">
+				<h3 class="h5">{{task.category}}</h3>
+			</div>
+			<div class="task-block category-{{task.category}}" data-key="{{taskKey}}">
+				<a href="#" class="remove-item">
+					<i class="icon-trash"></i>
+				</a>
+				<div class="task-deadline">
+					<time datetime="{{task.deadline}}">{{task.deadline}}</time>
 				</div>
-				<button class="open-timer pomodoro-priority priority-{{task.priority}}">
-					<i class="icon-toggle"></i>
-					<span class="priority-num">{{task.estimation}}</span>
-				</button>
-				<div class="task-edits">
-					<button class="arrow-to-top edit-btn"><i class="icon-arrows-up"></i></button>
-					<button id="editBtn" class="open-modal-btn edit-btn"><i class="icon-edit"></i></button>
+				<div class="task-description">
+					<h4>{{task.title}}</h4>
+					<p>{{task.description}}</p>
+				</div>
+				<ul class="task-edits">
+					<li><a href="#"><i class="icon-arrows-up"></i></a></li>
+					<li><a href="#"><i class="icon-edit"></i></a></li>
+				</ul>
+				<div class="task-timer">
+					<span class="timer-info">
+						<i class="icon-tomato"></i>
+					</span>
+					<a href="#" class="timer-run">
+						<i class="icon-timer"></i>
+					</a>
 				</div>
 			</div>
-		</section>
+		</div>
 	</script>
 	<script id="activePageTemplate" type="text/x-handlebars-template">
-        <div class="content-area">
-			<header class="main-page-title">
-				<button id="addBtn" class="add-task-btn"><h1 class="add-task">Daily Task List +</h1></button>
-			</header>
-			<div class="title-to-task">
-				<p class="top-hint"><i class="icon-arrow_circle"></i><br>Add your first task</p>
+        <section class="tasklist-section">
+			<h1><a href="#" class="add-task">Daily Task List +</a></h1>
+			<div class="hidden subtitle-holder">
+				<ul class="subnav-list daily-sort-list">
+					<li><a href="#">To Do</a></li>
+					<li><a href="#">Done</a></li>
+				</ul>
 			</div>
-			<div class="today-task-list task-list">
-			</div>
-			<div class="hidden btn-groups">
-				<div class="global-group">
-					<button id="globalListToggle" class="global-list accordion-header">Global list<i class="accordion-icon icon-global-list-arrow-down"></i></button>
-					<div class="selection-type accordion-body">
-						<button class="priority-filter tabs active">All</button>
-						<button class="priority-filter tabs">Urgent</button>
-						<button class="priority-filter tabs">High</button>
-						<button class="priority-filter tabs">Middle</button>
-						<button class="priority-filter tabs">Low</button>
+			<div class="daily-tasklist">
+				<div class="hint-block">
+					<div class="tasklist-global">
+						<p>Task added,<br>drag it to the top 5 in daily task list</p>
+					</div>
+					<i class="icon-arrow_circle"></i>
+					<div class="tasklist-empty">
+						<p>Add your first task</p>
 					</div>
 				</div>
-				<!--<div class="global-list-hide selection-group accordion-body">
-					<button class="tabs">Select All</button>
-					<button class="tabs">Deselect All</button>
-				</div>-->
 			</div>
-			<div class="global-list-hide global-task-list task-list accordion-body">
+			<div class="hidden tasklist-nav">
+				<div class="accodrion-holder">
+					<a href="#" class="list-tumbler">Global list<i class="icon-global-list-arrow-down"></i></a>
+					<ul class="subnav-list select-list">
+						<li><a href="#">Select All</a></li>
+						<li><a href="#">Deselect all</a></li>
+					</ul>
+				</div>
+				<ul class="subnav-list tasklist-sort">
+					<li><a href="#">All</a></li>
+					<li><a href="#">Urgent</a></li>
+					<li><a href="#">High</a></li>
+					<li><a href="#">Middle</a></li>
+					<li><a href="#">Low</a></li>
+				</ul>
 			</div>
-        </div>
+			<div class="global-tasklist"></div>
+        </section>
 	</script>
 	<script id="loginTemplate" type="text/x-handlebars-template">
 		<strong class="logo">
@@ -367,7 +374,7 @@
 			<h1>Settings</h1>
 			<div class="subtitle-holder">
 				<h2></h2>
-				<ul class="tabs-block">
+				<ul class="subnav-list tabs-block">
 					<li class="active"><a href="#">Pomodoros</a></li>
 					<li><a href="#">Categories</a></li>
 				</ul>
