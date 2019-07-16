@@ -9,4 +9,8 @@ window.initLogin = function() {
     EventBus.on('loginRendered', function() {
         loginController.formValidation();
     });
+
+    EventBus.on('loginDestroy', function() {
+        loginView.destroy();
+    });
 };

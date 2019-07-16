@@ -87,6 +87,7 @@ EventBus.on('routeChange', function(route) {
 });
 
 EventBus.on('afterLogin', function() {
+    EventBus.trigger('loginDestroy');
     if(LocalStorageData.getFromLS('Pomodoros') === null && LocalStorageData.getFromLS('Categories') === null) {
         EventBus.trigger('routeChange', '#settings');
     } else {
@@ -390,20 +391,15 @@ class ActivePageController {
 		self.view = view;
 		self.model = model;
 
-		//var $accordion = $('#globalListToggle');
-		//$accordion.accordion();
-		//$('.accordion-header').click(function() { //fix this repeat
-		//	$accordion.find('.accordion-icon').toggleClass('icon-global-list-arrow-right');
-		//});
-		//$('.app-controll').tooltips();
-
 		document.addEventListener('click', function(event) {
+            event.preventDefault();
 		 	var target = event.target;
 		 	if(target.closest('.add-task') || target.classList.contains('add-task')) {
 		 		EventBus.trigger('renderModalWindow', ['Add']);
 				//$('#modalWindow').modal();
 		 	}
-		 	else if(target.closest('edit-task') || target.classList.contains('add-task')) {
+		 	else if(target.closest('edit-task') || target.classList.contains('edit-task')) {
+                EventBus.trigger('renderModalWindow', ['Edit']);
 		 		//let taskId = target.parentNode.parentNode.parentNode.dataset.key; //i'll fix it
 		 		//EventBus.trigger('renderModalWindow', ['Edit', taskId]);
 		 		//$('#modalWindow').modal();
@@ -446,12 +442,6 @@ class ActivePageModel {
 		EventBus.trigger('getRemoteFBData');
 	}
 }
-/**
-* @constructor
-* @param template
-* @name ActivePageView
-*/
-
 class ActivePageView {
 	constructor() {
 		this.template = Handlebars.compile($('#activePageTemplate').html());
@@ -476,11 +466,8 @@ class ActivePageView {
 				self.dailyRender();
 			}, 3000); //hack for some time
 		}
-	}
 
-	pageTitle() {
-		var titleContainer = document.getElementsByClassName('title-to-task')[0];
-		titleContainer.innerHTML = '<p class="top-hint">Task added,<br>drag it to the top 5 in daily task list<br><i class="icon-arrow_circle"></i></p>';
+		$('.accodrion-holder').accordion();
 	}
 
 	setTaskToDaily(task) {
@@ -492,6 +479,7 @@ class ActivePageView {
 			}
 		}
 	}
+
 	dailyRender() {
 		let self = this;
 		let taskList = document.getElementsByClassName('task-block');
@@ -507,20 +495,9 @@ class ActivePageView {
 			}
 		}
 	}
-	clearTaskListArea() {
-		document.getElementsByClassName('global-task-list')[0].innerHTML = '';
-	}
-	removingTitle() {
-		document.getElementsByClassName('title-to-task')[0].innerHTML = '';
-	}
-	removeParent(parentRef) {
-		parentRef.remove();
-	}
-	clearEmptyWrappers() {
-		let categoryWrappers = document.getElementsByClassName('category-wrapper');
-		for(var i = 0; i < categoryWrappers.length; i++) {
-			if(!categoryWrappers[i].querySelector('.tasks-categories')) categoryWrappers[i].remove();
-		}
+
+	sortTasks() {
+		//tasklist-sort
 	}
 }
 	
@@ -598,6 +575,10 @@ window.initLogin = function() {
 
     EventBus.on('loginRendered', function() {
         loginController.formValidation();
+    });
+
+    EventBus.on('loginDestroy', function() {
+        loginView.destroy();
     });
 };
 
@@ -856,10 +837,17 @@ class ModalWindowView {
 													category4: JSON.parse(LocalStorageData.getFromLS('Categories'))['4'][1],
 													mode: mode});
 		document.body.innerHTML += data;
+        document.body.classList.add('modal-open');
+        $( ".datepicker" ).datepicker({
+			minDate: 0,
+			maxDate: "+1Y"
+        });
 	}
+
 	destroy() {
-		var modal = document.querySelector('.modal');
-		if(modal) document.body.removeChild(modal);
+		//var modal = document.querySelector('.modal');
+		//if(modal) document.body.removeChild(modal);
+        document.body.classList.remove('modal-open');
 	}
 }
 

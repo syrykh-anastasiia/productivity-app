@@ -12,47 +12,11 @@ const concat = require('gulp-concat');
 const babel = require("gulp-babel");
 var clean = require('gulp-clean');
 const settings = require('./gulp-settings.js');
-/*const postcssPlagins = [
-	plugins.autoprefixer({
-		browsers: ['last 2 version']
-	})
-];*/
 
 const reloadPage = (cb) => {
 	browserSync.reload();
 	cb();
 }
-
-// compile from sass to css
-gulp.task('allSass', () => {
-	const entryDir = settings.scssDir.entry;
-
-	return gulp.src(
-		path.resolve(__dirname, entryDir + '/**/*.scss'),
-		{
-			base: entryDir
-		}
-	)
-	.pipe(plugins.cached('allSass'))
-	.pipe(plugins.sassMultiInheritance({dir: entryDir + '/'}))
-	.pipe(plugins.plumber(function(error) {
-		plugins.util.log(plugins.util.colors.bold.red(error.message));
-		plugins.util.beep();
-		this.emit('end');
-	}))
-	.pipe(plugins.if(isDevelopment, plugins.sourcemaps.init()))
-	.pipe(plugins.sass().on('error', plugins.sass.logError))
-	.pipe(plugins.postcss(postcssPlagins))
-	.pipe(plugins.if(isDevelopment, plugins.sourcemaps.write('./')))
-	.pipe(plugins.plumber.stop())
-	.pipe(gulp.dest(function(file) {
-		return file.stem === settings.scssDir.mainFileName || file.stem === settings.scssDir.mainFileName + '.css' ?
-			path.resolve(__dirname, settings.scssDir.mainFileOutput) :
-			path.resolve(__dirname, settings.scssDir.output);
-	}))
-	.pipe(plugins.count('## files sass to css compiled', {logFiles: true}))
-	.pipe(browserSync.stream({match: '**/*.css'}));
-});
 
 // compile from less to css
 gulp.task('allLess', function () {
@@ -116,20 +80,6 @@ gulp.task('server', cb => {
 			notify: false
 		}
 	}, cb);
-});
-
-gulp.task('copyScripts', () => {
-	return gulp.src(
-		[
-			path.resolve(__dirname, settings.jsDir.entry + '/**/*.js')
-		],
-		{
-			base: path.resolve(__dirname, settings.jsDir.entry)
-		}
-	)
-	.pipe(plugins.cached('copyScripts'))
-	.pipe(gulp.dest(settings.jsDir.output))
-	.pipe(plugins.count('## JS files was copied', {logFiles: true}));
 });
 
 // image optimization
@@ -207,8 +157,6 @@ gulp.task('clear', (cb) => {
 });
 
 gulp.task('build', gulp.parallel(
-	//'assets',
-	//'copyScripts',
 	'clear',
 	'allJs',
 	'pluginsJS',

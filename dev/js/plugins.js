@@ -1,12 +1,10 @@
 (function($) {
-
-	$.fn.accordion = function(prop) {
-			$('.accordion-header').click(function(event) {
-				var accordionHeader = $('.accordion-header');
-				var accordionBody = $('.accordion-body');
-		
-				accordionBody.toggleClass('hidden');
-			});
+	$.fn.accordion = function() {
+        $('.drop').slideUp();
+		$(this).on('click', '.opener', function() {
+            $(this).parent().toggleClass('active');
+            $(this).siblings('.drop').slideToggle();
+		});
 			
 		return this;
 	};

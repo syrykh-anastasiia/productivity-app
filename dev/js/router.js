@@ -32,6 +32,7 @@ EventBus.on('routeChange', function(route) {
 });
 
 EventBus.on('afterLogin', function() {
+    EventBus.trigger('loginDestroy');
     if(LocalStorageData.getFromLS('Pomodoros') === null && LocalStorageData.getFromLS('Categories') === null) {
         EventBus.trigger('routeChange', '#settings');
     } else {

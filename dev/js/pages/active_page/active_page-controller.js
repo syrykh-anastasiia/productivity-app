@@ -10,20 +10,15 @@ class ActivePageController {
 		self.view = view;
 		self.model = model;
 
-		//var $accordion = $('#globalListToggle');
-		//$accordion.accordion();
-		//$('.accordion-header').click(function() { //fix this repeat
-		//	$accordion.find('.accordion-icon').toggleClass('icon-global-list-arrow-right');
-		//});
-		//$('.app-controll').tooltips();
-
 		document.addEventListener('click', function(event) {
+            event.preventDefault();
 		 	var target = event.target;
 		 	if(target.closest('.add-task') || target.classList.contains('add-task')) {
 		 		EventBus.trigger('renderModalWindow', ['Add']);
 				//$('#modalWindow').modal();
 		 	}
-		 	else if(target.closest('edit-task') || target.classList.contains('add-task')) {
+		 	else if(target.closest('edit-task') || target.classList.contains('edit-task')) {
+                EventBus.trigger('renderModalWindow', ['Edit']);
 		 		//let taskId = target.parentNode.parentNode.parentNode.dataset.key; //i'll fix it
 		 		//EventBus.trigger('renderModalWindow', ['Edit', taskId]);
 		 		//$('#modalWindow').modal();
