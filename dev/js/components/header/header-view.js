@@ -7,5 +7,6 @@ class HeaderView {
         holder.innerHTML += this.template();
 		$('.sticky-header').stickyHeader();
         //$('.tooltip').tooltips();
+		EventBus.trigger('eventListeners');
 	}
 }

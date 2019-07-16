@@ -60,13 +60,17 @@ class Router {
 		switch(currentLocation) {
 			case 'login':
 				EventBus.trigger('renderLogin');
-			break;
+				break;
+            case 'logout':
+                LocalStorageData.removeFromLS('username');
+                EventBus.trigger('routeChange', '#login');
+                break;
 			case 'settings':
 				EventBus.trigger('renderSettings');
-			break;
+				break;
 			case 'active_page':
 				EventBus.trigger('renderActivePage');
-			break;
+				break;
 		}
 	}
 }
@@ -76,13 +80,13 @@ EventBus.on('routeChange', function(route) {
 	switch(route) {
 		case 'login':
 			location.hash = '#login';
-		break;
+			break;
 		case 'settings':
 			location.hash = '#settings';
-		break;
+			break;
 		case 'active_page':
 			location.hash = '#active_page';
-		break;
+			break;
 	}
 });
 
@@ -245,6 +249,50 @@ function notification(text) {
     });
   }
 }
+class HeaderController {
+	constructor(view) {
+        this.view = view;
+	}
+
+	eventListeners() {
+        let menu = document.getElementsByClassName('main-menu')[0];
+        menu.addEventListener('click', function(e) {
+            /*if(event.target.parent.attr('href', '#logout')) {
+                LocalStorageData.removeFromLS('username');
+                EventBus.trigger('routeChange', '#login');
+            } else if(event.target.parent.attr('href', '#settings')) {
+                EventBus.trigger('routeChange', '#settings');
+            } else if(event.target.parent.attr('href', '#goToReports')) {
+                //EventBus.trigger('routeChange', '#reports');
+                alert('Sorry, service is not available');
+            }*/
+        });
+    }
+}
+class HeaderView {
+	constructor() {
+		this.template = Handlebars.compile($('#headerTemplate').html());
+	}
+
+	render(holder) {
+        holder.innerHTML += this.template();
+		$('.sticky-header').stickyHeader();
+        //$('.tooltip').tooltips();
+		EventBus.trigger('eventListeners');
+	}
+}
+window.initHeader = function() {
+	var headerView = new HeaderView();
+	var headerController = new HeaderController(headerView);
+
+    EventBus.on('renderHeader', function(holder) {
+        headerView.render(holder);
+    });
+
+    EventBus.on('eventListeners', function() {
+        headerController.eventListeners();
+    });
+}
 class TaskController {
 	constructor(model, view) {
 		this.model = model;
@@ -293,7 +341,6 @@ class TaskView {
 		this.template = Handlebars.compile($('#taskTemplate').html());
 	}
 	render(task, key) {
-		//var hTemplate = this.template();
 		var data = this.template({
 			task: {
 				category: task.category[0],
@@ -319,9 +366,8 @@ class TaskView {
 
 			newCategory.innerHTML = categoryData;
 			newCategory.innerHTML += data;
-			document.querySelector('.global-task-list').appendChild(newCategory);
+			document.querySelector('.global-tasklist').appendChild(newCategory);
 		}
-		document.querySelector('.btn-groups').classList.remove('hidden');
 	}
 	removeFromPage() {
 		
@@ -379,12 +425,6 @@ class TaskCollectionModel {
 		}
 	}
 }
-/**
-* @constructor
-* @param model
-* @param view
-* @name ActivePageController
-*/
 class ActivePageController {
 	constructor(model, view) {
 		var self = this;
@@ -392,33 +432,8 @@ class ActivePageController {
 		self.model = model;
 
 		document.addEventListener('click', function(event) {
-            event.preventDefault();
+            //event.preventDefault();
 		 	var target = event.target;
-		 	if(target.closest('.add-task') || target.classList.contains('add-task')) {
-		 		EventBus.trigger('renderModalWindow', ['Add']);
-				//$('#modalWindow').modal();
-		 	}
-		 	else if(target.closest('edit-task') || target.classList.contains('edit-task')) {
-                EventBus.trigger('renderModalWindow', ['Edit']);
-		 		//let taskId = target.parentNode.parentNode.parentNode.dataset.key; //i'll fix it
-		 		//EventBus.trigger('renderModalWindow', ['Edit', taskId]);
-		 		//$('#modalWindow').modal();
-		 	} else if(target.closest('.remove-task')) {
-		 		//let taskId = target.parentNode.parentNode.dataset.key; //i'll fix it
-		 		//EventBus.trigger('removeTask', taskId);
-		 	} else if(target.closest('.open-timer')) {
-		 		//let taskId = target.parentNode.parentNode.dataset.key;
-		 		//EventBus.trigger('renderTimer', taskId);
-		 	} else if(target.closest('.priority-filter')) {
-		 		//TaskCollectionModel.getByProperty('priority', target.innerHTML);
-		 	} else if(target.closest('.arrow-to-top')) {
-		 		//let removingTask = target.parentNode.parentNode.parentNode;
-		 		//let removingTaskParent = removingTask.parentNode;
-		 		//document.getElementsByClassName('today-task-list')[0].appendChild(removingTask);
-		 		//self.view.removeParent(removingTaskParent);
-		 		//self.view.setTaskToDaily(removingTask);
-		 		//EventBus.trigger('dailyListUpdate');
-		 	}
 		 });
 	}
 	
@@ -455,16 +470,18 @@ class ActivePageView {
 
 		if(LocalStorageData.getFromLS('TaskList') !== null) {
 			var list = JSON.parse(LocalStorageData.getFromLS('TaskList'));
-			//document.getElementsByClassName('btn-groups')[0].classList.remove('hidden');
-			//this.pageTitle();
 			setTimeout(function() {
-				if(document.getElementsByClassName('global-task-list')[0].childNodes.length === 0) { //fix with async fb
+				if(document.getElementsByClassName('global-tasklist')[0].childNodes.length === 0) { //fix with async fb
 					for(var i in list) {
 						EventBus.on('renderTask', [list[i], i]);
 					}
 				}
 				self.dailyRender();
 			}, 3000); //hack for some time
+		} else {
+			document.getElementsByClassName('subtitle-holder')[0].classList.add('unactive');
+            document.getElementsByClassName('tasklist-global')[0].classList.add('unactive');
+            document.getElementsByClassName('tasklist-nav')[0].classList.add('unactive');
 		}
 
 		$('.accodrion-holder').accordion();
@@ -508,6 +525,7 @@ window.initActivePage = function() {
 
 	EventBus.on('renderActivePage', function() {
 		activePageView.render();
+        EventBus.trigger('renderModalWindow');
 	});
 	EventBus.on('removeTask', function(taskId) {
 		activePageModel.removingItems(taskId);
@@ -689,42 +707,6 @@ ArrowsView.prototype.render = function() {
 	var hTemplate = this.template;
 	document.querySelector('.content-area').innerHTML += hTemplate();
 }
-class HeaderController {
-	constructor(view) {
-        this.view = view;
-
-        document.addEventListener('click', function(event) {
-            if(event.target.closest('#logout')) {
-                LocalStorageData.removeFromLS('username');
-                EventBus.trigger('routeChange', '#login');
-            } else if(event.target.closest('#settings')) {
-                EventBus.trigger('routeChange', '#settings');
-            } else if(event.target.closest('#goToReports')) {
-                //EventBus.trigger('routeChange', '#reports');
-                alert('Sorry, service is not available');
-            }
-        });
-	}
-}
-class HeaderView {
-	constructor() {
-		this.template = Handlebars.compile($('#headerTemplate').html());
-	}
-
-	render(holder) {
-        holder.innerHTML += this.template();
-		$('.sticky-header').stickyHeader();
-        //$('.tooltip').tooltips();
-	}
-}
-window.initHeader = function() {
-	var headerView = new HeaderView();
-	var headerController = new HeaderController(headerView);
-
-    EventBus.on('renderHeader', function(holder) {
-        headerView.render(holder);
-    });
-}
 class ModalWindowController {
 	constructor(model, view) {
 		var self = this;
@@ -747,31 +729,43 @@ class ModalWindowController {
 			}
 		});
 	}
-	getDataFromModal() {
-		let modal = document.querySelector('.modal-open');
-		let title = modal.querySelector('#title').value;
-		let description = modal.querySelector('#description').value;
+
+	eventListeners() {
+        var self = this;
+		let form = document.getElementsByClassName('task-modal-form')[0];
+
+		form.addEventListener('submit', function(e) {
+			e.preventDefault();
+            let newTaskInfo = self.getDataFromModal(form);
+            console.log(newTaskInfo);
+            EventBus.trigger('addNewTask', newTaskInfo);
+		});
+	}
+
+	getDataFromModal(form) {
+		let title = form.querySelector('#title').value;
+		let description = form.querySelector('#description').value;
 		let category = [];
-		let categories = modal.querySelectorAll('.category-list');
+		let categories = form.querySelectorAll('input[name="category"]');
 		for(var i = 0; i < categories.length; i++) {
 			if(categories[i].checked) {
 				category[0] = i;
-				category[1] = categories[i].parentNode.querySelector('.input-text').innerHTML;
+				category[1] = categories[i].parentNode.querySelector('.fake-label').innerHTML;
 			}
 		}
-		let deadline = modal.querySelector('#deadline').value;	
-		let estimations = modal.querySelectorAll('.estimation-list');
+		let deadline = form.querySelector('#deadline').value;
+		let estimations = form.querySelectorAll('.checkbox-rating input');
 		let estimation = 0;
 		for(var i = 0; i < estimations.length; i++) {
 			if(estimations[i].checked) {
-				estimation++;
+				estimation = estimations[i].value;
 			}
 		}
 		let priority = '';
-		let priorities = modal.querySelectorAll('.priority-list');
+		let priorities = form.querySelectorAll('input[name="priority"]');
 		for(var i = 0; i < priorities.length; i++) {
 			if(priorities[i].checked) {
-				priority = priorities[i].parentNode.querySelector('.input-text').innerHTML;
+				priority = priorities[i].parentNode.querySelector('.fake-label').innerHTML;
 			}
 		}
 		let obj = {
@@ -784,6 +778,7 @@ class ModalWindowController {
 				};
 		return obj;
 	}
+
 	setTaskToModel(task, taskId) {
 		var modal = document.querySelector('.modal-open');
 		modal.dataset.key = taskId;
@@ -828,6 +823,7 @@ class ModalWindowView {
 	constructor() {
 		this.template = Handlebars.compile($('#modalTemplate').html());
 	}
+
 	render(mode) {
 		var hTemplate = this.template;
 		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],
@@ -837,17 +833,14 @@ class ModalWindowView {
 													category4: JSON.parse(LocalStorageData.getFromLS('Categories'))['4'][1],
 													mode: mode});
 		document.body.innerHTML += data;
-        document.body.classList.add('modal-open');
-        $( ".datepicker" ).datepicker({
-			minDate: 0,
-			maxDate: "+1Y"
-        });
-	}
 
-	destroy() {
-		//var modal = document.querySelector('.modal');
-		//if(modal) document.body.removeChild(modal);
-        document.body.classList.remove('modal-open');
+        $( ".datepicker" ).datepicker({
+            minDate: 0,
+            maxDate: "+1Y",
+            dateFormat: "MM dd, yy"
+        });
+
+		$('.modal').modalWindow();
 	}
 }
 
@@ -863,11 +856,23 @@ window.initModalWindow = function() {
 	var modalWindowModel = new ModalWindowModel();
 	var modalWindowController = new ModalWindowController(modalWindowModel, modalWindowView);
 
-	EventBus.on('renderModalWindow', function([mode, taskId]) {
+	EventBus.on('renderModalWindow', function(mode = 'default') {
 		modalWindowView.render(mode);
-		if(mode === 'Edit') {
-			var task = modalWindowModel.getChosenTaskData(taskId);
-		 	modalWindowController.setTaskToModel(task, taskId);
+        modalWindowController.eventListeners();
+	});
+
+    EventBus.on('updateModalMode', function(elem) {
+    	let mode = elem[0].dataset.mode;
+    	switch(mode) {
+			case 'add':
+
+				break;
+			case 'edit':
+                //var task = modalWindowModel.getChosenTaskData(taskId);
+                // 	modalWindowController.setTaskToModel(task, taskId);
+				break;
+			case 'delete':
+				break;
 		}
 	});
 }

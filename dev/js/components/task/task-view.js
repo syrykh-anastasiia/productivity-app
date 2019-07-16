@@ -3,7 +3,6 @@ class TaskView {
 		this.template = Handlebars.compile($('#taskTemplate').html());
 	}
 	render(task, key) {
-		//var hTemplate = this.template();
 		var data = this.template({
 			task: {
 				category: task.category[0],
@@ -29,9 +28,8 @@ class TaskView {
 
 			newCategory.innerHTML = categoryData;
 			newCategory.innerHTML += data;
-			document.querySelector('.global-task-list').appendChild(newCategory);
+			document.querySelector('.global-tasklist').appendChild(newCategory);
 		}
-		document.querySelector('.btn-groups').classList.remove('hidden');
 	}
 	removeFromPage() {
 		

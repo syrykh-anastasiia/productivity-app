@@ -2,6 +2,7 @@ class ModalWindowView {
 	constructor() {
 		this.template = Handlebars.compile($('#modalTemplate').html());
 	}
+
 	render(mode) {
 		var hTemplate = this.template;
 		var data = hTemplate({category0: JSON.parse(LocalStorageData.getFromLS('Categories'))['0'][1],
@@ -11,17 +12,14 @@ class ModalWindowView {
 													category4: JSON.parse(LocalStorageData.getFromLS('Categories'))['4'][1],
 													mode: mode});
 		document.body.innerHTML += data;
-        document.body.classList.add('modal-open');
-        $( ".datepicker" ).datepicker({
-			minDate: 0,
-			maxDate: "+1Y"
-        });
-	}
 
-	destroy() {
-		//var modal = document.querySelector('.modal');
-		//if(modal) document.body.removeChild(modal);
-        document.body.classList.remove('modal-open');
+        $( ".datepicker" ).datepicker({
+            minDate: 0,
+            maxDate: "+1Y",
+            dateFormat: "MM dd, yy"
+        });
+
+		$('.modal').modalWindow();
 	}
 }
 

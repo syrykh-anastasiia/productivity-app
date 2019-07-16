@@ -3,11 +3,23 @@ window.initModalWindow = function() {
 	var modalWindowModel = new ModalWindowModel();
 	var modalWindowController = new ModalWindowController(modalWindowModel, modalWindowView);
 
-	EventBus.on('renderModalWindow', function([mode, taskId]) {
+	EventBus.on('renderModalWindow', function(mode = 'default') {
 		modalWindowView.render(mode);
-		if(mode === 'Edit') {
-			var task = modalWindowModel.getChosenTaskData(taskId);
-		 	modalWindowController.setTaskToModel(task, taskId);
+        modalWindowController.eventListeners();
+	});
+
+    EventBus.on('updateModalMode', function(elem) {
+    	let mode = elem[0].dataset.mode;
+    	switch(mode) {
+			case 'add':
+
+				break;
+			case 'edit':
+                //var task = modalWindowModel.getChosenTaskData(taskId);
+                // 	modalWindowController.setTaskToModel(task, taskId);
+				break;
+			case 'delete':
+				break;
 		}
 	});
 }

@@ -1,9 +1,3 @@
-/**
-* @constructor
-* @param model
-* @param view
-* @name ActivePageController
-*/
 class ActivePageController {
 	constructor(model, view) {
 		var self = this;
@@ -11,33 +5,8 @@ class ActivePageController {
 		self.model = model;
 
 		document.addEventListener('click', function(event) {
-            event.preventDefault();
+            //event.preventDefault();
 		 	var target = event.target;
-		 	if(target.closest('.add-task') || target.classList.contains('add-task')) {
-		 		EventBus.trigger('renderModalWindow', ['Add']);
-				//$('#modalWindow').modal();
-		 	}
-		 	else if(target.closest('edit-task') || target.classList.contains('edit-task')) {
-                EventBus.trigger('renderModalWindow', ['Edit']);
-		 		//let taskId = target.parentNode.parentNode.parentNode.dataset.key; //i'll fix it
-		 		//EventBus.trigger('renderModalWindow', ['Edit', taskId]);
-		 		//$('#modalWindow').modal();
-		 	} else if(target.closest('.remove-task')) {
-		 		//let taskId = target.parentNode.parentNode.dataset.key; //i'll fix it
-		 		//EventBus.trigger('removeTask', taskId);
-		 	} else if(target.closest('.open-timer')) {
-		 		//let taskId = target.parentNode.parentNode.dataset.key;
-		 		//EventBus.trigger('renderTimer', taskId);
-		 	} else if(target.closest('.priority-filter')) {
-		 		//TaskCollectionModel.getByProperty('priority', target.innerHTML);
-		 	} else if(target.closest('.arrow-to-top')) {
-		 		//let removingTask = target.parentNode.parentNode.parentNode;
-		 		//let removingTaskParent = removingTask.parentNode;
-		 		//document.getElementsByClassName('today-task-list')[0].appendChild(removingTask);
-		 		//self.view.removeParent(removingTaskParent);
-		 		//self.view.setTaskToDaily(removingTask);
-		 		//EventBus.trigger('dailyListUpdate');
-		 	}
 		 });
 	}
 	

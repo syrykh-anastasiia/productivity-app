@@ -643,6 +643,9 @@ body:after {
 .text-center {
   text-align: center;
 }
+.unactive {
+  display: none !important;
+}
 .logo {
   display: block;
   margin: 0 auto 30px;
@@ -1355,6 +1358,11 @@ input[type="password"]:focus + i {
     font-size: 36px;
   }
 }
+.hint-block i {
+  font-size: 60px;
+  display: block;
+  margin: 0 0 24px;
+}
 .hint-block p {
   margin: 0;
 }
@@ -1368,6 +1376,13 @@ input[type="password"]:focus + i {
   background-color: rgba(0, 0, 0, 0.7);
   font-family: "Roboto", "PT Sans", 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
   overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility .3s;
+}
+.modal.modal-open {
+  opacity: 1;
+  visibility: visible;
 }
 .modal.delete-modal .icon-trash {
   opacity: 1;
@@ -1377,6 +1392,7 @@ input[type="password"]:focus + i {
   font: 700 28px "Roboto", "PT Sans", 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif;
   text-align: center;
   margin: 0 0 44px;
+  text-transform: capitalize;
 }
 .modal label:not([class]) {
   display: inline-block;
@@ -1538,7 +1554,7 @@ input[type="password"]:focus + i {
 .main-menu a:hover {
   color: #fff;
 }
-.main-menu .remove-tasks,
+.main-menu .remove-task,
 .main-menu .add-task {
   display: none;
 }

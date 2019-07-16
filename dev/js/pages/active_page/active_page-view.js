@@ -11,16 +11,18 @@ class ActivePageView {
 
 		if(LocalStorageData.getFromLS('TaskList') !== null) {
 			var list = JSON.parse(LocalStorageData.getFromLS('TaskList'));
-			//document.getElementsByClassName('btn-groups')[0].classList.remove('hidden');
-			//this.pageTitle();
 			setTimeout(function() {
-				if(document.getElementsByClassName('global-task-list')[0].childNodes.length === 0) { //fix with async fb
+				if(document.getElementsByClassName('global-tasklist')[0].childNodes.length === 0) { //fix with async fb
 					for(var i in list) {
 						EventBus.on('renderTask', [list[i], i]);
 					}
 				}
 				self.dailyRender();
 			}, 3000); //hack for some time
+		} else {
+			document.getElementsByClassName('subtitle-holder')[0].classList.add('unactive');
+            document.getElementsByClassName('tasklist-global')[0].classList.add('unactive');
+            document.getElementsByClassName('tasklist-nav')[0].classList.add('unactive');
 		}
 
 		$('.accodrion-holder').accordion();

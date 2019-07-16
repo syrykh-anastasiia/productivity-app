@@ -109,6 +109,10 @@ body {
 	text-align: center;
 }
 
+.unactive {
+	display: none !important;
+}
+
 .logo {
 	display: block;
 	margin: 0 auto 30px;
@@ -856,6 +860,12 @@ input[type="password"] {
 		font-size: 36px;
 	}
 
+	i {
+		font-size: 60px;
+		display: block;
+		margin: 0 0 24px;
+	}
+
 	p {
 		margin: 0;
 	}
@@ -871,6 +881,14 @@ input[type="password"] {
 	background-color: rgba(0, 0, 0, .7);
 	font-family: @roboto, @base-font-sans-serif;
 	overflow: hidden;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity .3s, visibility .3s;
+
+	&.modal-open {
+		opacity: 1;
+		visibility: visible;
+	}
 
 	&.delete-modal {
 		.icon-trash {
@@ -883,6 +901,7 @@ input[type="password"] {
 		font: 700 28px @roboto, @base-font-sans-serif;
 		text-align: center;
 		margin: 0 0 44px;
+		text-transform: capitalize;
 	}
 	
 	label:not([class]) {

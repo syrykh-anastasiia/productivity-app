@@ -1,23 +1,17 @@
 (function($) {
 
-	$.fn.modal = function(prop) {
-		var modalContainer = $('.modal');
-		modalContainer.removeClass('hidden');
-
-		$("#deadline").datepicker({
-			showAnim: "slideDown",
-	    	changeMonth: true,
-	    	changeYear: true,
-    		minDate: 0,
-	    	dateFormat: "MM dd, yy"
+	$.fn.modalWindow = function() {
+		var modal = $(this);
+		$('.add-task, .edit-task, .remove-task').on('click', function(e) {
+			e.preventDefault();
+            EventBus.trigger('updateModalMode', $(this));
+            modal.addClass('modal-open');
 		});
 
-		$('#confirmAdding').click(function() {
-			modalContainer.addClass('hidden');
+        $('.modal-btns button').on('click', function() {
+            modal.removeClass('modal-open');
 		});
-		$('#cancelAdding').click(function() {
-			modalContainer.addClass('hidden');
-		});
+
 		return this;
 	};
 }(jQuery));

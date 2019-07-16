@@ -35,19 +35,19 @@
 				</strong>
 				<ul class="main-menu">
 					<li>
-						<a href="#" class="tooltip add-task" title="New Task"><i class="icon-add"></i></a>
+						<a href="#" class="tooltip add-task" data="add" title="New Task"><i class="icon-add"></i></a>
 					</li>
 					<li>
-						<a href="#" class="tooltip remove-tasks" title="To Trash"><i class="icon-trash"></i></a>
+						<a href="#" class="tooltip remove-task" data="remove" title="To Trash"><i class="icon-trash"></i></a>
 					</li>
 					<li>
-						<a href="#" class="tooltip" title="To Reports"><i class="icon-statistics"></i></a>
+						<a href="#reports" class="tooltip" title="To Reports"><i class="icon-statistics"></i></a>
 					</li>
 					<li>
 						<a href="#settings" class="tooltip" title="To Settings"><i class="icon-settings"></i></a>
 					</li>
 					<li>
-						<a href="#" class="tooltip" title="Log Out"><i class="icon-logout"></i></a>
+						<a href="#logout" class="tooltip" title="Log Out"><i class="icon-logout"></i></a>
 					</li>
 				</ul>
 			</div>
@@ -59,9 +59,9 @@
 		</main>
 	</script>
 	<script id="modalTemplate" type="text/x-handlebars-template">
-		<div id="modalWindow" class="modal {{mode}}-modal">
+		<div id="modalWindow" class="modal" data-mode="{{mode}}">
 			<div class="modal-window">
-				<form action="#">
+				<form action="#" class="task-modal-form">
 					<div class="modal-head">
 						<i class="icon-trash"></i>
 						<ul class="modal-btns">
@@ -320,8 +320,8 @@
 	</script>
 	<script id="activePageTemplate" type="text/x-handlebars-template">
         <section class="tasklist-section">
-			<h1><a href="#" class="add-task">Daily Task List +</a></h1>
-			<div class="hidden subtitle-holder">
+			<h1><a href="#" class="add-task" data-mode="add">Daily Task List +</a></h1>
+			<div class="subtitle-holder">
 				<ul class="subnav-list daily-sort-list">
 					<li><a href="#">To Do</a></li>
 					<li><a href="#">Done</a></li>
@@ -338,7 +338,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="hidden tasklist-nav">
+			<div class="tasklist-nav">
 				<div class="accodrion-holder">
 					<a href="#" class="opener list-tumbler">Global list<i class="icon-global-list-arrow-down"></i></a>
 					<ul class="drop subnav-list select-list">

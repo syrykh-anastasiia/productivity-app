@@ -20,31 +20,43 @@ class ModalWindowController {
 			}
 		});
 	}
-	getDataFromModal() {
-		let modal = document.querySelector('.modal-open');
-		let title = modal.querySelector('#title').value;
-		let description = modal.querySelector('#description').value;
+
+	eventListeners() {
+        var self = this;
+		let form = document.getElementsByClassName('task-modal-form')[0];
+
+		form.addEventListener('submit', function(e) {
+			e.preventDefault();
+            let newTaskInfo = self.getDataFromModal(form);
+            console.log(newTaskInfo);
+            EventBus.trigger('addNewTask', newTaskInfo);
+		});
+	}
+
+	getDataFromModal(form) {
+		let title = form.querySelector('#title').value;
+		let description = form.querySelector('#description').value;
 		let category = [];
-		let categories = modal.querySelectorAll('.category-list');
+		let categories = form.querySelectorAll('input[name="category"]');
 		for(var i = 0; i < categories.length; i++) {
 			if(categories[i].checked) {
 				category[0] = i;
-				category[1] = categories[i].parentNode.querySelector('.input-text').innerHTML;
+				category[1] = categories[i].parentNode.querySelector('.fake-label').innerHTML;
 			}
 		}
-		let deadline = modal.querySelector('#deadline').value;	
-		let estimations = modal.querySelectorAll('.estimation-list');
+		let deadline = form.querySelector('#deadline').value;
+		let estimations = form.querySelectorAll('.checkbox-rating input');
 		let estimation = 0;
 		for(var i = 0; i < estimations.length; i++) {
 			if(estimations[i].checked) {
-				estimation++;
+				estimation = estimations[i].value;
 			}
 		}
 		let priority = '';
-		let priorities = modal.querySelectorAll('.priority-list');
+		let priorities = form.querySelectorAll('input[name="priority"]');
 		for(var i = 0; i < priorities.length; i++) {
 			if(priorities[i].checked) {
-				priority = priorities[i].parentNode.querySelector('.input-text').innerHTML;
+				priority = priorities[i].parentNode.querySelector('.fake-label').innerHTML;
 			}
 		}
 		let obj = {
@@ -57,6 +69,7 @@ class ModalWindowController {
 				};
 		return obj;
 	}
+
 	setTaskToModel(task, taskId) {
 		var modal = document.querySelector('.modal-open');
 		modal.dataset.key = taskId;

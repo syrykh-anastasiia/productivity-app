@@ -5,6 +5,7 @@ window.initActivePage = function() {
 
 	EventBus.on('renderActivePage', function() {
 		activePageView.render();
+        EventBus.trigger('renderModalWindow');
 	});
 	EventBus.on('removeTask', function(taskId) {
 		activePageModel.removingItems(taskId);

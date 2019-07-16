@@ -5,4 +5,8 @@ window.initHeader = function() {
     EventBus.on('renderHeader', function(holder) {
         headerView.render(holder);
     });
+
+    EventBus.on('eventListeners', function() {
+        headerController.eventListeners();
+    });
 }

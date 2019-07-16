@@ -5,13 +5,17 @@ class Router {
 		switch(currentLocation) {
 			case 'login':
 				EventBus.trigger('renderLogin');
-			break;
+				break;
+            case 'logout':
+                LocalStorageData.removeFromLS('username');
+                EventBus.trigger('routeChange', '#login');
+                break;
 			case 'settings':
 				EventBus.trigger('renderSettings');
-			break;
+				break;
 			case 'active_page':
 				EventBus.trigger('renderActivePage');
-			break;
+				break;
 		}
 	}
 }
@@ -21,13 +25,13 @@ EventBus.on('routeChange', function(route) {
 	switch(route) {
 		case 'login':
 			location.hash = '#login';
-		break;
+			break;
 		case 'settings':
 			location.hash = '#settings';
-		break;
+			break;
 		case 'active_page':
 			location.hash = '#active_page';
-		break;
+			break;
 	}
 });
 
